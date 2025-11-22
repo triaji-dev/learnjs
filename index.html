@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kurikulum JIT JavaScript untuk React: TaskMaster</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fcfcfc; /* Near white, soft background */
+            color: #1f2937; /* Gray 800 */
+        }
+        .container-wrapper {
+            padding: 2rem 1rem;
+        }
+        @media (min-width: 1024px) {
+            .container-wrapper {
+                padding: 4rem 3rem;
+            }
+        }
+        .badge {
+            display: inline-block;
+            padding: 0.35rem 0.9rem;
+            border-radius: 0.75rem; /* Rounded large */
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.05em; /* Subtle spacing */
+            text-transform: uppercase;
+        }
+
+        /* --- Custom Styles for Completion Status --- */
+        .is-completed {
+            /* Menerapkan strikethrough ke seluruh teks baris */
+            text-decoration: line-through;
+        }
+        .is-completed td {
+            /* Mengurangi opacity untuk efek redup */
+            opacity: 0.5;
+            transition: opacity 0.2s;
+        }
+        /* Memastikan hover tidak mengubah background pada baris yang sudah selesai */
+        .is-completed:hover {
+            background-color: transparent !important; 
+        }
+        .is-completed .badge {
+             /* Mengurangi opacity badge lebih lanjut */
+            opacity: 0.3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container-wrapper max-w-7xl mx-auto">
+        
+        <!-- Minimalist Header & Navigation Placeholder -->
+        <header class="flex justify-between items-center mb-16 lg:mb-24">
+            <div class="text-xl font-bold text-gray-900 tracking-wider">
+                TaskMaster JIT
+            </div>
+            <!-- Minimal Navigation Placeholder (Hidden until needed) -->
+            <button class="text-gray-500 hover:text-indigo-700 transition duration-150 p-2 rounded-lg">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </header>
+
+        <!-- Main Heading Area -->
+        <section class="max-w-4xl mx-auto text-center mb-16">
+            <h1 class="text-5xl lg:text-6xl font-extrabold text-gray-900 mb-4 leading-tight">
+                Kurikulum Belajar
+            </h1>
+            <h2 class="text-5xl lg:text-6xl font-extrabold text-indigo-900 mb-4 leading-tight">Just-In-Time</h2>
+            <p class="text-xl text-gray-600 font-light mt-6 leading-relaxed">
+                Pelajari 16 konsep JavaScript yang paling relevan untuk pengembangan React, diterapkan secara langsung melalui proyek mikro "TaskMaster".
+            </p>
+        </section>
+
+        <!-- Summary Card - Clean Grid Layout -->
+        <div class="grid grid-cols-3 lg:grid-cols-5 gap-4 lg:gap-6 max-w-4xl mx-auto mb-16">
+            <div class="col-span-1 p-6 bg-gray-50 rounded-2xl border border-gray-100 text-center shadow-inner">
+                <p class="text-xs font-medium text-gray-500 uppercase tracking-wider">Topik Inti</p>
+                <p class="text-4xl font-bold text-gray-900 mt-2">16</p>
+            </div>
+            <div class="col-span-2 p-6 bg-indigo-50 rounded-2xl border border-indigo-100 text-center shadow-md">
+                <p class="text-xs font-medium text-indigo-700 uppercase tracking-wider">Estimasi Waktu Aktif</p>
+                <p class="text-4xl font-bold text-indigo-700 mt-2">~13 - 18 Jam</p>
+            </div>
+            <div class="col-span-3 lg:col-span-2 p-6 bg-gray-50 rounded-2xl border border-gray-100 text-center shadow-inner">
+                <p class="text-xs font-medium text-gray-500 uppercase tracking-wider">Metode Belajar</p>
+                <p class="text-4xl font-bold text-gray-900 mt-2">J.I.T.</p>
+            </div>
+        </div>
+
+        <!-- Main Table/Content Block - Card-based -->
+        <div class="bg-white rounded-3xl shadow-xl shadow-gray-200/80 overflow-hidden border border-gray-100">
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-100">
+                    <thead class="bg-white">
+                        <tr>
+                            <th scope="col" class="py-5 px-6 text-center text-xs font-semibold uppercase tracking-wider text-gray-500 w-16">No</th>
+                            <th scope="col" class="py-5 px-6 text-center text-xs font-semibold uppercase tracking-wider text-gray-500 w-20">Status</th> <!-- Kolom Status Baru -->
+                            <th scope="col" class="py-5 px-6 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Konsep JIT</th>
+                            <th scope="col" class="py-5 px-6 text-left text-xs font-semibold uppercase tracking-wider text-gray-500 hidden md:table-cell">Fitur Proyek</th>
+                            <th scope="col" class="py-5 px-6 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Relevansi React</th>
+                            <th scope="col" class="py-5 px-6 text-center text-xs font-semibold uppercase tracking-wider text-gray-500 w-28">Durasi</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100 text-gray-700" id="curriculum-body">
+                        <!-- Data will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="mt-20 pt-10 border-t border-gray-200 text-center text-sm text-gray-400">
+            <p>TaskMaster JIT Curriculum &bull; Desain Minimalis &bull; 2025</p>
+        </footer>
+    </div>
+
+    <script>
+        const curriculumData = [
+            { no: 1, konsep: "Variables (const) & Template Literals", fitur: "UI Header & Data Statis", detail: "Dasar JSX & Props", durasi: "30 - 45" },
+            { no: 2, konsep: "Arrow Functions & Return", fitur: "Komponen Kartu Tugas", detail: "Functional Component", durasi: "45 - 60" },
+            { no: 3, konsep: "Destructuring (Object)", fitur: "Ekstraksi Data Tugas", detail: "Menerima Props di Component", durasi: "30 - 45" },
+            { no: 4, konsep: "Ternary & Logical AND (&&)", fitur: "Label Prioritas & Status", detail: "Conditional Rendering", durasi: "45 - 60" },
+            { no: 5, konsep: "Array Map (.map())", fitur: "Render Daftar Tugas", detail: "Rendering List di React", durasi: "60 - 90" },
+            { no: 6, konsep: "Immutability (Spread ...)", fitur: "Fitur 'Tambah Tugas'", detail: "State Management / useState", durasi: "60 - 90" },
+            { no: 7, konsep: "Events & Callbacks", fitur: "Interaksi Tombol", detail: "Event Handling (onClick)", durasi: "45 - 60" },
+            { no: 8, konsep: "Array Filter (.filter())", fitur: "Fitur Hapus & Filter", detail: "State Update & Derived State", durasi: "45 - 60" },
+            { no: 9, konsep: "Array Reduce (.reduce())", fitur: "Widget Statistik", detail: "Complex Logic / useMemo", durasi: "60 - 90" },
+            { no: 10, konsep: "Modules (Import/Export)", fitur: "Refactor Struktur File", detail: "Struktur Component React", durasi: "45 - 60" },
+            { no: 11, konsep: "Async/Await + Fetch", fitur: "Load Data Server", detail: "useEffect & API Calls", durasi: "60 - 90" },
+            { no: 12, konsep: "Optional Chaining (?. )", fitur: "Handling Data", detail: "Mencegah UI Crash", durasi: "30" },
+            { no: 13, konsep: "Computed Property Names", fitur: "Form (Single Handler)", detail: "Multiple Input State di Form", durasi: "45 - 60" },
+            { no: 14, konsep: "LocalStorage & JSON", fitur: "Fitur 'Auto-Save'", detail: "Persisting State / Custom Hooks", durasi: "45 - 60" },
+            { no: 15, konsep: "Value vs Reference", fitur: "Cek Duplikasi", detail: "Dependency Array useEffect", durasi: "45 - 60" },
+            { no: 16, konsep: "Date Object & Formatting", fitur: "Format Deadline", detail: "Mengolah data display di UI", durasi: "30 - 45" }
+        ];
+
+        /**
+         * Fungsi untuk menangani perubahan status completion pada checkbox.
+         * @param {string} rowId - ID unik dari baris TR yang bersangkutan.
+         * @param {boolean} isChecked - Status checked dari checkbox.
+         */
+        function toggleCompletion(rowId, isChecked) {
+            const row = document.getElementById(rowId);
+            if (!row) {
+                console.error(`Row with ID ${rowId} not found.`);
+                return;
+            }
+
+            if (isChecked) {
+                // Tambahkan class is-completed yang akan memicu strikethrough dan opacity di CSS
+                row.classList.add('is-completed');
+                row.classList.remove('hover:bg-gray-100'); // Hapus efek hover
+            } else {
+                // Hapus class is-completed
+                row.classList.remove('is-completed');
+                row.classList.add('hover:bg-gray-100'); // Kembalikan efek hover
+            }
+        }
+
+        /**
+         * Fungsi untuk merender baris tabel dari data kurikulum
+         */
+        function renderCurriculum() {
+            const tbody = document.getElementById('curriculum-body');
+            if (!tbody) return;
+
+            // Mapping data array ke string HTML untuk setiap baris
+            const rowsHtml = curriculumData.map((item, index) => {
+                const rowClass = index % 2 === 0 ? 'bg-white' : 'bg-gray-50';
+                const rowId = `task-row-${item.no}`; // ID unik untuk setiap baris
+                const durasi = item.durasi.includes('-') ? item.durasi : `${item.durasi}`;
+                
+                // Minimalist badge colors using the Indigo accent and soft gray
+                let durasiColor;
+                if (durasi.includes('90')) {
+                    durasiColor = 'bg-indigo-50 text-indigo-700 border border-indigo-200';
+                } else if (durasi.includes('30')) {
+                    durasiColor = 'bg-teal-50 text-teal-700 border border-teal-200';
+                } else {
+                    durasiColor = 'bg-gray-100 text-gray-700 border border-gray-200';
+                }
+
+                return `
+                    <tr id="${rowId}" class="${rowClass} hover:bg-gray-100 transition duration-200 ease-in-out">
+                        <td class="py-5 px-6 text-center font-extrabold text-indigo-700">${item.no}</td>
+                        
+                        <!-- Kolom Checkbox Status -->
+                        <td class="py-5 px-6 text-center">
+                            <input type="checkbox" onchange="toggleCompletion('${rowId}', this.checked)" 
+                                   class="h-5 w-5 text-indigo-700 border-gray-300 rounded focus:ring-indigo-700 cursor-pointer transition duration-200">
+                        </td>
+                        
+                        <td class="py-5 px-6 text-base font-semibold text-gray-900">${item.konsep}</td>
+                        <td class="py-5 px-6 text-sm text-gray-600 hidden md:table-cell">${item.fitur}</td>
+                        <td class="py-5 px-6 text-sm font-medium text-indigo-600">${item.detail}</td>
+                        <td class="py-5 px-6 text-center min-w-[200px]">
+                            <span class="badge ${durasiColor}">
+                                ${durasi} Min
+                            </span>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            // Memasukkan semua baris HTML ke dalam tbody
+            tbody.innerHTML = rowsHtml;
+        }
+
+        // Jalankan fungsi saat jendela selesai dimuat
+        window.onload = renderCurriculum;
+    </script>
+
+</body>
+</html>
