@@ -1,0 +1,836 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>12. Optional Chaining (?.)</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2b412ce7-7e1b-8131-9b78-d3508e711e64" class="page sans"><header><h1 class="page-title"><strong>12. </strong>Optional Chaining (<code>?.</code>)</h1><p class="page-description"></p><table class="properties"><tbody><tr class="property-row property-row-text"><th><span class="icon property-icon"><img src="https://www.notion.so/icons/description_gray.svg" style="width:14px;height:14px;display:block"/></span>Detail Implementasi</th><td>Prevent errors if the API returns task data without complete properties.</td></tr><tr class="property-row property-row-text"><th><span class="icon property-icon"><img src="https://www.notion.so/icons/description_gray.svg" style="width:14px;height:14px;display:block"/></span>Fitur &quot;TaskMaster&quot;</th><td><strong>Data Handling</strong></td></tr><tr class="property-row property-row-text"><th><span class="icon property-icon"><img src="https://www.notion.so/icons/description_gray.svg" style="width:14px;height:14px;display:block"/></span>Relevansi React</th><td>Mencegah UI Crash</td></tr></tbody></table></header><div class="page-body"><h1 id="2b412ce7-7e1b-8105-9b88-f0fc17bf0cd1" class="block-color-yellow">12. Optional Chaining (<code>?.</code>) (15 Menit) 🛡️</h1><h3 id="2b412ce7-7e1b-81ed-879b-e355d27ef065" class="">A. Apa itu Optional Chaining?</h3><p id="2b412ce7-7e1b-8120-899c-cdd4410c254f" class=""><strong>Optional Chaining (</strong><code><strong>?.</strong></code><strong>)</strong> adalah fitur JavaScript (ES2020) yang memungkinkan Anda <strong>membaca nilai properti yang terletak jauh di dalam rantai objek</strong> tanpa harus memvalidasi setiap referensi di dalam rantai tersebut.</p><p id="2b412ce7-7e1b-810f-9baf-e6ac8fe0a575" class="">Intinya, ia menyediakan cara yang aman untuk mengakses properti dari sebuah objek, terutama ketika Anda tidak yakin apakah properti atau objek itu sendiri ada.</p><h3 id="2b412ce7-7e1b-8142-b424-f0d4827ec6d6" class=""><strong>Masalah Tanpa </strong><code><strong>?.</strong></code></h3><p id="2b412ce7-7e1b-8124-a1cf-e2154dc966ae" class="">Secara tradisional, ketika Anda mencoba mengakses properti dari objek yang mungkin <code>null</code> atau <code>undefined</code>, JavaScript akan memunculkan <em>error</em> yang fatal, menghentikan eksekusi kode (dan menyebabkan UI <em>crash</em>).</p><p id="2b412ce7-7e1b-81ee-a75c-e85fedd8d0d3" class=""><strong>Contoh Masalah:</strong></p><p id="2b412ce7-7e1b-818f-8a03-e8c03993b19b" class="">JavaScript</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2b412ce7-7e1b-819c-a0cd-c460d9f4a28b" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">const user = {
+    id: 1,
+    name: &#x27;Budi&#x27;
+    // Properti &#x27;address&#x27; TIDAK ADA
+};
+
+// Kode ini akan CRASH jika &#x27;user.address&#x27; adalah undefined atau null
+const city = user.address.city; 
+// ❌ Error: Cannot read properties of undefined (reading &#x27;city&#x27;)</code></pre><p id="2b412ce7-7e1b-8171-b49b-e930740ec9e4" class="">Untuk menghindari <em>crash</em> ini, kita harus melakukan validasi panjang:</p><p id="2b412ce7-7e1b-8197-b885-da8c3715662a" class="">JavaScript</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2b412ce7-7e1b-818d-a8ea-cd96295eaba9" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">// Solusi Tradisional (Verbose/Panjang)
+const city = user &amp;&amp; user.address &amp;&amp; user.address.city;</code></pre><h3 id="2b412ce7-7e1b-8175-924f-f79ca90e897f" class=""><strong>Solusi dengan </strong><code><strong>?.</strong></code></h3><p id="2b412ce7-7e1b-8100-afbe-f3c13b287dff" class="">Operator <code>?.</code> akan mengevaluasi rantai properti. Jika ada titik di rantai yang ditemukan sebagai <code><strong>null</strong></code><strong> atau </strong><code><strong>undefined</strong></code>, maka operator akan segera menghentikan evaluasi dan mengembalikan <code><strong>undefined</strong></code>, alih-alih memunculkan <em>error</em>.</p><p id="2b412ce7-7e1b-81a9-9314-eee05f780331" class="">JavaScript</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2b412ce7-7e1b-81e8-8355-e45d9624ae20" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">const user = { id: 1, name: &#x27;Budi&#x27; }; // user.address = undefined
+
+// Solusi Modern (Sederhana dan Aman)
+const city = user.address?.city; 
+// Hasil: undefined (TIDAK ERROR!)
+
+const zipCode = user?.address?.details?.zip;
+// Hasil: undefined (TIDAK ERROR!)</code></pre><hr id="2b412ce7-7e1b-81e7-b7b9-f3751305a976"/><h3 id="2b412ce7-7e1b-817f-ac84-f1af87a9b0b3" class="">B. Implementasi di Fitur &quot;TaskMaster&quot; (Handling Data)</h3><p id="2b412ce7-7e1b-81c4-b7d7-dbfeed003c30" class="">Dalam aplikasi <em>TaskMaster</em>, kita sering berurusan dengan data yang berasal dari API. Data API tidak selalu konsisten atau lengkap, terutama di lingkungan <em>staging</em> atau ketika ada bug di <em>backend</em>.</p><p id="2b412ce7-7e1b-816b-9ef2-e9bfa12bfd78" class=""><strong>Skenario:</strong> Kita memuat daftar tugas. Setiap tugas seharusnya memiliki objek <code>metadata</code> dan di dalamnya ada <code>priority</code>.</p><p id="2b412ce7-7e1b-81bb-bd5d-c58540bf3b40" class="">JavaScript</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2b412ce7-7e1b-81ea-817a-f4603b9b1710" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">// 1. Tugas Sempurna
+const task1 = { id: 1, title: &#x27;Meeting&#x27;, metadata: { priority: &#x27;High&#x27;, tags: [&#x27;work&#x27;] } };
+
+// 2. Tugas yang Hilang Propertinya
+const task2 = { id: 2, title: &#x27;Review&#x27;, metadata: null }; // metadata adalah null
+const task3 = { id: 3, title: &#x27;Draft&#x27;, isCompleted: false }; // metadata TIDAK ADA</code></pre><h3 id="2b412ce7-7e1b-815f-b719-f5bd05fd60d0" class=""><strong>Akses Properti Tanpa </strong><em><strong>Crash</strong></em></h3><table id="2b412ce7-7e1b-8162-bcdf-eb3382251480" class="simple-table"><tbody><tr id="2b412ce7-7e1b-810a-86db-f1dfc4e95c86"><td id="F^ft" class=""><strong>Operasi Akses</strong></td><td id="P&gt;jQ" class=""><strong>Tanpa ?.</strong></td><td id="vbLu" class=""><strong>Dengan ?.</strong></td><td id="qzqp" class=""><strong>Hasil</strong></td></tr><tr id="2b412ce7-7e1b-81d1-b18a-e2d62a8735df"><td id="F^ft" class=""><code><strong>task1.metadata.priority</strong></code></td><td id="P&gt;jQ" class=""><code>task1.metadata.priority</code></td><td id="vbLu" class=""><code>task1.metadata?.priority</code></td><td id="qzqp" class=""><code>&#x27;High&#x27;</code></td></tr><tr id="2b412ce7-7e1b-8196-a3cd-e220f2aee49b"><td id="F^ft" class=""><code><strong>task2.metadata.priority</strong></code></td><td id="P&gt;jQ" class="">❌ <strong>CRASH</strong></td><td id="vbLu" class=""><code>task2.metadata?.priority</code></td><td id="qzqp" class=""><code>undefined</code></td></tr><tr id="2b412ce7-7e1b-81f2-991b-f3a5a209cbdd"><td id="F^ft" class=""><code><strong>task3.metadata.priority</strong></code></td><td id="P&gt;jQ" class="">❌ <strong>CRASH</strong></td><td id="vbLu" class=""><code>task3.metadata?.priority</code></td><td id="qzqp" class=""><code>undefined</code></td></tr></tbody></table><p id="2b412ce7-7e1b-81dd-bb1a-ed2d177c626c" class="">Dengan <code>?.</code>, kita dapat memproses daftar tugas tanpa takut <em>crash</em>, dan kita dapat menggunakan <em>default value</em> yang aman jika properti tersebut hilang (lihat <strong>Nullish Coalescing</strong> di bagian <em>live coding</em>).</p><hr id="2b412ce7-7e1b-81ce-99fc-ca76f662f679"/><h3 id="2b412ce7-7e1b-8125-92ec-ee96e260d916" class="">C. Relevansi React: Mencegah UI Crash</h3><ul id="2b412ce7-7e1b-8155-afdd-eb7b11ac40d9" class="bulleted-list"><li style="list-style-type:disc"><strong>Data Asinkron:</strong> Komponen React sering di-<em>render</em> sebelum data dari API selesai dimuat. Jika Anda mencoba mengakses <code>props.user.profile.firstName</code> sebelum objek <code>user</code> ada (mungkin <code>null</code> atau <code>undefined</code> pada <em>render</em> pertama), UI akan <strong>Crash</strong>.</li></ul><ul id="2b412ce7-7e1b-81bb-a144-f3722aaecb61" class="bulleted-list"><li style="list-style-type:disc"><strong>Optional Chaining</strong> adalah solusi paling bersih untuk <strong>mencegah UI Crash</strong> di React saat menangani <em>props</em> atau <em>state</em> yang mungkin asinkron atau tidak lengkap.</li></ul><p id="2b412ce7-7e1b-8148-868d-da5c20f35ed0" class="">JavaScript</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2b412ce7-7e1b-8181-bde6-e38649601478" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">// Di dalam komponen React:
+function UserProfile({ user }) {
+    // Tanpa ?. akan Crash jika user = null
+    // return &lt;h1&gt;Welcome, {user.name.firstName}!&lt;/h1&gt; 
+
+    // ✅ Dengan Optional Chaining, akan menampilkan &quot;Guest&quot; jika user.name null/undefined
+    const name = user?.name?.firstName || &#x27;Guest&#x27;; 
+    
+    // Perhatikan: user?.tasks[0]?.title - Bekerja juga pada Array Index!
+    const firstTask = user?.tasks?.[0]?.title; 
+
+    return (
+        &lt;div className=&quot;profile&quot;&gt;
+            &lt;h1&gt;Halo, {name}&lt;/h1&gt;
+            &lt;p&gt;Tugas Pertama: {firstTask || &#x27;Belum ada tugas&#x27;}&lt;/p&gt;
+        &lt;/div&gt;
+    );
+}</code></pre><hr id="2b412ce7-7e1b-81c2-8b21-c119a9de9656"/><h1 id="2b412ce7-7e1b-81db-b326-ed9ef6733f79" class="block-color-yellow">Live Coding: Mencegah Error dengan Optional Chaining (15 Menit) </h1><p id="2b412ce7-7e1b-8188-8afe-fd999f9ab503" class="">Kita akan membuat <em>live coding</em> sederhana untuk mendemonstrasikan bagaimana <code>?.</code> melindungi kode kita saat memproses <em>array</em> tugas dengan data yang tidak konsisten.</p><h3 id="2b412ce7-7e1b-817d-9951-d060ea50fe57" class="">Exercise untuk peserta:</h3><ol type="1" id="2b412ce7-7e1b-816f-813c-c9bec17594ab" class="numbered-list" start="1"><li>Buat <em>array</em> tugas dengan beberapa objek data yang <strong>tidak lengkap</strong> (sengaja hilangkan beberapa properti <code>metadata</code>).</li></ol><ol type="1" id="2b412ce7-7e1b-813e-9279-f5878b6519c8" class="numbered-list" start="2"><li>Tulis fungsi <em>rendering</em> yang mencoba mengakses properti yang dalam (misalnya, <code>task.metadata.priority</code>) tanpa <code>?.</code>. Amati <em>crash</em>.</li></ol><ol type="1" id="2b412ce7-7e1b-81b4-bf7c-e3b4b2c66c25" class="numbered-list" start="3"><li>Ubah kode untuk menggunakan <code><strong>?.</strong></code> dan <strong>Nullish Coalescing Operator (</strong><code><strong>??</strong></code><strong>)</strong> untuk memberikan nilai <em>default</em> yang aman.</li></ol><h3 id="2b412ce7-7e1b-818a-8570-e40168107c2b" class="">Contoh Code Starter (HTML/JS):</h3><p id="2b412ce7-7e1b-8169-a017-c7a569d22092" class="">HTML</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2b412ce7-7e1b-8161-9b6a-edbf8273c427" class="code code-wrap"><code class="language-HTML" style="white-space:pre-wrap;word-break:break-all">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;id&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Praktek: Optional Chaining (?.)&lt;/title&gt;
+    &lt;script src=&quot;https://cdn.tailwindcss.com&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body class=&quot;bg-gray-100 p-8&quot;&gt;
+
+    &lt;div id=&quot;app&quot; class=&quot;max-w-xl mx-auto bg-white p-6 rounded-lg shadow-xl&quot;&gt;
+        &lt;h1 class=&quot;text-3xl font-bold mb-6 text-gray-800&quot;&gt;Demo Optional Chaining&lt;/h1&gt;
+        
+        &lt;div id=&quot;error-box&quot; class=&quot;p-3 mb-4 bg-red-100 text-red-700 font-medium rounded hidden&quot;&gt;
+            Terjadi Error! Lihat console.
+        &lt;/div&gt;
+        
+        &lt;ul id=&quot;task-list&quot; class=&quot;space-y-3&quot;&gt;
+            &lt;/ul&gt;
+    &lt;/div&gt;
+
+    &lt;script&gt;
+        // --- DATA DENGAN INKONSISTENSI ---
+        const INCONSISTENT_TASKS = [
+            // Tugas 1: Sempurna
+            { id: 1, title: &#x27;Setup Server&#x27;, metadata: { priority: &#x27;High&#x27;, tag: &#x27;DevOps&#x27; } },
+            
+            // Tugas 2: metadata adalah NULL
+            { id: 2, title: &#x27;Design UI&#x27;, metadata: null },
+            
+            // Tugas 3: metadata TIDAK ADA (undefined)
+            { id: 3, title: &#x27;Write Documentation&#x27;, isCompleted: false },
+            
+            // Tugas 4: metadata ada, tapi properti &#x27;tag&#x27; tidak ada
+            { id: 4, title: &#x27;Debug Bug X&#x27;, metadata: { priority: &#x27;Medium&#x27; } }
+        ];
+
+        const taskListContainer = document.getElementById(&#x27;task-list&#x27;);
+        const errorBox = document.getElementById(&#x27;error-box&#x27;);
+
+        function renderTasks(tasks) {
+            taskListContainer.innerHTML = &#x27;&#x27;;
+            errorBox.classList.add(&#x27;hidden&#x27;);
+            
+            tasks.forEach(task =&gt; {
+                let tag = &#x27;&#x27;;
+                let priority = &#x27;&#x27;;
+
+                // --- BAGIAN KRITIS: AMAN DENGAN OPTIONAL CHAINING ---
+                try {
+                    // 1. Akses Properti Tanpa Optional Chaining (untuk demonstrasi crash)
+                    // ❌ const crashTag = task.metadata.tag; 
+                    // ❌ const crashPrio = task.metadata.priority; 
+                    
+                    // 2. ✅ Akses Properti Dengan Optional Chaining
+                    // Jika task.metadata null/undefined, eksekusi berhenti, hasilnya undefined
+                    tag = task.metadata?.tag;
+                    priority = task.metadata?.priority;
+
+                    // 3. Gabungkan dengan Nullish Coalescing Operator (??)
+                    // ?? memberikan nilai default HANYA jika hasilnya null atau undefined
+                    tag = task.metadata?.tag ?? &#x27;Tidak Ada Tag&#x27;;
+                    priority = task.metadata?.priority ?? &#x27;Prioritas Biasa&#x27;;
+                    
+                } catch (e) {
+                    console.error(&quot;CRASH TERDETEKSI (Tanpa Optional Chaining):&quot;, e.message);
+                    errorBox.classList.remove(&#x27;hidden&#x27;);
+                    return; // Hentikan render jika crash
+                }
+                // --- AKHIR BAGIAN KRITIS ---
+
+                const taskItemHTML = `
+                    &lt;li class=&quot;p-3 bg-gray-50 rounded-lg border flex justify-between&quot;&gt;
+                        &lt;span class=&quot;font-medium&quot;&gt;${task.title}&lt;/span&gt;
+                        &lt;div class=&quot;space-x-2 text-sm&quot;&gt;
+                            &lt;span class=&quot;bg-blue-100 text-blue-800 px-2 py-0.5 rounded&quot;&gt;${priority}&lt;/span&gt;
+                            &lt;span class=&quot;bg-gray-100 text-gray-600 px-2 py-0.5 rounded&quot;&gt;${tag}&lt;/span&gt;
+                        &lt;/div&gt;
+                    &lt;/li&gt;
+                `;
+                taskListContainer.innerHTML += taskItemHTML;
+            });
+        }
+
+        // --- INISIALISASI ---
+        document.addEventListener(&#x27;DOMContentLoaded&#x27;, () =&gt; {
+             // Coba jalankan fungsi render. 
+             // Untuk melihat crash, uncomment baris crashTag/crashPrio di atas.
+             renderTasks(INCONSISTENT_TASKS);
+        });
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

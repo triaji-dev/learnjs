@@ -1,0 +1,18 @@
+﻿Topik,Detail Implementasi,"Fitur ""TaskMaster""",Relevansi React
+13. Computed Property Names,"A single handleInput function to handle Title, Date, & Priority inputs simultaneously.",Form (Single Handler),Multiple Input State in Form
+15. Value vs Reference,Prevent identical task input. Understand why [] === [] is false.,Duplication Check,Dependency Array useEffect
+5. Array Map (.map()),Automatically transform an Array of Objects into a list of task card HTML elements.,Render Task List,Rendering List in React
+12. Optional Chaining (?.),Prevent errors if the API returns task data without complete properties.,Data Handling,Mencegah UI Crash
+4. Ternary & Logical AND (&&),"Display a red badge if High priority, or hide the ""Edit"" button if the status is Done.",Priority & Status Label,Conditional Rendering
+6. Immutability (Spread ...),"The addTask function does not use .push(), but creates a new array using the Spread syntax: [...old, new].","""Add Task"" Feature",State Management / useState
+10. Modules (Import/Export),"Refactor the code: data.js (model), view.js (UI), main.js (logic).",Refactor File Structure,Component React Structure
+16. Date Object & Formatting,"Convert the raw timestamp (""2023-12-01"") into a clean format (""Friday, Dec 1"").",Deadline Formatting,Handling data for UI display
+2. Arrow Functions & Return,Create the createTaskCard(task) function that receives data and returns the task card's HTML string.,Task Card Component,Functional Component
+14. LocalStorage & JSON,Save task data to the browser so it is not lost upon refresh.,"""Auto-Save"" Feature",Persisting State / Custom Hooks
+9. Array Reduce (.reduce()),Calculate the total completed vs. pending tasks in a single iteration for the dashboard.,Statistics Widget,Complex Logic / useMemo
+8. Array Filter (.filter()),"Delete the task (new array without that ID) & filter the tabs ""Completed"" vs ""Pending"".",Delete & Filter Feature,State Update & Derived State
+11. Async/Await + Fetch,"Replace dummy data with data from an API (e.g., JSONPlaceholder) on initial load.",Load Server Data,useEffect & API Calls
+1. Variables (const) & Template Literals,Create the initial data structure (user & title objects). Display them using Template Literals.,UI Header & Static Data Structure,Basic JSX & Props
+7. Events & Callbacks,Add an event listener. The delete function is passed as a callback parameter.,Button Interaction,Event Handling (onClick)
+3. Destructuring (Object),"Destructure the object { title, priority } in the function parameter for cleaner code.",Task Data Extraction,Receiving Props in a Component
+Final Project: TaskMaster Dashboard,Implement all previously learned topics.,Final Assignment,Using basic JavaScript to emulate the concepts of modern frameworks like React.

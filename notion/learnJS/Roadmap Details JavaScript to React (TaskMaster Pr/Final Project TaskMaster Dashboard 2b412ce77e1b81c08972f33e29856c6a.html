@@ -1,0 +1,1107 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Final Project: TaskMaster Dashboard</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2b412ce7-7e1b-81c0-8972-f33e29856c6a" class="page sans"><header><h1 class="page-title">Final Project: TaskMaster Dashboard</h1><p class="page-description"></p><table class="properties"><tbody><tr class="property-row property-row-text"><th><span class="icon property-icon"><img src="https://www.notion.so/icons/description_gray.svg" style="width:14px;height:14px;display:block"/></span>Detail Implementasi</th><td>Implement all previously learned topics.</td></tr><tr class="property-row property-row-text"><th><span class="icon property-icon"><img src="https://www.notion.so/icons/description_gray.svg" style="width:14px;height:14px;display:block"/></span>Fitur &quot;TaskMaster&quot;</th><td><strong>Final Assignment</strong></td></tr><tr class="property-row property-row-text"><th><span class="icon property-icon"><img src="https://www.notion.so/icons/description_gray.svg" style="width:14px;height:14px;display:block"/></span>Relevansi React</th><td>Using basic JavaScript to emulate the concepts of modern frameworks like React.</td></tr></tbody></table></header><div class="page-body"><h1 id="2b412ce7-7e1b-8189-a4a2-f0017e7c775c" class="block-color-yellow">Instruksi Proyek Akhir: TaskMaster Dashboard</h1><p id="2b412ce7-7e1b-818f-93ad-c97224f34797" class="">
+</p><p id="2b412ce7-7e1b-81e2-9823-dbef27ab94c0" class=""><strong>Judul Proyek:</strong> TaskMaster Dashboard</p><p id="2b412ce7-7e1b-81a5-aa96-f47a439c37cf" class=""><strong>Tujuan:</strong> Membuat aplikasi manajemen tugas sederhana (<em>To-Do List</em>) yang memanfaatkan semua fitur JavaScript modern dan mengaplikasikan prinsip pengelolaan <em>state</em> dan rendering layaknya <em>framework</em> modern (misalnya, React), meskipun dibangun dari dasar.</p><h3 id="2b412ce7-7e1b-81b7-8b90-c6ea08499f24" class="">📝 Fitur Utama</h3><p id="2b412ce7-7e1b-8176-9e19-e50b4679fe50" class="">Aplikasi harus memungkinkan pengguna untuk:</p><ol type="1" id="2b412ce7-7e1b-81a4-9fca-cc4b8627e331" class="numbered-list" start="1"><li><strong>Menambah</strong> Tugas baru (Judul, Prioritas, Deadline).</li></ol><ol type="1" id="2b412ce7-7e1b-8141-91fc-ed442adc2cc8" class="numbered-list" start="2"><li><strong>Menghapus</strong> Tugas.</li></ol><ol type="1" id="2b412ce7-7e1b-8111-8fbd-c89f237af265" class="numbered-list" start="3"><li><strong>Mengubah Status</strong> Tugas menjadi &quot;Selesai&quot; atau &quot;Belum&quot;.</li></ol><ol type="1" id="2b412ce7-7e1b-8146-afb2-c69236dc546f" class="numbered-list" start="4"><li><strong>Memfilter</strong> daftar tugas berdasarkan Status (<em>Done</em> / <em>To Do</em>).</li></ol><ol type="1" id="2b412ce7-7e1b-8123-9026-e4a59fe2945e" class="numbered-list" start="5"><li><strong>Menampilkan Statistik</strong> tugas secara <em>real-time</em>.</li></ol><ol type="1" id="2b412ce7-7e1b-81f6-bf7e-fa63aacc7629" class="numbered-list" start="6"><li><strong>Menyimpan Data</strong> secara otomatis di <em>browser</em>.</li></ol><hr id="2b412ce7-7e1b-81b7-bdf8-c76bd65ab54d"/><h3 id="2b412ce7-7e1b-816b-a6d1-fa67e645a096" class="">🧱 Struktur Proyek &amp; Implementasi Topik</h3><p id="2b412ce7-7e1b-8101-baab-d0ee2344d535" class="">Berikut adalah panduan langkah demi langkah, beserta relevansi topiknya:</p><h3 id="2b412ce7-7e1b-810c-b512-d2b3cccfb7de" class="">1. Persiapan Data &amp; Struktur HTML (Topik 1, 10, 16)</h3><ul id="2b412ce7-7e1b-813b-b74b-e751157b569b" class="bulleted-list"><li style="list-style-type:disc">Buat struktur folder dengan file: <code>index.html</code>, <code>style.css</code>, dan folder <code>js/</code>.</li></ul><ul id="2b412ce7-7e1b-81f2-97ea-d1c9ef8c20e7" class="bulleted-list"><li style="list-style-type:disc">Di folder <code>js/</code>, buat file:<ul id="2b412ce7-7e1b-8153-8c55-f60b3eedb238" class="bulleted-list"><li style="list-style-type:circle"><code>data.js</code>: Berisi data <em>array</em> tugas awal (untuk simulasi <em>load</em> data).</li></ul><ul id="2b412ce7-7e1b-81bd-bac6-e153b7a63ad2" class="bulleted-list"><li style="list-style-type:circle"><code>model.js</code>: Berisi semua fungsi logika data (<code>addTask</code>, <code>deleteTask</code>, <code>toggleStatus</code>, dll).</li></ul><ul id="2b412ce7-7e1b-814e-8d7d-d673a3c46c34" class="bulleted-list"><li style="list-style-type:circle"><code>ui.js</code>: Berisi fungsi untuk membuat dan merender elemen UI (<code>createTaskCard</code>).</li></ul><ul id="2b412ce7-7e1b-81d2-9afa-eb26d3506d4e" class="bulleted-list"><li style="list-style-type:circle"><code>main.js</code>: File utama yang menginisialisasi aplikasi dan menangani <em>event</em>.</li></ul></li></ul><ul id="2b412ce7-7e1b-8146-9b59-fd70f1ff3b08" class="bulleted-list"><li style="list-style-type:disc"><strong>Implementasi Topik 1:</strong> Gunakan <em>template literals</em> (``) secara ekstensif di <code>ui.js</code> untuk membuat <em>card</em> tugas (HTML <em>template</em>).</li></ul><ul id="2b412ce7-7e1b-8110-8795-e7b9471306bd" class="bulleted-list"><li style="list-style-type:disc"><strong>Implementasi Topik 16:</strong> Pastikan <em>deadline</em> tugas diformat dengan baik (<code>&quot;Jumat, 3 Mei 2024&quot;</code>) sebelum ditampilkan.</li></ul><h3 id="2b412ce7-7e1b-8187-bbb9-f7eee9d85530" class="">2. Rendering Tugas Awal (Topik 2, 3, 4, 13)</h3><ul id="2b412ce7-7e1b-81bf-9b36-e9e4a7a4bc37" class="bulleted-list"><li style="list-style-type:disc"><strong>Implementasi Topik 2:</strong> Di <code>ui.js</code>, buat fungsi <code>createTaskCard(task)</code> sebagai <em>Arrow Function</em> yang menerima objek tugas dan mengembalikan <em>string</em> HTML (meniru <em>Functional Component</em> React).</li></ul><ul id="2b412ce7-7e1b-818a-bb23-d21d8655a544" class="bulleted-list"><li style="list-style-type:disc"><strong>Implementasi Topik 3:</strong> Gunakan <em>Destructuring</em> saat menerima objek tugas di dalam <code>createTaskCard</code> <code>({title, priority, isDone}).</code></li></ul><ul id="2b412ce7-7e1b-8152-ba8f-f5325aa1b118" class="bulleted-list"><li style="list-style-type:disc"><strong>Implementasi Topik 4:</strong> Gunakan <em>Ternary Operator</em> di dalam <em>template literal</em> untuk:<ul id="2b412ce7-7e1b-812c-8c75-e92af91745fb" class="bulleted-list"><li style="list-style-type:circle">Menampilkan label <strong>Prioritas</strong> (Misal: warna badge berbeda untuk <em>High</em>).</li></ul><ul id="2b412ce7-7e1b-81ee-8e09-f5889c730296" class="bulleted-list"><li style="list-style-type:circle">Menampilkan tombol <strong>&quot;Selesai&quot;</strong> jika status <code>isDone</code> adalah <code>false</code>, atau <strong>&quot;Batal Selesai&quot;</strong> jika <code>true</code>.</li></ul></li></ul><ul id="2b412ce7-7e1b-81c8-b052-e214720fe09c" class="bulleted-list"><li style="list-style-type:disc"><strong>Implementasi Topik 13:</strong> Saat membuat <em>form</em> input, gunakan <em>Computed Property Names</em> untuk menangani <em>input</em> ganda (Judul, Prioritas) dalam satu fungsi <em>handler</em> (misalnya: <code>$handleInput(e)$</code> yang memperbarui objek <em>state</em> sementara).</li></ul><h3 id="2b412ce7-7e1b-8177-b92f-fe3f4f4d3906" class="">3. Memproses Daftar Tugas (Topik 5, 6, 7, 8)</h3><p id="2b412ce7-7e1b-817a-a0d4-db63c510a851" class="">Ini adalah inti dari <em>rendering</em> dan <em>state management</em>.</p><ul id="2b412ce7-7e1b-8195-ab7f-ca18f9f83848" class="bulleted-list"><li style="list-style-type:disc"><strong>Implementasi Topik 5:</strong> Di <code>main.js</code>, buat fungsi <code>renderTasks(tasks)</code>. Gunakan <strong>Array Map (</strong><code><strong>Array.map()</strong></code><strong>)</strong> untuk mengubah <em>array</em> data tugas menjadi <em>array</em> string HTML/elemen UI, lalu masukkan ke dalam DOM.</li></ul><ul id="2b412ce7-7e1b-8155-bba9-e8bde9a6d9f6" class="bulleted-list"><li style="list-style-type:disc"><strong>Implementasi Topik 6 (Immutability):</strong> Semua operasi modifikasi tugas (Tambah, Hapus, Ubah Status) di <code>model.js</code> <strong>HARUS</strong> menjaga <em>immutability</em>.<ul id="2b412ce7-7e1b-812f-857d-ce9c212fcbc5" class="bulleted-list"><li style="list-style-type:circle"><strong>Menambah Tugas:</strong> Gunakan <strong>Spread Operator (</strong><code><strong>...</strong></code><strong>)</strong> untuk membuat <em>array</em> tugas baru, bukan <code>push()</code>.</li></ul><ul id="2b412ce7-7e1b-81b7-955a-f8e5eefbba17" class="bulleted-list"><li style="list-style-type:circle"><strong>Menghapus/Ubah:</strong> Gunakan <code>map()</code> atau <code>filter()</code> untuk membuat <em>array</em> baru, bukan memodifikasi elemen <em>array</em> yang lama. * <strong>Implementasi Topik 7:</strong> Hubungkan semua tombol di UI (<code>Tambah</code>, <code>Hapus</code>, <code>Toggle Status</code>) ke fungsi <em>handler</em> di <code>main.js</code> menggunakan <em>event listeners</em>. Pastikan fungsi <em>toggle status</em> dilewatkan sebagai <strong>Callback</strong> ke tombol yang dibuat.</li></ul></li></ul><ul id="2b412ce7-7e1b-818b-b533-e377f6e10a8c" class="bulleted-list"><li style="list-style-type:disc"><strong>Implementasi Topik 8:</strong> Tambahkan fungsi <strong>Filter Tugas</strong>. Gunakan <strong>Array Filter (</strong><code><strong>Array.filter()</strong></code><strong>)</strong> untuk hanya menampilkan tugas yang statusnya &quot;Selesai&quot; atau &quot;Belum Selesai&quot; berdasarkan tombol filter yang diklik pengguna.</li></ul><h3 id="2b412ce7-7e1b-8176-949d-e3c9d2fbd6c4" class="">4. Statistik dan Logika Kompleks (Topik 9, 12)</h3><ul id="2b412ce7-7e1b-81cd-9abf-f7af8df34d67" class="bulleted-list"><li style="list-style-type:disc"><strong>Implementasi Topik 9:</strong> Buat fungsi <code>calculateStats(tasks)</code> di <code>model.js</code>. Gunakan <strong>Array Reduce (</strong><code><strong>Array.reduce()</strong></code><strong>)</strong> untuk menghitung jumlah total tugas, tugas selesai, dan tugas belum selesai dalam satu kali iterasi. Tampilkan hasil ini di <em>Dashboard</em>.</li></ul><ul id="2b412ce7-7e1b-818d-8247-c07bbd800e29" class="bulleted-list"><li style="list-style-type:disc"><strong>Implementasi Topik 12:</strong> Saat mengambil data <em>dummy</em> dari <code>data.js</code> (atau API sungguhan jika Anda mengembangkannya), simulasikan data yang hilang/tidak lengkap. Gunakan <strong>Optional Chaining (</strong><code><strong>?.</strong></code><strong>)</strong> di <code>ui.js</code> saat mengakses properti tugas (misalnya: <code>$task.user?.name$</code>) untuk mencegah <em>error</em> jika properti tidak ada.</li></ul><h3 id="2b412ce7-7e1b-810d-873d-d7ed66e52d42" class="">5. Persistence &amp; Async/Await (Topik 11, 14, 15)</h3><ul id="2b412ce7-7e1b-81fc-85d7-d756db3c09e3" class="bulleted-list"><li style="list-style-type:disc"><strong>Implementasi Topik 11 (Async/Await):</strong> Di <code>main.js</code>, buat fungsi <strong>async</strong> untuk mengambil data tugas awal. Simulasikan keterlambatan jaringan menggunakan <code>setTimeout</code> di dalam <em>Promise</em> atau <em>simulasi API call</em> agar Anda bisa menggunakan <code>await</code>. Tampilkan status &quot;Loading...&quot; sebelum data muncul.</li></ul><ul id="2b412ce7-7e1b-8157-b797-d775983e173e" class="bulleted-list"><li style="list-style-type:disc"><strong>Implementasi Topik 14:</strong> Setelah setiap operasi modifikasi (Tambah, Hapus, Ubah Status), simpan <em>array</em> tugas terbaru ke <strong>LocalStorage</strong> menggunakan <strong>JSON.stringify()</strong>. Saat aplikasi di-<em>load</em> (setelah simulasi <em>async</em>), cek LocalStorage dan gunakan data dari sana jika ada. Gunakan <strong>JSON.parse()</strong> untuk mengambilnya.</li></ul><ul id="2b412ce7-7e1b-812b-a9fd-d90e8df47ae7" class="bulleted-list"><li style="list-style-type:disc"><strong>Implementasi Topik 15 (Value vs Reference):</strong> Saat menambahkan tugas baru, pastikan Anda tidak menyalin objek <em>input</em> baru secara <em>by reference</em>. Buat <em>deep copy</em> dari <em>payload</em> <em>form</em> untuk menghindari masalah duplikasi atau modifikasi yang tidak disengaja.</li></ul><hr id="2b412ce7-7e1b-81ed-a6b0-d4ec6ed465fb"/><h2 id="2b412ce7-7e1b-818f-9f7c-d9e2801f76c9" class="">✅ Ceklist Penilaian Proyek Akhir</h2><p id="2b412ce7-7e1b-81b7-9db9-d7e5f6869173" class="">Berikut adalah <em>checklist</em> yang akan digunakan untuk menilai proyek Anda, berdasarkan 16 topik yang telah dipelajari:</p><table id="2b412ce7-7e1b-819b-b3e4-e5ac1416cd4c" class="simple-table"><tbody><tr id="2b412ce7-7e1b-81a4-8e79-ed86d212717b"><td id="FesL" class="" style="width:38.99999237060547px"><strong>No.</strong></td><td id="lL[E" class=""><strong>Topik</strong></td><td id="}q}^" class=""><strong>Implementasi Proyek TaskMaster</strong></td><td id=";Lnq" class=""><strong>Relevansi Nilai</strong></td></tr><tr id="2b412ce7-7e1b-81e1-b308-c7145493a1f5"><td id="FesL" class="" style="width:38.99999237060547px">1.</td><td id="lL[E" class="">Variables (const) &amp; Template Literals</td><td id="}q}^" class="">Menggunakan <em>Template Literals</em> untuk <em>rendering</em> kartu tugas (HTML <em>template</em>)</td><td id=";Lnq" class=""><strong>Dasar JSX &amp; Props</strong></td></tr><tr id="2b412ce7-7e1b-81cb-afc3-f4b90acc4f27"><td id="FesL" class="" style="width:38.99999237060547px">2.</td><td id="lL[E" class="">Arrow Functions &amp; Return</td><td id="}q}^" class="">Fungsi <code>createTaskCard</code> diimplementasikan sebagai <em>Arrow Function</em></td><td id=";Lnq" class=""><strong>Functional Component</strong></td></tr><tr id="2b412ce7-7e1b-8125-af80-c969312bbe5d"><td id="FesL" class="" style="width:38.99999237060547px">3.</td><td id="lL[E" class="">Destructuring (Object)</td><td id="}q}^" class="">Menggunakan <em>Destructuring</em> pada parameter fungsi <code>createTaskCard</code></td><td id=";Lnq" class=""><strong>Menerima Props di Component</strong></td></tr><tr id="2b412ce7-7e1b-81e5-92ed-c455d5fd63e5"><td id="FesL" class="" style="width:38.99999237060547px">4.</td><td id="lL[E" class="">Ternary &amp; Logical AND (&amp;&amp;)</td><td id="}q}^" class="">Menggunakan <em>Ternary Operator</em> di <em>template literal</em> untuk <em>conditional rendering</em> (status Selesai/Belum)</td><td id=";Lnq" class=""><strong>Conditional Rendering</strong></td></tr><tr id="2b412ce7-7e1b-8128-bff8-ebea721d8b44"><td id="FesL" class="" style="width:38.99999237060547px">5.</td><td id="lL[E" class="">Array Map (())</td><td id="}q}^" class="">Digunakan untuk mengiterasi <em>array</em> tugas menjadi <em>array</em> UI elemen</td><td id=";Lnq" class=""><strong>Rendering List di React</strong></td></tr><tr id="2b412ce7-7e1b-8195-abfa-f93a17f8b0c6"><td id="FesL" class="" style="width:38.99999237060547px">6.</td><td id="lL[E" class="">Immutability (Spread ...)</td><td id="}q}^" class="">Digunakan saat menambah tugas baru atau memodifikasi <em>array</em> tugas (menggunakan Spread Operator untuk membuat <em>array</em> baru)</td><td id=";Lnq" class=""><strong>State Management / useState</strong></td></tr><tr id="2b412ce7-7e1b-813c-a173-fa566a024cee"><td id="FesL" class="" style="width:38.99999237060547px">7.</td><td id="lL[E" class="">Events &amp; Callbacks</td><td id="}q}^" class="">Fungsi <em>handler</em> dipassing sebagai <em>callback</em> ke tombol UI</td><td id=";Lnq" class=""><strong>Event Handling (onClick)</strong></td></tr><tr id="2b412ce7-7e1b-8166-9d03-e2dfc234f77f"><td id="FesL" class="" style="width:38.99999237060547px">8.</td><td id="lL[E" class="">Array Filter (filter())</td><td id="}q}^" class="">Digunakan untuk menyaring daftar tugas berdasarkan status Selesai/Belum</td><td id=";Lnq" class=""><strong>State Update &amp; Derived State</strong></td></tr><tr id="2b412ce7-7e1b-8128-8451-ccec244d40b7"><td id="FesL" class="" style="width:38.99999237060547px">9.</td><td id="lL[E" class="">Array Reduce (reduce())</td><td id="}q}^" class="">Digunakan untuk menghitung total statistik tugas (Selesai/Belum)</td><td id=";Lnq" class=""><strong>Complex Logic / useMemo</strong></td></tr><tr id="2b412ce7-7e1b-819c-b104-d9c4896950fe"><td id="FesL" class="" style="width:38.99999237060547px">10.</td><td id="lL[E" class="">Modules (Import/Export)</td><td id="}q}^" class="">Struktur kode dipecah menjadi <code>data.js</code>, <code>model.js</code>, <code>ui.js</code>, dan <code>main.js</code> dan di-<em>import</em> dengan benar</td><td id=";Lnq" class=""><strong>Struktur Component React</strong></td></tr><tr id="2b412ce7-7e1b-8142-9495-cf8ad3641b37"><td id="FesL" class="" style="width:38.99999237060547px">11.</td><td id="lL[E" class="">Async / Await + Fetch</td><td id="}q}^" class="">Menggunakan <code>async/await</code> untuk simulasi <em>load</em> data awal dan menampilkan <em>loading state</em></td><td id=";Lnq" class=""><strong>API Calls</strong></td></tr><tr id="2b412ce7-7e1b-817c-b724-c808cd417884"><td id="FesL" class="" style="width:38.99999237060547px">12.</td><td id="lL[E" class="">Optional Chaining (?. )</td><td id="}q}^" class="">Digunakan saat mengakses properti tugas untuk mencegah <em>error</em> jika data tidak lengkap</td><td id=";Lnq" class=""><strong>Mencegah UI Crash</strong></td></tr><tr id="2b412ce7-7e1b-81b6-8185-d8cb6ed1d6ea"><td id="FesL" class="" style="width:38.99999237060547px">13.</td><td id="lL[E" class="">Computed Property Names</td><td id="}q}^" class="">Digunakan di <em>handler</em> input <em>form</em> untuk menangani <em>key</em> properti secara dinamis</td><td id=";Lnq" class=""><strong>Multiple Input State di Form</strong></td></tr><tr id="2b412ce7-7e1b-812f-8f9d-d36685856988"><td id="FesL" class="" style="width:38.99999237060547px">14.</td><td id="lL[E" class="">LocalStorage &amp; JSON</td><td id="}q}^" class="">Data tugas disimpan ke LocalStorage menggunakan <code>JSON.stringify/parse</code></td><td id=";Lnq" class=""><strong>Persisting State / Custom Hooks</strong></td></tr><tr id="2b412ce7-7e1b-8167-9477-f940f084e33b"><td id="FesL" class="" style="width:38.99999237060547px">15.</td><td id="lL[E" class="">Value vs Reference</td><td id="}q}^" class="">Memastikan objek tugas baru yang ditambahkan adalah salinan nilai, bukan <em>by reference</em></td><td id=";Lnq" class=""><strong>Dependency Array useEffect</strong></td></tr><tr id="2b412ce7-7e1b-816b-8270-e5cc2190a0b3"><td id="FesL" class="" style="width:38.99999237060547px">16.</td><td id="lL[E" class="">Date Object &amp; Formatting</td><td id="}q}^" class="">Tanggal <em>deadline</em> diubah menjadi format yang mudah dibaca</td><td id=";Lnq" class=""><strong>Mengolah data display di UI</strong></td></tr></tbody></table><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">Contoh Hasil Akhir</summary><div class="indented"><p id="2b412ce7-7e1b-8184-bd4f-d78478a320ad" class="">Struktur Files</p><ul id="2b412ce7-7e1b-8150-b377-c52a88b76725" class="bulleted-list"><li style="list-style-type:disc"><code><strong>index.html</strong></code>: Struktur UI dan <em>styling</em> menggunakan Tailwind.</li></ul><ul id="2b412ce7-7e1b-8144-9d36-c379c6900afb" class="bulleted-list"><li style="list-style-type:disc"><code><strong>js/data.js</strong></code>: Data <em>dummy</em> awal.</li></ul><ul id="2b412ce7-7e1b-8115-b43b-e72c54071dff" class="bulleted-list"><li style="list-style-type:disc"><code><strong>js/model.js</strong></code>: Semua logika data (<strong>Immutability, Array Reduce</strong>).</li></ul><ul id="2b412ce7-7e1b-8192-b560-e5a05af1737c" class="bulleted-list"><li style="list-style-type:disc"><code><strong>js/ui.js</strong></code>: Semua fungsi <em>rendering</em> (<strong>Template Literals, Destructuring, Ternary, Array Map</strong>).</li></ul><ul id="2b412ce7-7e1b-816c-a88d-dca21f2d7ba3" class="bulleted-list"><li style="list-style-type:disc"><code><strong>js/main.js</strong></code>: Pengelola <em>state</em> dan <em>event handler</em> (<strong>Async/Await, LocalStorage, Modules, Callbacks</strong>).</li></ul><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">Task Data <code><strong>js/data.js</strong></code>:</summary><div class="indented"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2b412ce7-7e1b-8106-80ec-d68e9146ffd1" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">// Topik 10: Modules (Export)
+// Simulasi data tugas awal
+const initialTasks = [
+    {
+        id: &#x27;1&#x27;,
+        title: &#x27;Buat Struktur Proyek&#x27;,
+        priority: &#x27;High&#x27;,
+        isDone: true,
+        deadline: new Date(2025, 1, 10).getTime() // Topik 16: Date Object
+    },
+    {
+        id: &#x27;2&#x27;,
+        title: &#x27;Implementasi Fitur Tambah Tugas&#x27;,
+        priority: &#x27;Medium&#x27;,
+        isDone: false,
+        deadline: new Date(2025, 1, 15).getTime()
+    },
+    {
+        id: &#x27;3&#x27;,
+        title: &#x27;Testing Immutability Array&#x27;,
+        priority: &#x27;High&#x27;,
+        isDone: false,
+        deadline: new Date(2025, 2, 1).getTime()
+    }
+];
+
+export { initialTasks };</code></pre></div></details><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><strong>Task Model &amp; Logic  </strong><code><strong>js/model.js</strong></code></summary><div class="indented"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2b412ce7-7e1b-8175-b045-cc04d2e8b658" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">// Topik 10: Modules (Import)
+
+// --- FUNGSI MANIPULASI STATE (Logika Bisnis) ---
+
+// Topik 6: Immutability (Menggunakan Spread Operator)
+export const addTask = (tasks, newTaskData) =&gt; {
+    const newId = Date.now().toString();
+    const newTask = {
+        id: newId,
+        isDone: false,
+        ...newTaskData // Mengambil data title, priority, deadline dari form
+    };
+    // Mengembalikan array baru (immutability)
+    return [...tasks, newTask];
+};
+
+// Topik 6: Immutability (Menggunakan Filter)
+export const deleteTask = (tasks, taskId) =&gt; {
+    // Mengembalikan array baru tanpa tugas dengan taskId yang cocok
+    return tasks.filter(task =&gt; task.id !== taskId);
+};
+
+// Topik 6: Immutability (Menggunakan Map)
+export const toggleTaskStatus = (tasks, taskId) =&gt; {
+    // Mengembalikan array baru dengan status tugas yang diubah
+    return tasks.map(task =&gt; {
+        if (task.id === taskId) {
+            // Mengembalikan objek tugas baru (immutability)
+            return { ...task, isDone: !task.isDone };
+        }
+        return task;
+    });
+};
+
+// --- FUNGSI PENGHITUNGAN STATISTIK ---
+
+// Topik 9: Array Reduce
+export const calculateStats = (tasks) =&gt; {
+    // Menggunakan reduce untuk menghitung semua statistik dalam satu iterasi
+    return tasks.reduce((acc, task) =&gt; {
+        // Total tugas
+        acc.total += 1;
+        
+        // Cek status selesai
+        if (task.isDone) {
+            acc.done += 1;
+        } else {
+            acc.todo += 1;
+        }
+
+        return acc;
+    }, { total: 0, done: 0, todo: 0 }); // Nilai awal (accumulator)
+};</code></pre></div></details><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><strong>UI Rendering &amp; Components </strong><code><strong>js/ui.js</strong></code></summary><div class="indented"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2b412ce7-7e1b-81cc-9430-f5f07964e2b1" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">// Topik 10: Modules (Export)
+
+// Helper untuk format tanggal (Topik 16: Date Formatting)
+const formatDate = (timestamp) =&gt; {
+    try {
+        const date = new Date(timestamp);
+        const options = { weekday: &#x27;long&#x27;, day: &#x27;numeric&#x27;, month: &#x27;short&#x27;, year: &#x27;numeric&#x27; };
+        // Menggunakan &quot;en-US&quot; untuk menghindari masalah i18n yang kompleks, hasilnya konsisten
+        return date.toLocaleDateString(&#x27;id-ID&#x27;, options);
+    } catch (e) {
+        return &#x27;N/A&#x27;;
+    }
+};
+
+// Topik 2: Arrow Function &amp; Return (Functional Component Look-alike)
+// Topik 3: Destructuring (Object)
+// Topik 1: Template Literals
+export const createTaskCard = ({ id, title, priority, isDone, deadline }) =&gt; {
+    // Topik 4: Ternary &amp; Logical AND (&amp;&amp;) untuk Conditional Rendering
+    const statusClass = isDone ? &#x27;bg-green-100 text-green-800&#x27; : &#x27;bg-yellow-100 text-yellow-800&#x27;;
+    const priorityClass = priority === &#x27;High&#x27; ? &#x27;bg-red-500&#x27; : priority === &#x27;Medium&#x27; ? &#x27;bg-yellow-500&#x27; : &#x27;bg-blue-500&#x27;;
+
+    // String HTML menggunakan Template Literals
+    return `
+        &lt;div data-id=&quot;${id}&quot; class=&quot;task-card bg-white p-4 rounded-lg shadow-md flex flex-col md:flex-row justify-between items-start md:items-center mb-4 border-l-4 ${isDone ? &#x27;border-green-500&#x27; : &#x27;border-yellow-500&#x27;}&quot;&gt;
+            &lt;div class=&quot;flex-grow mb-3 md:mb-0&quot;&gt;
+                &lt;h3 class=&quot;text-lg font-semibold ${isDone ? &#x27;line-through text-gray-500&#x27; : &#x27;text-gray-800&#x27;}&quot;&gt;
+                    ${title}
+                &lt;/h3&gt;
+                
+                &lt;!-- Badge Prioritas --&gt;
+                &lt;span class=&quot;inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium text-white ${priorityClass}&quot;&gt;
+                    ${priority}
+                &lt;/span&gt;
+
+                &lt;!-- Badge Status --&gt;
+                &lt;span class=&quot;inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusClass} ml-2&quot;&gt;
+                    ${isDone ? &#x27;Selesai&#x27; : &#x27;Belum&#x27;}
+                &lt;/span&gt;
+
+                &lt;p class=&quot;text-sm text-gray-500 mt-1&quot;&gt;
+                    Deadline: ${formatDate(deadline)}
+                &lt;/p&gt;
+            &lt;/div&gt;
+            
+            &lt;div class=&quot;flex space-x-2 flex-shrink-0&quot;&gt;
+                &lt;!-- Tombol Status --&gt;
+                &lt;button 
+                    data-id=&quot;${id}&quot; 
+                    data-action=&quot;toggle&quot;
+                    class=&quot;p-2 rounded-lg text-sm font-medium transition duration-150 ease-in-out ${isDone ? &#x27;bg-yellow-500 hover:bg-yellow-600 text-white&#x27; : &#x27;bg-green-500 hover:bg-green-600 text-white&#x27;}&quot;
+                &gt;
+                    ${isDone ? &#x27;Batal Selesai&#x27; : &#x27;Tandai Selesai&#x27;}
+                &lt;/button&gt;
+
+                &lt;!-- Tombol Hapus --&gt;
+                &lt;button 
+                    data-id=&quot;${id}&quot; 
+                    data-action=&quot;delete&quot;
+                    class=&quot;p-2 rounded-lg text-sm font-medium bg-red-500 hover:bg-red-600 text-white transition duration-150 ease-in-out&quot;
+                &gt;
+                    Hapus
+                &lt;/button&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    `;
+};
+
+// Fungsi untuk merender seluruh daftar tugas
+// Topik 5: Array Map
+export const renderTasks = (tasks, containerElement) =&gt; {
+    // Mengubah array objek menjadi array string HTML
+    const htmlCards = tasks.map(task =&gt; createTaskCard(task));
+    
+    // Memasukkan semua string HTML ke dalam container
+    containerElement.innerHTML = htmlCards.join(&#x27;&#x27;);
+};
+
+// Fungsi untuk memperbarui statistik
+export const renderStats = (stats) =&gt; {
+    document.getElementById(&#x27;stat-total&#x27;).textContent = stats.total;
+    document.getElementById(&#x27;stat-done&#x27;).textContent = stats.done;
+    document.getElementById(&#x27;stat-todo&#x27;).textContent = stats.todo;
+};
+
+// Fungsi untuk menampilkan status loading
+export const renderLoading = (isLoading) =&gt; {
+    const listContainer = document.getElementById(&#x27;task-list-container&#x27;);
+    if (isLoading) {
+        listContainer.innerHTML = &#x27;&lt;div class=&quot;text-center py-8 text-xl text-indigo-500&quot;&gt;Memuat Tugas... ⏳&lt;/div&gt;&#x27;;
+    }
+};
+
+// Fungsi untuk mengosongkan form setelah submit
+export const clearForm = (form) =&gt; {
+    form.reset();
+};</code></pre></div></details><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><strong>Main Application Logic </strong><code><strong>js/main.js</strong></code></summary><div class="indented"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2b412ce7-7e1b-8120-b09c-db7a223e6d7b" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">// Topik 10: Modules (Import)
+import { initialTasks } from &#x27;./data.js&#x27;;
+import { addTask, deleteTask, toggleTaskStatus, calculateStats } from &#x27;./model.js&#x27;;
+import { createTaskCard, renderTasks, renderStats, renderLoading, clearForm } from &#x27;./ui.js&#x27;;
+
+// Topik 14: LocalStorage key
+const STORAGE_KEY = &#x27;taskMaster_tasks&#x27;;
+
+// STATE UTAMA APLIKASI
+let taskState = [];
+let currentFilter = &#x27;all&#x27;; // all, done, todo
+
+// Cache DOM Elements
+const taskListContainer = document.getElementById(&#x27;task-list-container&#x27;);
+const taskForm = document.getElementById(&#x27;task-form&#x27;);
+const filterButtons = document.querySelectorAll(&#x27;.filter-btn&#x27;);
+
+// --- FUNGSI UTAMA RENDERING DAN UPDATE STATE ---
+
+// Fungsi utama yang dipanggil setelah state berubah
+const updateUI = () =&gt; {
+    // 1. Filter tugas (Topik 8: Array Filter)
+    let filteredTasks = taskState;
+    if (currentFilter === &#x27;done&#x27;) {
+        filteredTasks = taskState.filter(task =&gt; task.isDone);
+    } else if (currentFilter === &#x27;todo&#x27;) {
+        filteredTasks = taskState.filter(task =&gt; !task.isDone);
+    }
+
+    // 2. Render daftar tugas
+    renderTasks(filteredTasks, taskListContainer);
+
+    // 3. Hitung dan render statistik (Topik 9: Array Reduce)
+    const stats = calculateStats(taskState);
+    renderStats(stats);
+    
+    // 4. Simpan ke LocalStorage (Topik 14: LocalStorage &amp; JSON)
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(taskState));
+};
+
+// --- FUNGSI ASYNC LOAD DATA ---
+
+// Topik 11: Async / Await
+const loadInitialData = async () =&gt; {
+    renderLoading(true); // Tampilkan status loading
+
+    // Cek LocalStorage (Topik 14: LocalStorage &amp; JSON)
+    const storedTasksJSON = localStorage.getItem(STORAGE_KEY);
+    
+    // Simulasi delay jaringan/API call
+    await new Promise(resolve =&gt; setTimeout(resolve, 1500)); 
+
+    if (storedTasksJSON) {
+        // Data ditemukan di LocalStorage
+        taskState = JSON.parse(storedTasksJSON);
+    } else {
+        // Data dari dummy file
+        taskState = initialTasks;
+    }
+
+    renderLoading(false); // Sembunyikan status loading
+    updateUI();
+};
+
+// --- HANDLER EVENTS ---
+
+// Handler Submit Form (Topik 7, 13, 15)
+taskForm.addEventListener(&#x27;submit&#x27;, (e) =&gt; {
+    e.preventDefault();
+    
+    const formData = new FormData(taskForm);
+    const newTaskData = {};
+    
+    // Topik 13: Computed Property Names (mengambil nama input secara dinamis)
+    for (let [name, value] of formData.entries()) {
+        newTaskData[name] = value;
+    }
+    
+    // Topik 15: Value vs Reference. Pastikan kita hanya mengambil nilai (sudah dilakukan via FormData)
+    // Jika kita menggunakan objek langsung dari input (misalnya state form di React), kita perlu deep copy.
+    // Di sini, newTaskData sudah menjadi objek VALUE baru.
+    
+    // Panggil model untuk menambah tugas (Topik 6: Immutability)
+    taskState = addTask(taskState, newTaskData);
+
+    clearForm(taskForm);
+    updateUI();
+});
+
+// Handler Klik Tombol pada List (Hapus, Toggle Status)
+// Topik 7: Events &amp; Callbacks
+taskListContainer.addEventListener(&#x27;click&#x27;, (e) =&gt; {
+    const target = e.target;
+    const taskId = target.getAttribute(&#x27;data-id&#x27;);
+    const action = target.getAttribute(&#x27;data-action&#x27;);
+
+    if (!taskId || !action) return;
+
+    if (action === &#x27;delete&#x27;) {
+        // Konfirmasi Hapus (menggunakan modal simulasi, bukan alert/confirm)
+        if (window.confirm(&#x27;Anda yakin ingin menghapus tugas ini?&#x27;)) {
+            // Panggil model untuk menghapus (Topik 6: Immutability)
+            taskState = deleteTask(taskState, taskId);
+            updateUI();
+        }
+    } else if (action === &#x27;toggle&#x27;) {
+        // Panggil model untuk mengubah status (Topik 6: Immutability)
+        taskState = toggleTaskStatus(taskState, taskId);
+        updateUI();
+    }
+});
+
+// Handler Filter (Topik 8: Array Filter)
+filterButtons.forEach(button =&gt; {
+    button.addEventListener(&#x27;click&#x27;, () =&gt; {
+        // Hapus styling aktif dari semua tombol
+        filterButtons.forEach(btn =&gt; btn.classList.remove(&#x27;bg-indigo-700&#x27;, &#x27;text-white&#x27;));
+        
+        // Atur filter baru
+        currentFilter = button.getAttribute(&#x27;data-filter&#x27;);
+        
+        // Tambahkan styling aktif pada tombol yang diklik
+        button.classList.add(&#x27;bg-indigo-700&#x27;, &#x27;text-white&#x27;);
+        
+        // Panggil updateUI untuk me-render ulang
+        updateUI();
+    });
+});
+
+
+// --- INISIALISASI APLIKASI ---
+window.onload = loadInitialData;</code></pre><p id="2b412ce7-7e1b-818e-a31e-c99210c90d17" class="">
+</p></div></details><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><strong>TaskMaster Dashboard</strong></summary><div class="indented"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2b412ce7-7e1b-8174-befe-cdacae36c707" class="code code-wrap"><code class="language-HTML" style="white-space:pre-wrap;word-break:break-all">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;id&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;TaskMaster Dashboard - Final Project JS&lt;/title&gt;
+    &lt;!-- Load Tailwind CSS dari CDN --&gt;
+    &lt;script src=&quot;https://cdn.tailwindcss.com&quot;&gt;&lt;/script&gt;
+    &lt;style&gt;
+        /* Menggunakan font Inter */
+        @import url(&#x27;https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap&#x27;);
+        body {
+            font-family: &#x27;Inter&#x27;, sans-serif;
+            background-color: #f4f7f9;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body class=&quot;p-4 md:p-8&quot;&gt;
+
+    &lt;div class=&quot;max-w-4xl mx-auto bg-white p-6 rounded-xl shadow-2xl&quot;&gt;
+        &lt;header class=&quot;text-center mb-8&quot;&gt;
+            &lt;h1 class=&quot;text-4xl font-extrabold text-indigo-700&quot;&gt;TaskMaster Dashboard&lt;/h1&gt;
+            &lt;p class=&quot;text-gray-500 mt-2&quot;&gt;Aplikasi manajemen tugas berbasis Vanilla JS Modules&lt;/p&gt;
+        &lt;/header&gt;
+
+        &lt;!-- Bagian Statistik (Topik 9) --&gt;
+        &lt;div class=&quot;grid grid-cols-1 md:grid-cols-3 gap-4 mb-8&quot;&gt;
+            &lt;div class=&quot;bg-indigo-50 p-4 rounded-lg shadow-md text-center&quot;&gt;
+                &lt;p class=&quot;text-lg text-indigo-800&quot;&gt;Total Tugas&lt;/p&gt;
+                &lt;p id=&quot;stat-total&quot; class=&quot;text-3xl font-bold text-indigo-700&quot;&gt;0&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;bg-green-50 p-4 rounded-lg shadow-md text-center&quot;&gt;
+                &lt;p class=&quot;text-lg text-green-800&quot;&gt;Selesai&lt;/p&gt;
+                &lt;p id=&quot;stat-done&quot; class=&quot;text-3xl font-bold text-green-700&quot;&gt;0&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;bg-yellow-50 p-4 rounded-lg shadow-md text-center&quot;&gt;
+                &lt;p class=&quot;text-lg text-yellow-800&quot;&gt;Belum Selesai&lt;/p&gt;
+                &lt;p id=&quot;stat-todo&quot; class=&quot;text-3xl font-bold text-yellow-700&quot;&gt;0&lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Bagian Form Tambah Tugas (Topik 13) --&gt;
+        &lt;section class=&quot;mb-10 p-6 bg-gray-50 rounded-xl shadow-inner&quot;&gt;
+            &lt;h2 class=&quot;text-2xl font-semibold text-gray-700 mb-4&quot;&gt;Tambah Tugas Baru&lt;/h2&gt;
+            &lt;form id=&quot;task-form&quot; class=&quot;grid grid-cols-1 md:grid-cols-4 gap-4&quot;&gt;
+                &lt;div class=&quot;md:col-span-2&quot;&gt;
+                    &lt;label for=&quot;title&quot; class=&quot;block text-sm font-medium text-gray-700&quot;&gt;Judul Tugas&lt;/label&gt;
+                    &lt;input type=&quot;text&quot; id=&quot;title&quot; name=&quot;title&quot; required class=&quot;mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500&quot;&gt;
+                &lt;/div&gt;
+                &lt;div&gt;
+                    &lt;label for=&quot;priority&quot; class=&quot;block text-sm font-medium text-gray-700&quot;&gt;Prioritas&lt;/label&gt;
+                    &lt;select id=&quot;priority&quot; name=&quot;priority&quot; required class=&quot;mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500&quot;&gt;
+                        &lt;option value=&quot;High&quot;&gt;High&lt;/option&gt;
+                        &lt;option value=&quot;Medium&quot; selected&gt;Medium&lt;/option&gt;
+                        &lt;option value=&quot;Low&quot;&gt;Low&lt;/option&gt;
+                    &lt;/select&gt;
+                &lt;/div&gt;
+                &lt;div&gt;
+                    &lt;label for=&quot;deadline&quot; class=&quot;block text-sm font-medium text-gray-700&quot;&gt;Deadline&lt;/label&gt;
+                    &lt;!-- Menggunakan tanggal saat ini sebagai default --&gt;
+                    &lt;input type=&quot;date&quot; id=&quot;deadline&quot; name=&quot;deadline&quot; value=&quot;2025-05-30&quot; required class=&quot;mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500&quot;&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;md:col-span-4 flex justify-end&quot;&gt;
+                    &lt;button type=&quot;submit&quot; class=&quot;w-full md:w-auto px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition duration-150 ease-in-out&quot;&gt;
+                        Tambah Tugas
+                    &lt;/button&gt;
+                &lt;/div&gt;
+            &lt;/form&gt;
+        &lt;/section&gt;
+
+        &lt;!-- Bagian Daftar Tugas --&gt;
+        &lt;section&gt;
+            &lt;div class=&quot;flex justify-between items-center mb-4&quot;&gt;
+                &lt;h2 class=&quot;text-2xl font-semibold text-gray-700&quot;&gt;Daftar Tugas&lt;/h2&gt;
+                &lt;!-- Filter Buttons (Topik 8) --&gt;
+                &lt;div class=&quot;flex space-x-2&quot;&gt;
+                    &lt;button data-filter=&quot;all&quot; class=&quot;filter-btn px-4 py-2 text-sm font-medium rounded-lg bg-indigo-700 text-white shadow-md hover:bg-indigo-800 transition&quot;&gt;Semua&lt;/button&gt;
+                    &lt;button data-filter=&quot;todo&quot; class=&quot;filter-btn px-4 py-2 text-sm font-medium rounded-lg text-gray-600 bg-gray-200 hover:bg-gray-300 transition&quot;&gt;Belum Selesai&lt;/button&gt;
+                    &lt;button data-filter=&quot;done&quot; class=&quot;filter-btn px-4 py-2 text-sm font-medium rounded-lg text-gray-600 bg-gray-200 hover:bg-gray-300 transition&quot;&gt;Selesai&lt;/button&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            
+            &lt;!-- Kontainer Daftar Tugas (Diisi oleh JS) --&gt;
+            &lt;div id=&quot;task-list-container&quot; class=&quot;space-y-4&quot;&gt;
+                &lt;!-- Status Loading Awal (Topik 11) --&gt;
+                &lt;div class=&quot;text-center py-8 text-xl text-indigo-500&quot;&gt;Memuat Tugas... ⏳&lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/section&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Topik 10: Modules (Import/Export) &amp; Menghubungkan main.js --&gt;
+    &lt;script type=&quot;module&quot; src=&quot;js/main.js&quot;&gt;&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></details></div></details></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

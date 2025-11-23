@@ -1,0 +1,824 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>14. LocalStorage &amp; JSON</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2b412ce7-7e1b-8168-ace1-ecba319dc21a" class="page sans"><header><h1 class="page-title"><strong>14. </strong>LocalStorage &amp; JSON</h1><p class="page-description"></p><table class="properties"><tbody><tr class="property-row property-row-text"><th><span class="icon property-icon"><img src="https://www.notion.so/icons/description_gray.svg" style="width:14px;height:14px;display:block"/></span>Detail Implementasi</th><td>Save task data to the browser so it is not lost upon refresh.</td></tr><tr class="property-row property-row-text"><th><span class="icon property-icon"><img src="https://www.notion.so/icons/description_gray.svg" style="width:14px;height:14px;display:block"/></span>Fitur &quot;TaskMaster&quot;</th><td><strong>&quot;Auto-Save&quot; Feature</strong></td></tr><tr class="property-row property-row-text"><th><span class="icon property-icon"><img src="https://www.notion.so/icons/description_gray.svg" style="width:14px;height:14px;display:block"/></span>Relevansi React</th><td>Persisting State / Custom Hooks</td></tr></tbody></table></header><div class="page-body"><h1 id="2b412ce7-7e1b-81f0-be42-f32eb1152aeb" class="block-color-yellow">14. LocalStorage &amp; JSON (15 Menit) </h1><h3 id="2b412ce7-7e1b-813e-b5d0-c8fb53325387" class="">A. Konsep Dasar Web Storage: <code>localStorage</code></h3><p id="2b412ce7-7e1b-8113-8d60-c1b7840b710e" class=""><code><strong>localStorage</strong></code> adalah mekanisme penyimpanan data sisi klien yang disediakan oleh <em>browser</em>. Ia memungkinkan aplikasi web menyimpan data secara permanen di dalam <em>browser</em> pengguna.</p><h3 id="2b412ce7-7e1b-818a-afe7-d6aa520ef059" class=""><strong>Karakteristik Utama </strong><code><strong>localStorage</strong></code></h3><table id="2b412ce7-7e1b-8138-affa-eb745ddc8897" class="simple-table"><tbody><tr id="2b412ce7-7e1b-81df-9b90-f3e0c954e657"><td id="gTQ}" class=""><strong>Fitur</strong></td><td id="psDO" class=""><strong>Deskripsi</strong></td></tr><tr id="2b412ce7-7e1b-8129-b34b-d2ea58e5460e"><td id="gTQ}" class=""><strong>Kapasitas</strong></td><td id="psDO" class="">Lebih besar dari <em>cookies</em>, biasanya antara <strong>5MB hingga 10MB</strong> per domain.</td></tr><tr id="2b412ce7-7e1b-81dd-83b8-c1b9fdb94007"><td id="gTQ}" class=""><strong>Persistensi</strong></td><td id="psDO" class="">Data <strong>tidak memiliki tanggal kedaluwarsa</strong> dan akan tetap ada di <em>browser</em> bahkan setelah <em>browser</em> ditutup dan dibuka kembali.</td></tr><tr id="2b412ce7-7e1b-818f-bdf2-db2b593e9468"><td id="gTQ}" class=""><strong>Tipe Data</strong></td><td id="psDO" class=""><code>localStorage</code> <strong>hanya dapat menyimpan </strong><em><strong>string</strong></em>. Jika Anda menyimpan objek atau <em>array</em>, Anda harus mengubahnya menjadi <em>string</em> terlebih dahulu (menggunakan JSON).</td></tr><tr id="2b412ce7-7e1b-81b2-a4b8-c4f795d7cc7d"><td id="gTQ}" class=""><strong>Akses</strong></td><td id="psDO" class="">Data hanya dapat diakses oleh kode JavaScript pada domain yang sama.</td></tr></tbody></table><h3 id="2b412ce7-7e1b-813f-8965-c80855261bcf" class=""><strong>Metode Utama </strong><code><strong>localStorage</strong></code></h3><p id="2b412ce7-7e1b-81eb-bddf-eea3afc3429d" class=""><code>localStorage</code> adalah objek global yang memiliki empat metode dasar:</p><ol type="1" id="2b412ce7-7e1b-815d-94d6-f2f2d5b1a739" class="numbered-list" start="1"><li><code>localStorage.**setItem(key, value)**</code>: Menyimpan data (key dan value harus berupa <em>string</em>).</li></ol><ol type="1" id="2b412ce7-7e1b-81c0-a2ba-fdba223a2165" class="numbered-list" start="2"><li><code>localStorage.**getItem(key)**</code>: Mengambil data yang tersimpan berdasarkan <em>key</em>. Mengembalikan <em>string</em> atau <code>null</code> jika <em>key</em> tidak ada.</li></ol><ol type="1" id="2b412ce7-7e1b-81eb-ac04-d785f6d5af2a" class="numbered-list" start="3"><li><code>localStorage.**removeItem(key)**</code>: Menghapus data berdasarkan <em>key</em>.</li></ol><ol type="1" id="2b412ce7-7e1b-8115-b3b5-f571a84a946f" class="numbered-list" start="4"><li><code>localStorage.**clear()**</code>: Menghapus semua data dari <em>domain</em> saat ini.</li></ol><hr id="2b412ce7-7e1b-81e1-8e85-d5047482936e"/><h3 id="2b412ce7-7e1b-815d-8ca7-d34c671e8b7e" class="">B. Peran JSON: Serialization dan Deserialization</h3><p id="2b412ce7-7e1b-818b-86e1-df862c210d6a" class="">Karena <code>localStorage</code> hanya dapat menyimpan <em>string</em>, kita membutuhkan <strong>JSON (JavaScript Object Notation)</strong> untuk mengkonversi data kompleks (seperti <em>array</em> tugas) menjadi <em>string</em> yang dapat disimpan, dan mengembalikannya lagi.</p><p id="2b412ce7-7e1b-819a-9db0-e3fbbf18ea28" class="">JSON menyediakan dua metode utama:</p><h3 id="2b412ce7-7e1b-8100-aeac-d0592f018065" class=""><strong>1. JSON.stringify() (Serialization)</strong></h3><p id="2b412ce7-7e1b-81ae-9006-dcd6f3f38204" class="">Mengubah objek JavaScript atau <em>array</em> menjadi representasi <strong>string JSON</strong> yang dapat disimpan.</p><p id="2b412ce7-7e1b-8119-aaf5-ebbbf2d58136" class="">JavaScript</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2b412ce7-7e1b-813c-9c50-e31a1f252694" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">const tasks = [{ id: 1, title: &#x27;Beli Kopi&#x27; }];
+const tasksString = JSON.stringify(tasks); 
+// Hasil: &#x27;[{&quot;id&quot;:1,&quot;title&quot;:&quot;Beli Kopi&quot;}]&#x27; (sebuah string)
+
+localStorage.setItem(&#x27;myTasks&#x27;, tasksString);</code></pre><h3 id="2b412ce7-7e1b-816a-a9cd-c40871773174" class=""><strong>2. JSON.parse() (Deserialization)</strong></h3><p id="2b412ce7-7e1b-81b1-a1a3-da2f6313ee79" class="">Mengubah <em>string</em> JSON kembali menjadi objek JavaScript atau <em>array</em> yang dapat digunakan.</p><p id="2b412ce7-7e1b-8187-90a2-fc7e47b66bc7" class="">JavaScript</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2b412ce7-7e1b-813d-a400-f0f0bb6f4beb" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">const loadedString = localStorage.getItem(&#x27;myTasks&#x27;); // Ambil string dari storage
+const loadedTasks = JSON.parse(loadedString); 
+// Hasil: [{ id: 1, title: &#x27;Beli Kopi&#x27; }] (sebuah Array/Object JS)</code></pre><hr id="2b412ce7-7e1b-81c9-bc75-cfd8418f530a"/><h3 id="2b412ce7-7e1b-81be-9023-ce7bf1878c2b" class="">C. Relevansi React: Persisting State / Custom Hooks</h3><p id="2b412ce7-7e1b-81c0-b9b8-c209c154228b" class="">Dalam ekosistem React, konsep <em>persisting state</em> (menyimpan <em>state</em> agar tetap ada setelah <em>refresh</em>) sangat penting.</p><ul id="2b412ce7-7e1b-81d4-80c4-e25aeb729d7f" class="bulleted-list"><li style="list-style-type:disc"><strong>Persisting State:</strong> Ini adalah cara untuk membuat <em>state</em> aplikasi (misalnya, <code>tasks</code>) tetap ada di <em>browser</em> menggunakan <code>localStorage</code>.</li></ul><ul id="2b412ce7-7e1b-818a-882b-c8eda80bc43f" class="bulleted-list"><li style="list-style-type:disc"><strong>Custom Hooks (</strong><code><strong>useLocalStorage</strong></code><strong>):</strong> Dalam aplikasi skala besar, developer sering membungkus logika <code>JSON.stringify</code>, <code>JSON.parse</code>, <code>localStorage.setItem</code>, dan <code>localStorage.getItem</code> ke dalam <strong>Custom Hook</strong> (misalnya <code>useLocalStorage</code>) untuk menjaga komponen tetap bersih dan logikanya dapat digunakan kembali.</li></ul><p id="2b412ce7-7e1b-81e4-b8a4-e68015941ae1" class="">Ketika menggunakan React, Anda biasanya akan:</p><ol type="1" id="2b412ce7-7e1b-810b-9dbb-db4975fad6b1" class="numbered-list" start="1"><li><strong>Load:</strong> Di awal (<code>useEffect</code> dengan dependensi kosong), cek <code>localStorage</code>. Jika ada, <code>JSON.parse</code> dan gunakan sebagai <em>initial state</em>.</li></ol><ol type="1" id="2b412ce7-7e1b-8165-bf7a-d7d9855fc460" class="numbered-list" start="2"><li><strong>Save:</strong> Setiap kali <em>state</em> berubah (<code>useEffect</code> dengan <code>[tasks]</code> di <em>dependency array</em>), <code>JSON.stringify</code> dan <code>localStorage.setItem</code> data baru.</li></ol><hr id="2b412ce7-7e1b-8184-b637-fe479ed55217"/><h1 id="2b412ce7-7e1b-81b8-a514-eb25430fdaae" class="block-color-yellow">Live Coding: Fitur &quot;Auto-Save&quot; TaskMaster (15 Menit) </h1><p id="2b412ce7-7e1b-818a-818f-e8ca0f25824b" class="">Kita akan membuat fitur <em>Auto-Save</em> sederhana di TaskMaster. Setiap kali tugas baru ditambahkan, data akan disimpan ke <code>localStorage</code>, dan ketika halaman dimuat ulang, data akan dimuat kembali.</p><h3 id="2b412ce7-7e1b-81d0-a93c-c787bd869896" class="">Exercise untuk peserta:</h3><ol type="1" id="2b412ce7-7e1b-81ef-b3ba-fa09b88b36e8" class="numbered-list" start="1"><li>Buat fungsi <code><strong>saveTasks(tasks)</strong></code> yang menggunakan <code>JSON.stringify</code> dan <code>localStorage.setItem</code>.</li></ol><ol type="1" id="2b412ce7-7e1b-812a-abb2-c17cad96c766" class="numbered-list" start="2"><li>Buat fungsi <code><strong>loadTasks()</strong></code> yang menggunakan <code>localStorage.getItem</code> dan <code>JSON.parse</code>.</li></ol><ol type="1" id="2b412ce7-7e1b-812f-9c4c-de3139bb2eda" class="numbered-list" start="3"><li>Ubah <em>state</em> tugas awal (variabel <code>tasks</code>) untuk memanggil <code>loadTasks()</code> saat inisialisasi.</li></ol><ol type="1" id="2b412ce7-7e1b-8142-a8d0-c9f54f0d73b9" class="numbered-list" start="4"><li>Tambahkan logika untuk memanggil <code>saveTasks()</code> setiap kali ada penambahan tugas baru.</li></ol><h3 id="2b412ce7-7e1b-8115-b4d4-c3d792170344" class="">Contoh Code Starter (HTML/JS):</h3><p id="2b412ce7-7e1b-8138-b0d2-dc21639e77cb" class="">HTML</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2b412ce7-7e1b-8125-abab-e8225ed7513b" class="code code-wrap"><code class="language-HTML" style="white-space:pre-wrap;word-break:break-all">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;id&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Praktek: LocalStorage &amp; JSON&lt;/title&gt;
+    &lt;script src=&quot;https://cdn.tailwindcss.com&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body class=&quot;bg-gray-100 p-8&quot;&gt;
+
+    &lt;div id=&quot;app&quot; class=&quot;max-w-xl mx-auto bg-white p-6 rounded-lg shadow-xl&quot;&gt;
+        &lt;h1 class=&quot;text-3xl font-bold mb-6 text-gray-800&quot;&gt;TaskMaster: Auto-Save Demo&lt;/h1&gt;
+        
+        &lt;div class=&quot;mb-6 pb-4 border-b&quot;&gt;
+            &lt;input type=&quot;text&quot; id=&quot;new-task-title&quot; placeholder=&quot;Tambahkan tugas baru...&quot; 
+                   class=&quot;w-3/4 p-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-indigo-500&quot;&gt;
+            &lt;button id=&quot;add-task-btn&quot; class=&quot;w-1/4 bg-indigo-600 text-white p-2 rounded-r-md hover:bg-indigo-700&quot;&gt;
+                Tambah
+            &lt;/button&gt;
+        &lt;/div&gt;
+
+        &lt;h2 class=&quot;text-xl font-semibold mb-3 text-gray-800&quot;&gt;Daftar Tugas&lt;/h2&gt;
+        &lt;ul id=&quot;task-list&quot; class=&quot;space-y-3&quot;&gt;
+            &lt;/ul&gt;
+        
+        &lt;p class=&quot;mt-4 text-sm text-gray-500&quot;&gt;Data tersimpan di LocalStorage.&lt;/p&gt;
+    &lt;/div&gt;
+
+    &lt;script&gt;
+        const STORAGE_KEY = &#x27;taskmaster_tasks&#x27;;
+        const taskListContainer = document.getElementById(&#x27;task-list&#x27;);
+        const newTaskTitleInput = document.getElementById(&#x27;new-task-title&#x27;);
+        const addTaskButton = document.getElementById(&#x27;add-task-btn&#x27;);
+
+        let tasks = []; // State utama
+
+        // --- 1. LOGIKA SIMPAN KE LOCALSTORAGE ---
+        function saveTasks(currentTasks) {
+            // ✅ Serialization: Array/Object JS -&gt; String JSON
+            const tasksJson = JSON.stringify(currentTasks);
+            localStorage.setItem(STORAGE_KEY, tasksJson);
+            console.log(&quot;Data berhasil disimpan ke LocalStorage.&quot;);
+        }
+
+        // --- 2. LOGIKA MUAT DARI LOCALSTORAGE ---
+        function loadTasks() {
+            // Ambil string dari LocalStorage
+            const tasksJson = localStorage.getItem(STORAGE_KEY);
+            
+            if (tasksJson) {
+                // ✅ Deserialization: String JSON -&gt; Array/Object JS
+                console.log(&quot;Data berhasil dimuat dari LocalStorage.&quot;);
+                return JSON.parse(tasksJson);
+            }
+            
+            // Jika tidak ada data, kembalikan array kosong sebagai default
+            return [];
+        }
+
+        // --- FUNGSI UTAMA: RENDER DAN MANIPULASI DOM ---
+        function renderTasks() {
+            taskListContainer.innerHTML = &#x27;&#x27;;
+            
+            if (tasks.length === 0) {
+                taskListContainer.innerHTML = `&lt;li class=&quot;p-4 text-center text-gray-500 italic&quot;&gt;Daftar tugas kosong.&lt;/li&gt;`;
+                return;
+            }
+
+            tasks.forEach(task =&gt; {
+                const li = document.createElement(&#x27;li&#x27;);
+                li.className = &#x27;p-3 bg-gray-50 rounded-lg border&#x27;;
+                li.textContent = task.title;
+                taskListContainer.appendChild(li);
+            });
+        }
+
+        function addTask() {
+            const title = newTaskTitleInput.value.trim();
+            if (title === &#x27;&#x27;) return;
+
+            const newId = tasks.length &gt; 0 ? tasks[tasks.length - 1].id + 1 : 1;
+            
+            const newTask = {
+                id: newId,
+                title: title,
+                isCompleted: false
+            };
+
+            // Perbarui state (Immutability)
+            tasks = [...tasks, newTask];
+            
+            // 3. Simpan state baru ke LocalStorage
+            saveTasks(tasks);
+            
+            // Render ulang dan bersihkan input
+            renderTasks();
+            newTaskTitleInput.value = &#x27;&#x27;;
+        }
+
+        // --- INISIALISASI ---
+        function initializeApp() {
+            // 4. Muat data dari LocalStorage saat inisialisasi
+            tasks = loadTasks(); 
+            renderTasks();
+            
+            addTaskButton.addEventListener(&#x27;click&#x27;, addTask);
+        }
+
+        document.addEventListener(&#x27;DOMContentLoaded&#x27;, initializeApp);
+
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

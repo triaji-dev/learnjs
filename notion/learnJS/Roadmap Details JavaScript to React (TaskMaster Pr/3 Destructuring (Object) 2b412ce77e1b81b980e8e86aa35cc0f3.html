@@ -1,0 +1,861 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>3. Destructuring (Object)</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2b412ce7-7e1b-81b9-80e8-e86aa35cc0f3" class="page sans"><header><h1 class="page-title">3. Destructuring (Object)</h1><p class="page-description"></p><table class="properties"><tbody><tr class="property-row property-row-text"><th><span class="icon property-icon"><img src="https://www.notion.so/icons/description_gray.svg" style="width:14px;height:14px;display:block"/></span>Detail Implementasi</th><td><strong>Destructure</strong> the object <code>{ title, priority }</code> in the function parameter for cleaner code.</td></tr><tr class="property-row property-row-text"><th><span class="icon property-icon"><img src="https://www.notion.so/icons/description_gray.svg" style="width:14px;height:14px;display:block"/></span>Fitur &quot;TaskMaster&quot;</th><td><strong>Task Data Extraction</strong></td></tr><tr class="property-row property-row-text"><th><span class="icon property-icon"><img src="https://www.notion.so/icons/description_gray.svg" style="width:14px;height:14px;display:block"/></span>Relevansi React</th><td>Receiving Props in a Component</td></tr></tbody></table></header><div class="page-body"><h1 id="2b412ce7-7e1b-811e-b34c-d6ebb85cd3b8" class="block-color-yellow">3. Destructuring (Object) (15 Menit)</h1><h3 id="2b412ce7-7e1b-8117-9d83-f95a65e869d3" class="">A. Konsep Dasar Destructuring Objek di JavaScript</h3><p id="2b412ce7-7e1b-8157-8b89-f43b7dee3ca0" class=""><em>Destructuring</em> adalah fitur <strong>ES6 (ECMAScript 2015)</strong> yang memungkinkan kita untuk &quot;membongkar&quot; properti dari sebuah <strong>objek</strong> (atau elemen dari array) dan menetapkannya ke variabel individual dengan sintaks yang ringkas.</p><p id="2b412ce7-7e1b-8146-a2d9-f52190968c35" class=""><strong>Tujuan Utama:</strong></p><ol type="1" id="2b412ce7-7e1b-81a3-9d85-dcc13b87f313" class="numbered-list" start="1"><li><strong>Mengambil Properti dengan Cepat:</strong> Mengurangi penulisan berulang (<code>data.title</code>, <code>data.priority</code>, dll.).</li></ol><ol type="1" id="2b412ce7-7e1b-815b-a135-d4d89e5bb483" class="numbered-list" start="2"><li><strong>Kode Lebih Bersih (Clean Code):</strong> Terutama saat menerima objek sebagai parameter fungsi.</li></ol><h3 id="2b412ce7-7e1b-81c5-8f9c-dd236ce42170" class="">Sintaks Dasar Destructuring Objek</h3><p id="2b412ce7-7e1b-8170-bc8b-e7351f7c5ea9" class="">Kita menggunakan kurung kurawal $(\{\})$ di sisi kiri penugasan (<code>=</code>) untuk mencocokkan nama properti objek yang ingin diambil.</p><p id="2b412ce7-7e1b-8162-b2c3-e588751d9c75" class=""><strong>Contoh 1: Mengambil Properti Objek Sederhana</strong></p><p id="2b412ce7-7e1b-81a0-a23b-d20a62ee285f" class="">Misalnya, kita memiliki objek tugas:</p><p id="2b412ce7-7e1b-819e-baeb-f1071919dd20" class="">JavaScript</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2b412ce7-7e1b-81dc-8c8f-fe18fceda4db" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">const task = {
+    id: &#x27;t-001&#x27;,
+    title: &#x27;Buat Materi Destructuring&#x27;,
+    priority: &#x27;High&#x27;,
+    isComplete: false,
+    dueDate: &#x27;2025-12-01&#x27;
+};
+
+// Cara Tradisional (sebelum Destructuring)
+// const taskTitle = task.title;
+// const taskPriority = task.priority;
+
+// ✅ Cara dengan Destructuring (ES6)
+const { title, priority, isComplete } = task;
+
+console.log(title);      // Output: Buat Materi Destructuring
+console.log(priority);   // Output: High
+console.log(isComplete); // Output: false</code></pre><h3 id="2b412ce7-7e1b-81ac-9a92-d0792f5dd54c" class="">B. Aplikasi Destructuring untuk Fungsi</h3><p id="2b412ce7-7e1b-8120-a0dd-e0e3125a7466" class="">Ini adalah skenario penggunaan <strong>terpenting</strong> di JavaScript modern, khususnya di <strong>React</strong>. <em>Destructuring</em> membuat penanganan data dari parameter fungsi menjadi sangat efisien dan mudah dibaca.</p><p id="2b412ce7-7e1b-8148-9cc9-fca61cb7a2ba" class=""><strong>Poin Relevansi React (Menerima Props di Komponen):</strong></p><p id="2b412ce7-7e1b-81b5-855c-d7b949736bed" class="">Dalam React, <em>props</em> (properties) selalu dikirim sebagai sebuah objek ke komponen. Dengan <em>destructuring</em> di parameter fungsi, kita bisa langsung mengambil properti yang kita butuhkan.</p><p id="2b412ce7-7e1b-8161-9f94-ca75d3ac4bc8" class=""><strong>Contoh 2: Destructuring dalam Parameter Fungsi</strong></p><p id="2b412ce7-7e1b-8123-a8bc-dedee52304d2" class="">Kita akan membuat fungsi untuk menampilkan detail tugas:</p><p id="2b412ce7-7e1b-81ca-ba42-f77c87dda127" class="">JavaScript</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2b412ce7-7e1b-81c7-bbb4-e520ae805704" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">// Data yang akan dikirim (Objek Props)
+const taskData = {
+    title: &#x27;Review PR Tim&#x27;,
+    priority: &#x27;Urgent&#x27;,
+    assignee: &#x27;Alice&#x27;
+};
+
+// ❌ Cara Tradisional (Mengakses properti satu per satu)
+function displayTaskTraditional(props) {
+    // const title = props.title;
+    // const priority = props.priority;
+    // ...
+    console.log(`[Tradisional] Tugas: ${props.title}, Prioritas: ${props.priority}`);
+}
+
+// ✅ Cara Modern (Destructuring Langsung di Parameter)
+function displayTaskModern({ title, priority, assignee }) {
+    // Variabel &#x27;title&#x27;, &#x27;priority&#x27;, dan &#x27;assignee&#x27; sudah tersedia!
+    console.log(`[Modern] Tugas: ${title}`);
+    console.log(`[Modern] Prioritas: ${priority}`);
+    console.log(`[Modern] Ditugaskan: ${assignee}`);
+}
+
+displayTaskTraditional(taskData);
+// Output: [Tradisional] Tugas: Review PR Tim, Prioritas: Urgent
+
+displayTaskModern(taskData);
+/*
+Output:
+[Modern] Tugas: Review PR Tim
+[Modern] Prioritas: Urgent
+[Modern] Ditugaskan: Alice
+*/</code></pre><h3 id="2b412ce7-7e1b-817e-86ad-e0c953a56621" class="">C. Fitur Lanjutan: Mengubah Nama Variabel &amp; Nilai Default</h3><p id="2b412ce7-7e1b-81ae-9c32-f2acf0bcac32" class=""><strong>1. Mengubah Nama Variabel (Aliasing)</strong></p><p id="2b412ce7-7e1b-81fb-98af-ccd9bee4aa85" class="">Jika nama properti objek terlalu panjang atau sudah ada variabel dengan nama yang sama, kita bisa mengganti namanya menggunakan sintaks <code><strong>propertyName: newVariableName</strong></code>.</p><p id="2b412ce7-7e1b-8170-a2e6-e312d4b2fa86" class="">JavaScript</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2b412ce7-7e1b-8193-8b98-d2531a1d440b" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">const user = {
+    fullName: &#x27;Jane Doe&#x27;,
+    userRole: &#x27;Admin&#x27;
+};
+
+// Mengambil userRole tapi menyimpannya di variabel &#x27;role&#x27;
+const { fullName, userRole: role } = user;
+
+console.log(fullName); // Output: Jane Doe
+console.log(role);     // Output: Admin
+// console.log(userRole); // -&gt; Akan Error! userRole bukan variabel</code></pre><p id="2b412ce7-7e1b-81df-a539-e8770b75e39f" class=""><strong>2. Nilai Default</strong></p><p id="2b412ce7-7e1b-81a0-be66-e5cbfc439847" class="">Kita bisa memberikan <strong>nilai </strong><em><strong>default</strong></em> jika properti yang dicari tidak ada (atau bernilai <code>undefined</code>) di objek sumber, menggunakan sintaks <code><strong>propertyName = defaultValue</strong></code>.</p><p id="2b412ce7-7e1b-8121-b83c-e1794db8bd25" class="">JavaScript</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2b412ce7-7e1b-818f-9d95-e3af226ae2c1" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">const setting = { theme: &#x27;dark&#x27; };
+
+// Destructuring &#x27;theme&#x27; dan &#x27;fontSize&#x27;. &#x27;fontSize&#x27; akan menggunakan default.
+const { theme, fontSize = 16 } = setting;
+
+console.log(theme);     // Output: dark
+console.log(fontSize);  // Output: 16 (mengambil nilai default)</code></pre><hr id="2b412ce7-7e1b-81f7-bde8-dd714bf1807a"/><h1 id="2b412ce7-7e1b-818c-827e-cd3cd7417891" class="block-color-yellow">Live Coding (15 Menit)</h1><h3 id="2b412ce7-7e1b-817a-88f6-eb49363a7c6b" class="">Exercise untuk Peserta</h3><p id="2b412ce7-7e1b-8184-b18d-e948992a0624" class="">Ajak peserta untuk membuat kode yang merefleksikan fitur &quot;TaskMaster&quot; seperti di <em>screenshot</em>, yaitu <strong>Ekstraksi Data Tugas</strong> dan relevansinya untuk <strong>menerima </strong><em><strong>Props</strong></em><strong> di Komponen</strong> (simulasi fungsi).</p><ol type="1" id="2b412ce7-7e1b-81f3-971b-f1abeea2397d" class="numbered-list" start="1"><li><strong>Siapkan Objek Data Tugas:</strong> Buat objek bernama <code>taskData</code> yang berisi properti seperti <code>id</code>, <code>title</code>, <code>priority</code>, dan <code>status</code>.</li></ol><ol type="1" id="2b412ce7-7e1b-8148-bc6a-f05a6065b4e0" class="numbered-list" start="2"><li><strong>Lakukan Destructuring:</strong> Gunakan <em>destructuring</em> untuk mengambil properti <code>title</code> dan <code>priority</code> ke dalam variabel lokal.</li></ol><ol type="1" id="2b412ce7-7e1b-8113-b2ea-c429f8308190" class="numbered-list" start="3"><li><strong>Simulasi Props (Parameter Fungsi):</strong> Buat fungsi <code>TaskComponent</code> yang menerima satu objek sebagai parameter, dan ubah agar menggunakan <em>destructuring</em> langsung di parameter untuk mengambil <code>title</code>, <code>priority</code>, dan properti baru <code>assignee</code>.</li></ol><ol type="1" id="2b412ce7-7e1b-8135-9125-e26bc3395bbd" class="numbered-list" start="4"><li><strong>Terapkan Nilai Default:</strong> Ubah <em>destructuring</em> di fungsi <code>TaskComponent</code> untuk memberikan nilai <em>default</em> <code>Unassigned</code> untuk properti <code>assignee</code> jika tidak disediakan.</li></ol><h3 id="2b412ce7-7e1b-8199-b9ec-cafc03d46bf8" class="">Contoh Code (Untuk panduan <em>live coding</em>)</h3><p id="2b412ce7-7e1b-8135-9a86-ea88c799e5b8" class="">HTML</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2b412ce7-7e1b-812b-847b-f87b24e83c5b" class="code code-wrap"><code class="language-HTML" style="white-space:pre-wrap;word-break:break-all">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;id&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Praktek: Destructuring Objek&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+    &lt;h1 id=&quot;app-title&quot;&gt;TaskMaster - Destructuring&lt;/h1&gt;
+    &lt;div id=&quot;task-detail&quot; style=&quot;margin-top: 20px; padding: 10px; border: 1px solid #ccc;&quot;&gt;
+        &lt;/div&gt;
+    &lt;div id=&quot;function-output&quot; style=&quot;margin-top: 20px;&quot;&gt;
+        &lt;h2&gt;Simulasi Komponen (Fungsi)&lt;/h2&gt;
+    &lt;/div&gt;
+
+    &lt;script&gt;
+        // Data Objek Tugas (Simulasi data yang masuk dari API/State)
+        const taskData = {
+            id: &#x27;tm-101&#x27;,
+            title: &#x27;Setup Environment Project Baru&#x27;,
+            priority: &#x27;High&#x27;,
+            status: &#x27;In Progress&#x27;,
+            dueDate: &#x27;2025-11-30&#x27;
+            // Catatan: Properti &#x27;assignee&#x27; tidak ada di objek ini
+        };
+        
+        console.log(&quot;Objek Data Tugas Sumber:&quot;, taskData);
+        
+        // -----------------------------------------------------------------
+        // 🚀 LANGKAH 1 &amp; 2: Destructuring Sederhana &amp; Menampilkan Hasil
+        // -----------------------------------------------------------------
+        
+        // Destructuring untuk mengambil properti title, priority, dan status
+        const { title, priority, status } = taskData;
+        
+        console.log(&quot;Hasil Destructuring:&quot;);
+        console.log(`Judul: ${title}, Prioritas: ${priority}, Status: ${status}`);
+        
+        // Menampilkan di UI
+        const detailContainer = document.getElementById(&#x27;task-detail&#x27;);
+        detailContainer.innerHTML = `
+            &lt;h3&gt;Detail Tugas dari Destructuring:&lt;/h3&gt;
+            &lt;p&gt;&lt;strong&gt;Judul:&lt;/strong&gt; ${title}&lt;/p&gt;
+            &lt;p&gt;&lt;strong&gt;Prioritas:&lt;/strong&gt; ${priority}&lt;/p&gt;
+            &lt;p&gt;&lt;strong&gt;Status:&lt;/strong&gt; ${status}&lt;/p&gt;
+        `;
+        
+        // -----------------------------------------------------------------
+        // 🚀 LANGKAH 3 &amp; 4: Destructuring di Parameter Fungsi (Simulasi Props)
+        // -----------------------------------------------------------------
+        
+        // Fungsi simulasi komponen React/JavaScript
+        // Menerima satu objek &#x27;props&#x27; sebagai parameter
+        function TaskComponent({ 
+            title, 
+            priority, 
+            assignee = &#x27;Unassigned&#x27; // Destructuring dengan Nilai Default
+        }) {
+            const outputDiv = document.getElementById(&#x27;function-output&#x27;);
+            outputDiv.innerHTML += `
+                &lt;div style=&quot;border: 1px dashed #666; padding: 10px; margin-bottom: 10px;&quot;&gt;
+                    &lt;p&gt;&lt;strong&gt;Tugas:&lt;/strong&gt; ${title}&lt;/p&gt;
+                    &lt;p&gt;&lt;strong&gt;Prioritas:&lt;/strong&gt; ${priority}&lt;/p&gt;
+                    &lt;p&gt;&lt;strong&gt;Ditugaskan Kepada:&lt;/strong&gt; ${assignee}&lt;/p&gt;
+                &lt;/div&gt;
+            `;
+            
+            // Catatan: Properti &#x27;status&#x27; tidak diambil/digunakan di komponen ini, 
+            // menunjukkan kita hanya mengambil yang dibutuhkan.
+        }
+
+        // Contoh 1: Mengirim Objek &#x27;taskData&#x27; (tanpa &#x27;assignee&#x27;)
+        console.log(&quot;--- Memanggil Komponen 1 (tanpa assignee) ---&quot;);
+        TaskComponent(taskData); 
+        // &#x27;assignee&#x27; akan mengambil nilai default &#x27;Unassigned&#x27;
+        
+        // Contoh 2: Mengirim Objek dengan semua properti
+        const taskWithAssignee = {
+            title: &#x27;Deploy Hotfix&#x27;,
+            priority: &#x27;Urgent&#x27;,
+            assignee: &#x27;Budi Santoso&#x27;
+        };
+        
+        console.log(&quot;--- Memanggil Komponen 2 (dengan assignee) ---&quot;);
+        TaskComponent(taskWithAssignee);
+        // &#x27;assignee&#x27; akan mengambil nilai &#x27;Budi Santoso&#x27;
+        
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><h3 id="2b412ce7-7e1b-81eb-8b9d-e3e3bedd8d69" class="">Next Step</h3><p id="2b412ce7-7e1b-816e-b311-f36e894ef12f" class="">Apakah Anda ingin saya membuatkan materi dan panduan <em>live coding</em> untuk topik berikutnya (misalnya, <em>Destructuring</em> pada <em>Array</em> atau materi JavaScript/React lain) atau ada bagian dari penjelasan <em>Destructuring</em> ini yang ingin Anda kembangkan lebih detail?</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

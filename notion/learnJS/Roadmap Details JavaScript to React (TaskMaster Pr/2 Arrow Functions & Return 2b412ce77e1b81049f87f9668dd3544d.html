@@ -1,0 +1,794 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>2. Arrow Functions &amp; Return</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2b412ce7-7e1b-8104-9f87-f9668dd3544d" class="page sans"><header><h1 class="page-title">2. Arrow Functions &amp; Return</h1><p class="page-description"></p><table class="properties"><tbody><tr class="property-row property-row-text"><th><span class="icon property-icon"><img src="https://www.notion.so/icons/description_gray.svg" style="width:14px;height:14px;display:block"/></span>Detail Implementasi</th><td>Create the <code>createTaskCard(task)</code> function that receives data and returns the task card&#x27;s HTML string.</td></tr><tr class="property-row property-row-text"><th><span class="icon property-icon"><img src="https://www.notion.so/icons/description_gray.svg" style="width:14px;height:14px;display:block"/></span>Fitur &quot;TaskMaster&quot;</th><td><strong>Task Card Component</strong></td></tr><tr class="property-row property-row-text"><th><span class="icon property-icon"><img src="https://www.notion.so/icons/description_gray.svg" style="width:14px;height:14px;display:block"/></span>Relevansi React</th><td>Functional Component</td></tr></tbody></table></header><div class="page-body"><h1 id="2b412ce7-7e1b-812b-8fbf-d5566885c2b2" class="block-color-yellow">2. Arrow Functions &amp; Return (15 Menit)</h1><p id="2b412ce7-7e1b-8144-bb56-e0e7f6c0d0dd" class="">Detail Implementasi: Membuat fungsi createTaskCard(task) yang menerima data dan me-return string HTML kartu.</p><p id="2b412ce7-7e1b-812f-9092-fe45b77dd687" class="">Fitur &quot;TaskMaster&quot;: Komponen Kartu Tugas</p><p id="2b412ce7-7e1b-81c8-8bbf-d0ffe22ebe96" class="">Relevansi React: Functional Component</p><h3 id="2b412ce7-7e1b-81f4-8c7a-cb81dbe3e973" class="">A. Konsep Dasar Arrow Functions </h3><p id="2b412ce7-7e1b-81c1-bd13-c4a429e207d5" class="">Arrow Functions adalah sintaks ringkas (concise syntax) untuk menulis fungsi di JavaScript yang diperkenalkan pada <strong>ES6 (ECMAScript 2015)</strong>. Mereka seringkali lebih disukai daripada fungsi tradisional (<code>function</code> keyword) karena kodenya lebih pendek dan memiliki perilaku yang lebih konsisten terkait dengan konteks <code>this</code>.</p><h3 id="2b412ce7-7e1b-817d-98f5-ca55567c6230" class="">1. Sintaks Dasar dan Perbandingan</h3><table id="2b412ce7-7e1b-8135-a6e9-fb21230ab787" class="simple-table"><tbody><tr id="2b412ce7-7e1b-817e-83c6-d7324134a272"><td id="vwrn" class=""><strong>Fitur</strong></td><td id="YoE`" class=""><strong>Fungsi Tradisional</strong></td><td id="y}j{" class=""><strong>Arrow Function</strong></td></tr><tr id="2b412ce7-7e1b-8121-89c9-db87ad5aa7ad"><td id="vwrn" class=""><strong>Sintaks Penuh</strong></td><td id="YoE`" class=""><code>function add(a, b) { return a + b; }</code></td><td id="y}j{" class=""><code>const add = (a, b) =&gt; { return a + b; };</code></td></tr><tr id="2b412ce7-7e1b-8135-bd38-caad8f6f1b69"><td id="vwrn" class=""><strong>Sintaks Ringkas (Implisit Return)</strong></td><td id="YoE`" class="">(Tidak ada)</td><td id="y}j{" class=""><code>const add = (a, b) =&gt; a + b;</code></td></tr><tr id="2b412ce7-7e1b-812a-bafc-fcecbdf2f1dd"><td id="vwrn" class=""><strong>Satu Parameter</strong></td><td id="YoE`" class=""><code>function greet(name) { ... }</code></td><td id="y}j{" class=""><code>const greet = name =&gt; { ... };</code> (Tanda kurung <code>()</code> bisa dihilangkan)</td></tr><tr id="2b412ce7-7e1b-81fb-a974-cf8911d643f8"><td id="vwrn" class=""><strong>Tanpa Parameter</strong></td><td id="YoE`" class=""><code>function sayHi() { ... }</code></td><td id="y}j{" class=""><code>const sayHi = () =&gt; { ... };</code></td></tr></tbody></table><h3 id="2b412ce7-7e1b-8143-847d-d02b6be06b47" class="">2. Implisit Return (Return Tersirat)</h3><p id="2b412ce7-7e1b-8148-b7c4-c7b15a9be560" class="">Fitur kunci yang akan kita gunakan untuk membuat komponen kartu tugas adalah <strong>Implisit Return</strong>.</p><ul id="2b412ce7-7e1b-814c-9a77-d76c0c770f01" class="bulleted-list"><li style="list-style-type:disc">Jika <em>body</em> fungsi hanya terdiri dari <strong>satu ekspresi tunggal</strong> (tidak perlu kurung kurawal <code>{}</code>), Anda dapat menghilangkan kata kunci <code><strong>return</strong></code>. Nilai dari ekspresi tunggal tersebut secara otomatis akan menjadi nilai yang dikembalikan oleh fungsi.</li></ul><table id="2b412ce7-7e1b-8179-8901-ea982c7d1bb1" class="simple-table"><tbody><tr id="2b412ce7-7e1b-81cb-b412-d4caeeadbe5d"><td id="{dXj" class=""><strong>Fungsi</strong></td><td id="Wn?p" class=""><strong>Sintaks</strong></td></tr><tr id="2b412ce7-7e1b-81ba-a6b2-e96f68a37010"><td id="{dXj" class=""><strong>Explicit Return</strong> (Dinyatakan)</td><td id="Wn?p" class=""><code>const calculateArea = (w, h) =&gt; { return w * h; };</code></td></tr><tr id="2b412ce7-7e1b-81ca-8f07-ebb434718759"><td id="{dXj" class=""><strong>Implicit Return</strong> (Tersirat)</td><td id="Wn?p" class=""><code>const calculateArea = (w, h) =&gt; w * h;</code></td></tr></tbody></table><h3 id="2b412ce7-7e1b-8149-b098-e5d3e7989047" class="">3. Mengembalikan Objek atau Struktur HTML</h3><p id="2b412ce7-7e1b-81e7-8fcc-fcbbdfcd7548" class="">Ketika Anda ingin mengembalikan sebuah <strong>Objek Literal</strong> atau <strong>String HTML Multi-baris</strong> (seperti yang dibutuhkan untuk Kartu Tugas), Anda harus menggunakan <strong>kurung kurawal</strong> (<code>{}</code>) yang diapit oleh <strong>tanda kurung</strong> (<code>()</code>) untuk membedakannya dari <em>body</em> fungsi biasa.</p><ul id="2b412ce7-7e1b-811d-a075-cd09cc821cad" class="bulleted-list"><li style="list-style-type:disc"><strong>Mengembalikan Objek:</strong>JavaScript<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2b412ce7-7e1b-81d6-81e1-ea63e4810633" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">// SALAH: JS akan mengira {} adalah body fungsi, bukan objek literal
+const getPerson = (name, age) =&gt; { name: name, age: age }; 
+
+// BENAR: Menggunakan () untuk mengapit objek literal
+const getPerson = (name, age) =&gt; ({ name: name, age: age });</code></pre></li></ul><ul id="2b412ce7-7e1b-81e6-aead-fa7936b94796" class="bulleted-list"><li style="list-style-type:disc">Mengembalikan String HTML Multi-baris (Implisit Return):JavaScript<p id="2b412ce7-7e1b-8133-ae25-ef224cc37463" class="">Ini sangat berguna saat kita mengombinasikan Arrow Functions dengan Template Literals (```) dari sesi sebelumnya.</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2b412ce7-7e1b-8147-8596-fc535e8a4154" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">const task = { title: &quot;Deploy App&quot;, priority: &quot;High&quot; };
+// Implisit Return dari Template Literal
+const renderCard = (task) =&gt; (
+    `
+    &lt;div class=&quot;task-card ${task.priority.toLowerCase()}&quot;&gt;
+        &lt;h3&gt;${task.title}&lt;/h3&gt;
+        &lt;p&gt;Priority: ${task.priority}&lt;/p&gt;
+    &lt;/div&gt;
+    `
+);
+
+console.log(renderCard(task)); 
+// Output adalah string HTML yang sudah terisi data</code></pre></li></ul><hr id="2b412ce7-7e1b-81cf-b7b8-fa65ab326dd0"/><h1 id="2b412ce7-7e1b-81b3-8810-f7edeb1a0e5f" class=""><mark class="highlight-yellow">Live Coding (15 Menit)</mark></h1><p id="2b412ce7-7e1b-818e-a687-e2d6c3339ad1" class="">Kita akan membuat fungsi <code><strong>createTaskCard(task)</strong></code> yang menerima objek tugas dan mengembalikan string HTML lengkap kartu tugas, memanfaatkan:</p><ol type="1" id="2b412ce7-7e1b-81c8-805b-da8a3d1ddcba" class="numbered-list" start="1"><li><strong>Arrow Function</strong> dengan <strong>Implisit Return</strong>.</li></ol><ol type="1" id="2b412ce7-7e1b-81dd-8c7a-cbe17b78b752" class="numbered-list" start="2"><li><strong>Template Literals</strong> untuk menyusun markup HTML.</li></ol><h3 id="2b412ce7-7e1b-81e1-a0b9-ca2d8ec1bf93" class=""><strong>Tujuan Live Coding:</strong></h3><ul id="2b412ce7-7e1b-8196-8beb-e03cc60ea2e6" class="bulleted-list"><li style="list-style-type:disc">Mengubah fungsi tradisional menjadi Arrow Function.</li></ul><ul id="2b412ce7-7e1b-8187-9ec4-d7ef9bccc5a4" class="bulleted-list"><li style="list-style-type:disc">Mengimplementasikan Implisit Return untuk mengembalikan string HTML.</li></ul><ul id="2b412ce7-7e1b-8102-b9a0-fcbcdb5938e1" class="bulleted-list"><li style="list-style-type:disc">Menerima dan menyisipkan data dari objek <code>task</code> ke dalam string HTML.</li></ul><ul id="2b412ce7-7e1b-817b-b7c9-c94a8cf04780" class="bulleted-list"><li style="list-style-type:disc">Membuat <em>variasi</em> tampilan (misalnya, warna) berdasarkan properti data (misalnya, <code>priority</code>).</li></ul><h3 id="2b412ce7-7e1b-81e0-8eda-fd564933e418" class=""><strong>Contoh Kode:</strong></h3><p id="2b412ce7-7e1b-81ad-bce2-cac64cb0ba10" class="">Kita akan melanjutkan dari file HTML sebelumnya (dengan Tailwind CSS CDN).</p><p id="2b412ce7-7e1b-81ce-9224-d49d2996e238" class="">HTML</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2b412ce7-7e1b-81af-aa6e-fca7452dbcf3" class="code code-wrap"><code class="language-HTML" style="white-space:pre-wrap;word-break:break-all">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;id&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Praktek: Arrow Functions &amp; Return&lt;/title&gt;
+    &lt;script src=&quot;https://cdn.tailwindcss.com&quot;&gt;&lt;/script&gt;
+    &lt;style&gt;
+        .priority-high { border-left: 4px solid #ef4444; } /* Merah */
+        .priority-medium { border-left: 4px solid #f97316; } /* Jingga */
+        .priority-low { border-left: 4px solid #10b981; } /* Hijau */
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+    &lt;div id=&quot;app&quot; class=&quot;p-8 max-w-2xl mx-auto&quot;&gt;
+        &lt;h1 class=&quot;text-3xl font-bold mb-6 text-gray-800&quot;&gt;Daftar Tugas TaskMaster&lt;/h1&gt;
+        &lt;div id=&quot;task-list&quot; class=&quot;space-y-4&quot;&gt;
+            &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;script&gt;
+        // --- DATA STATIS ---
+        const TASK_LIST = [
+            { id: 1, title: &quot;Revisi Desain Landing Page&quot;, priority: &quot;High&quot;, isDone: false },
+            { id: 2, title: &quot;Review Code Feature X&quot;, priority: &quot;Medium&quot;, isDone: false },
+            { id: 3, title: &quot;Update Dokumentasi API&quot;, priority: &quot;Low&quot;, isDone: true },
+        ];
+        
+        // --- ARROW FUNCTION DENGAN IMPLISIT RETURN ---
+        
+        // Fungsi untuk mengembalikan string class CSS berdasarkan prioritas
+        const getPriorityClass = priority =&gt; `priority-${priority.toLowerCase()}`;
+        
+        /**
+         * @param {Object} task - Objek tugas { title, priority, isDone }
+         * @returns {string} String HTML untuk kartu tugas
+         */
+        // Menggunakan Arrow Function dan IMPLISIT RETURN untuk mengembalikan Template Literal HTML
+        const createTaskCard = (task) =&gt; (
+            `
+            &lt;div class=&quot;bg-white p-4 shadow-md rounded-lg ${getPriorityClass(task.priority)} flex justify-between items-center&quot;&gt;
+                &lt;div class=&quot;${task.isDone ? &#x27;line-through text-gray-500&#x27; : &#x27;text-gray-800&#x27;}&quot;&gt;
+                    &lt;h3 class=&quot;text-lg font-semibold&quot;&gt;${task.title}&lt;/h3&gt;
+                    &lt;p class=&quot;text-sm text-gray-600&quot;&gt;Prioritas: ${task.priority}&lt;/p&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;px-3 py-1 text-xs font-bold rounded-full 
+                    ${task.isDone ? &#x27;bg-green-200 text-green-800&#x27; : &#x27;bg-red-200 text-red-800&#x27;}&quot;&gt;
+                    ${task.isDone ? &#x27;SELESAI&#x27; : &#x27;BELUM&#x27;}
+                &lt;/div&gt;
+            &lt;/div&gt;
+            `
+        );
+
+
+        // --- FUNGSI UTAMA UNTUK MERENDER SEMUA TUGAS ---
+        function renderTaskList() {
+            const taskListContainer = document.getElementById(&#x27;task-list&#x27;);
+            
+            // Menggunakan .map() pada array untuk mengkonversi setiap objek menjadi string HTML
+            // dan .join(&#x27;&#x27;) untuk menggabungkan semua string HTML menjadi satu blok
+            const allTaskHTML = TASK_LIST.map(task =&gt; createTaskCard(task)).join(&#x27;&#x27;);
+            
+            taskListContainer.innerHTML = allTaskHTML;
+        }
+
+        // Jalankan fungsi setelah DOM dimuat
+        document.addEventListener(&#x27;DOMContentLoaded&#x27;, renderTaskList);
+
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><h3 id="2b412ce7-7e1b-816e-9b7f-c8dac1067db3" class=""><strong>Langkah-langkah di Live Coding:</strong></h3><ol type="1" id="2b412ce7-7e1b-8138-88ee-f310052bd7c9" class="numbered-list" start="1"><li><strong>Demonstrasi </strong><code><strong>createTaskCard</strong></code><strong>:</strong> Tunjukkan bagaimana fungsi menerima <code>task</code> dan dengan cepat me-<em>return</em> string HTML tanpa kata kunci <code>return</code>.</li></ol><ol type="1" id="2b412ce7-7e1b-81a2-a559-e8695be5e7ed" class="numbered-list" start="2"><li><strong>Modifikasi Implisit Return:</strong> Coba hilangkan tanda kurung <code>()</code> yang mengapit <em>Template Literal</em> dan tunjukkan <em>error</em> yang terjadi (JavaScript mengira itu adalah <em>body</em> fungsi biasa).</li></ol><ol type="1" id="2b412ce7-7e1b-81be-b8c8-dedbc7db507e" class="numbered-list" start="3"><li><strong>Penggunaan </strong><code><strong>.map()</strong></code><strong>:</strong> Jelaskan bagaimana fungsi <code>createTaskCard</code> digunakan di dalam metode <code>TASK_LIST.map()</code> untuk mengubah array data menjadi array HTML. Ini adalah konsep fundamental dalam <em>rendering list</em> di React.</li></ol><ol type="1" id="2b412ce7-7e1b-81f6-83b8-d11cbbb46e5f" class="numbered-list" start="4"><li><strong>Menambahkan Logika:</strong> Ajak peserta untuk mengubah warna kartu atau menambahkan ikon berdasarkan status <code>isDone</code> atau <code>priority</code> lainnya, mempraktikkan ekspresi di dalam Template Literal dan Arrow Function.</li></ol><hr id="2b412ce7-7e1b-811d-bc73-d29a183d9cc2"/><p id="2b412ce7-7e1b-81ca-9027-fd8c2827aee7" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

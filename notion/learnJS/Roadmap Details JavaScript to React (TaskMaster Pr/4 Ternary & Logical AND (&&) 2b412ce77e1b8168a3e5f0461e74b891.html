@@ -1,0 +1,857 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>4. Ternary &amp; Logical AND (&amp;&amp;)</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2b412ce7-7e1b-8168-a3e5-f0461e74b891" class="page sans"><header><h1 class="page-title">4. Ternary &amp; Logical AND (<code>&amp;&amp;</code>)</h1><p class="page-description"></p><table class="properties"><tbody><tr class="property-row property-row-text"><th><span class="icon property-icon"><img src="https://www.notion.so/icons/description_gray.svg" style="width:14px;height:14px;display:block"/></span>Detail Implementasi</th><td>Display a red badge if <strong>High</strong> priority, or hide the &quot;Edit&quot; button if the status is <strong>Done</strong>.</td></tr><tr class="property-row property-row-text"><th><span class="icon property-icon"><img src="https://www.notion.so/icons/description_gray.svg" style="width:14px;height:14px;display:block"/></span>Fitur &quot;TaskMaster&quot;</th><td><strong>Priority &amp; Status Label</strong></td></tr><tr class="property-row property-row-text"><th><span class="icon property-icon"><img src="https://www.notion.so/icons/description_gray.svg" style="width:14px;height:14px;display:block"/></span>Relevansi React</th><td>Conditional Rendering</td></tr></tbody></table></header><div class="page-body"><h1 id="2b412ce7-7e1b-8126-94e7-fb9e8f1f1077" class="block-color-yellow">4. Ternary &amp; Logical AND (<code>&amp;&amp;</code>) (15 Menit)</h1><h3 id="2b412ce7-7e1b-81dc-9e19-fd7f3a8e3f08" class="">1. Penjelasan Materi dan Contoh (15 Menit)</h3><p id="2b412ce7-7e1b-81ce-a65d-c447ea230307" class="">Konsep ini adalah inti dari <strong>Conditional Rendering</strong> di React (dan framework UI modern lainnya), di mana kita perlu menampilkan atau mengubah elemen UI berdasarkan kondisi data (<em>state</em> atau <em>props</em>).</p><h3 id="2b412ce7-7e1b-810f-9b8b-f9b6317d1442" class="">A. Ternary Operator (Operator Kondisional Tiga Bagian)</h3><p id="2b412ce7-7e1b-810a-9f69-e9cd025f0245" class=""><em>Ternary Operator</em> adalah cara singkat untuk menulis pernyataan <code><strong>if-else</strong></code> sederhana. Ini sangat berguna ketika Anda perlu memilih satu dari dua nilai atau ekspresi berdasarkan sebuah kondisi.</p><p id="2b412ce7-7e1b-8188-b41e-fdbda35c0777" class=""><strong>Sintaks:</strong></p><p id="2b412ce7-7e1b-813d-815e-d8268a8ed0ad" class="">JavaScript</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2b412ce7-7e1b-81c3-84a2-f4a70dd4a7be" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">kondisi ? ekspresi_jika_TRUE : ekspresi_jika_FALSE;</code></pre><table id="2b412ce7-7e1b-81f7-89c6-d3f0a563bac2" class="simple-table"><tbody><tr id="2b412ce7-7e1b-81f3-95ac-f801bab55e0d"><td id="pfN&lt;" class=""><strong>Bagian</strong></td><td id="z\V{" class=""><strong>Deskripsi</strong></td></tr><tr id="2b412ce7-7e1b-816b-bc9f-df7ca42a74d2"><td id="pfN&lt;" class=""><code>kondisi</code></td><td id="z\V{" class="">Ekspresi yang dievaluasi menjadi <code><strong>true</strong></code> atau <code><strong>false</strong></code>.</td></tr><tr id="2b412ce7-7e1b-818c-a8dc-f5f9b8eb48c8"><td id="pfN&lt;" class=""><code>?</code></td><td id="z\V{" class="">Pemisah antara kondisi dan nilai jika <em>true</em>.</td></tr><tr id="2b412ce7-7e1b-815e-a31b-e311452e348e"><td id="pfN&lt;" class=""><code>ekspresi_jika_TRUE</code></td><td id="z\V{" class="">Nilai atau kode yang dieksekusi jika kondisi <code><strong>true</strong></code>.</td></tr><tr id="2b412ce7-7e1b-81bc-9aaf-cf15ea866185"><td id="pfN&lt;" class=""><code>:</code></td><td id="z\V{" class="">Pemisah antara nilai jika <em>true</em> dan nilai jika <em>false</em>.</td></tr><tr id="2b412ce7-7e1b-8143-b5b9-f8fd6cb67d60"><td id="pfN&lt;" class=""><code>ekspresi_jika_FALSE</code></td><td id="z\V{" class="">Nilai atau kode yang dieksekusi jika kondisi <code><strong>false</strong></code>.</td></tr></tbody></table><p id="2b412ce7-7e1b-81e8-819c-fa7682c46efb" class=""><strong>Contoh 1: Menentukan Teks atau Nilai</strong></p><p id="2b412ce7-7e1b-81ee-8113-cad374608630" class="">Kita ingin menampilkan label warna berdasarkan prioritas tugas.</p><p id="2b412ce7-7e1b-8192-94b2-fad2eec5e1f8" class="">JavaScript</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2b412ce7-7e1b-81ce-90ee-f265324e9dcd" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">const taskPriority = &#x27;High&#x27;;
+
+// Menggunakan if-else tradisional:
+// let priorityColor;
+// if (taskPriority === &#x27;High&#x27;) {
+//     priorityColor = &#x27;red&#x27;;
+// } else {
+//     priorityColor = &#x27;blue&#x27;;
+// }
+
+// ✅ Menggunakan Ternary Operator:
+const priorityColor = taskPriority === &#x27;High&#x27; ? &#x27;red&#x27; : &#x27;blue&#x27;;
+
+console.log(priorityColor); // Output: red</code></pre><p id="2b412ce7-7e1b-818d-85c8-ef3698b37ff7" class=""><strong>Relevansi React:</strong></p><p id="2b412ce7-7e1b-81cd-b6fa-dd55b59dd353" class="">Ternary sering digunakan untuk menetapkan nilai atribut (seperti <em>className</em> atau <em>style</em>) atau untuk memilih komponen mana yang akan ditampilkan.</p><p id="2b412ce7-7e1b-81eb-982a-e69c8c82ce6d" class="">JavaScript</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2b412ce7-7e1b-81b6-aab4-e7f26669f235" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">// Contoh dalam konteks JSX (di React):
+&lt;div className={taskStatus === &#x27;Done&#x27; ? &#x27;bg-green-100&#x27; : &#x27;bg-yellow-100&#x27;}&gt;
+    {taskStatus}
+&lt;/div&gt;</code></pre><hr id="2b412ce7-7e1b-8160-87c9-de8912d727ac"/><h3 id="2b412ce7-7e1b-8104-9449-d324de518cfd" class="">B. Logical AND Operator (<code>&amp;&amp;</code>)</h3><p id="2b412ce7-7e1b-8144-aa46-df63240a16b7" class="">Operator <strong>Logical AND (</strong><code><strong>&amp;&amp;</strong></code><strong>)</strong> mengembalikan nilai ekspresi pertama yang bernilai <em>falsy</em> (<code>false</code>, <code>0</code>, <code>&quot;&quot;</code>, <code>null</code>, <code>undefined</code>) atau, jika semua ekspresi bernilai <em>truthy</em>, ia mengembalikan nilai ekspresi terakhir.</p><p id="2b412ce7-7e1b-8196-893c-fba89d82feb1" class="">Di JavaScript modern, ini umum digunakan sebagai bentuk singkatan untuk pernyataan <code><strong>if</strong></code> sederhana, terutama dalam <strong>Conditional Rendering</strong> (menampilkan elemen HANYA jika kondisinya benar).</p><p id="2b412ce7-7e1b-8193-99b7-c26d7f676568" class=""><strong>Sintaks:</strong></p><p id="2b412ce7-7e1b-81cd-bf93-c2e93558c9cc" class="">JavaScript</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2b412ce7-7e1b-81ec-9082-fe32860a9be8" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">kondisi_truthy &amp;&amp; ekspresi_yang_dieksekusi_jika_TRUE</code></pre><p id="2b412ce7-7e1b-8123-82a4-fbc92dbf08b0" class=""><strong>Bagaimana cara kerjanya (Short-Circuit Evaluation):</strong></p><ol type="1" id="2b412ce7-7e1b-8174-b263-f83d592b9fcb" class="numbered-list" start="1"><li>Jika <code><strong>kondisi_truthy</strong></code> bernilai <code>true</code>, JavaScript akan melihat ekspresi berikutnya (<code>ekspresi_yang_dieksekusi_jika_TRUE</code>) dan mengembalikan nilainya.</li></ol><ol type="1" id="2b412ce7-7e1b-81cf-9d77-d7828589e403" class="numbered-list" start="2"><li>Jika <code><strong>kondisi_truthy</strong></code> bernilai <code>false</code>, JavaScript akan langsung berhenti (short-circuit) dan mengembalikan nilai <code>false</code> tanpa melihat ekspresi kedua.</li></ol><p id="2b412ce7-7e1b-810e-810c-d4bb659af623" class=""><strong>Contoh 2: Conditional Rendering</strong></p><p id="2b412ce7-7e1b-81d7-b04b-d90723f40830" class="">Dalam aplikasi <em>TaskMaster</em>, kita ingin menampilkan tombol <strong>&quot;Edit&quot;</strong> hanya jika status tugas <em>bukan</em> <code><strong>Done</strong></code>.</p><p id="2b412ce7-7e1b-810d-b76f-c1dba588b875" class="">JavaScript</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2b412ce7-7e1b-8162-8e31-f4fd6bb090c9" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">const taskStatus1 = &#x27;In Progress&#x27;;
+const taskStatus2 = &#x27;Done&#x27;;
+
+// Kondisi 1: taskStatus1 BUKAN &#x27;Done&#x27; (True)
+const showEditButton1 = taskStatus1 !== &#x27;Done&#x27; &amp;&amp; &#x27;Tampilkan Tombol Edit&#x27;;
+
+// Kondisi 2: taskStatus2 BUKAN &#x27;Done&#x27; (False)
+const showEditButton2 = taskStatus2 !== &#x27;Done&#x27; &amp;&amp; &#x27;Tampilkan Tombol Edit&#x27;;
+
+console.log(showEditButton1); // Output: Tampilkan Tombol Edit (nilai dari ekspresi kedua)
+console.log(showEditButton2); // Output: false (nilai dari ekspresi pertama, karena false)</code></pre><p id="2b412ce7-7e1b-8133-a9e6-e933292ed9be" class=""><strong>Relevansi React:</strong></p><p id="2b412ce7-7e1b-81f2-b446-c03c77626af1" class="">Dalam JSX (React), jika ekspresi pertama (<code>kondisi_truthy</code>) bernilai <code>true</code>, ekspresi kedua yang berupa markup HTML/JSX akan dieksekusi dan ditampilkan. Jika ekspresi pertama <code>false</code>, React akan mengabaikan ekspresi kedua (markup) dan tidak menampilkan apapun, sehingga terjadi penyembunyian elemen.</p><p id="2b412ce7-7e1b-8115-ae04-cad9e1315d31" class="">JavaScript</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2b412ce7-7e1b-8180-bee8-c8098375ac54" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">// Contoh dalam konteks JSX (di React):
+// { taskStatus !== &#x27;Done&#x27; &amp;&amp; &lt;button onClick={handleEdit}&gt;Edit&lt;/button&gt; }</code></pre><hr id="2b412ce7-7e1b-81bc-bfe2-e5d6083ffeff"/><h1 id="2b412ce7-7e1b-812c-a8d5-ca8af12df7d2" class="block-color-yellow">Live Coding (15 Menit)</h1><h3 id="2b412ce7-7e1b-818c-9f28-f65e2b01a5e9" class="">Exercise untuk Peserta</h3><p id="2b412ce7-7e1b-8167-95c5-d20b5a0930e5" class="">Ajak peserta untuk mengimplementasikan <em>Conditional Rendering</em> menggunakan <em>Ternary</em> dan <code>&amp;&amp;</code> pada data tugas (Fitur TaskMaster: Label Prioritas &amp; Status).</p><ol type="1" id="2b412ce7-7e1b-8169-9e52-e5dea4c490a7" class="numbered-list" start="1"><li><strong>Siapkan Data Tugas:</strong> Deklarasikan objek <code>task</code> dengan properti <code>priority</code> (<code>High</code>, <code>Medium</code>, atau <code>Low</code>) dan <code>status</code> (<code>To Do</code>, <code>In Progress</code>, atau <code>Done</code>).</li></ol><ol type="1" id="2b412ce7-7e1b-81a9-b286-d43d85f301ba" class="numbered-list" start="2"><li><strong>Terapkan Ternary untuk </strong><em><strong>Class Styling</strong></em><strong>:</strong> Gunakan <em>Ternary Operator</em> untuk menetapkan <em>class</em> CSS (warna) berdasarkan nilai <code>task.priority</code>.</li></ol><ol type="1" id="2b412ce7-7e1b-81e4-83a1-cb24471295e8" class="numbered-list" start="3"><li><strong>Terapkan Ternary untuk Logika Kompleks (2 Tingkat):</strong> Gunakan <em>Ternary</em> yang bersarang (atau buat variabel bantu) untuk menangani tiga kondisi prioritas (<code>High</code>, <code>Medium</code>, <code>Low</code>).</li></ol><ol type="1" id="2b412ce7-7e1b-815a-98a3-c23460aaeae9" class="numbered-list" start="4"><li><strong>Terapkan Logical AND (</strong><code><strong>&amp;&amp;</strong></code><strong>) untuk </strong><em><strong>Conditional Rendering</strong></em><strong>:</strong> Gunakan <code>&amp;&amp;</code> untuk menampilkan tombol <code><strong>Edit</strong></code> hanya jika status tugas <em>bukan</em> <code><strong>Done</strong></code>.</li></ol><h3 id="2b412ce7-7e1b-8174-a9a0-f1176c0328bf" class="">Contoh Code (Untuk panduan <em>live coding</em>)</h3><p id="2b412ce7-7e1b-8102-b5c1-d29617dbe729" class="">HTML</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2b412ce7-7e1b-819b-bd9f-efed6bdf3523" class="code code-wrap"><code class="language-HTML" style="white-space:pre-wrap;word-break:break-all">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;id&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Praktek: Ternary &amp; Logical AND&lt;/title&gt;
+    &lt;script src=&quot;https://cdn.tailwindcss.com&quot;&gt;&lt;/script&gt;
+    &lt;style&gt;
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .badge-red { background-color: #fca5a5; color: #7f1d1d; } /* High */
+        .badge-yellow { background-color: #fde68a; color: #92400e; } /* Medium */
+        .badge-blue { background-color: #bfdbfe; color: #1e40af; } /* Low/Default */
+        .badge-green { background-color: #a7f3d0; color: #065f46; } /* Done Status */
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+    &lt;div id=&quot;app&quot; class=&quot;p-8 max-w-lg mx-auto&quot;&gt;
+        &lt;h1 class=&quot;text-2xl font-bold mb-6&quot;&gt;TaskMaster - Conditional Rendering&lt;/h1&gt;
+        &lt;/div&gt;
+
+    &lt;script&gt;
+        // Data Tugas untuk Simulasi Conditional Rendering
+        const taskData = {
+            title: &#x27;Selesaikan Desain UI Mobile&#x27;,
+            priority: &#x27;High&#x27;, // Coba ubah ke &#x27;Medium&#x27; atau &#x27;Low&#x27;
+            status: &#x27;In Progress&#x27;, // Coba ubah ke &#x27;Done&#x27; atau &#x27;To Do&#x27;
+            isUrgent: true
+        };
+
+        function renderTaskDetail(task) {
+            
+            // -----------------------------------------------------------------
+            // 🚀 LANGKAH 1 &amp; 2: Ternary Operator untuk 2 Kondisi (Priority Color)
+            // -----------------------------------------------------------------
+            
+            // Menentukan warna badge (2 kondisi: High atau Default)
+            const priorityBadgeClass = task.priority === &#x27;High&#x27; 
+                ? &#x27;badge-red&#x27; 
+                : &#x27;badge-blue&#x27;;
+
+            // -----------------------------------------------------------------
+            // 🚀 LANGKAH 3: Ternary Bersarang/Bantuan untuk 3 Kondisi (Lebih Kompleks)
+            // -----------------------------------------------------------------
+
+            // Menentukan warna badge untuk 3 kondisi (High, Medium, Low/Default)
+            const complexPriorityClass = task.priority === &#x27;High&#x27; 
+                ? &#x27;badge-red&#x27; 
+                : (task.priority === &#x27;Medium&#x27; 
+                    ? &#x27;badge-yellow&#x27; 
+                    : &#x27;badge-blue&#x27;); 
+            
+            // Status badge (contoh ternary sederhana lagi)
+            const statusClass = task.status === &#x27;Done&#x27; ? &#x27;badge-green&#x27; : &#x27;badge-yellow&#x27;;
+
+
+            // -----------------------------------------------------------------
+            // 🚀 LANGKAH 4: Logical AND (&amp;&amp;) untuk Conditional Rendering Tombol
+            // -----------------------------------------------------------------
+            
+            // Variabel ini akan berisi string (markup) atau false.
+            const editButtonMarkup = task.status !== &#x27;Done&#x27; &amp;&amp; 
+                `&lt;button class=&quot;bg-indigo-500 hover:bg-indigo-600 text-white py-1 px-3 rounded-md text-sm ml-4&quot;&gt;
+                    Edit Tugas
+                &lt;/button&gt;`;
+
+            // Jika task.status adalah &#x27;Done&#x27;, task.status !== &#x27;Done&#x27; menjadi false.
+            // Ekspresi keseluruhan menjadi false, dan tombol tidak dirender.
+            // Jika task.status BUKAN &#x27;Done&#x27;, ekspresi menjadi string markup, dan dirender.
+
+            
+            // Gabungkan semua ke dalam Template Literal
+            const taskHTML = `
+                &lt;div class=&quot;p-5 border border-gray-200 rounded-lg shadow-md mb-4&quot;&gt;
+                    &lt;div class=&quot;flex items-center justify-between mb-3&quot;&gt;
+                        &lt;h2 class=&quot;text-xl font-semibold&quot;&gt;${task.title}&lt;/h2&gt;
+                        
+                        ${task.isUrgent &amp;&amp; &#x27;&lt;span class=&quot;text-red-500 font-bold text-xs ml-2&quot;&gt;URGENT!&lt;/span&gt;&#x27;}
+                    &lt;/div&gt;
+
+                    &lt;div class=&quot;flex space-x-2 mb-4&quot;&gt;
+                        &lt;span class=&quot;badge ${complexPriorityClass}&quot;&gt;
+                            Prioritas: ${task.priority}
+                        &lt;/span&gt;
+
+                        &lt;span class=&quot;badge ${statusClass}&quot;&gt;
+                            Status: ${task.status}
+                        &lt;/span&gt;
+                    &lt;/div&gt;
+
+                    &lt;div class=&quot;flex justify-end&quot;&gt;
+                        ${editButtonMarkup} 
+                        &lt;button class=&quot;bg-green-500 hover:bg-green-600 text-white py-1 px-3 rounded-md text-sm&quot;&gt;
+                            ${task.status === &#x27;Done&#x27; ? &#x27;Arsipkan&#x27; : &#x27;Tandai Selesai&#x27;}
+                        &lt;/button&gt;
+                    &lt;/div&gt;
+
+                &lt;/div&gt;
+            `;
+            
+            return taskHTML;
+        }
+
+        // Tampilkan hasil rendering ke halaman
+        const appContainer = document.getElementById(&#x27;app&#x27;);
+        appContainer.innerHTML += renderTaskDetail(taskData);
+
+        // Tambahkan satu tugas yang Selesai untuk demonstrasi perbandingan
+        const doneTask = {
+            title: &#x27;Review Materi Lama&#x27;,
+            priority: &#x27;Low&#x27;,
+            status: &#x27;Done&#x27;, // &lt;-- Status Done, Tombol Edit akan hilang
+            isUrgent: false
+        };
+        appContainer.innerHTML += renderTaskDetail(doneTask);
+        
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><hr id="2b412ce7-7e1b-819b-abe3-d1ca4e9f3819"/></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

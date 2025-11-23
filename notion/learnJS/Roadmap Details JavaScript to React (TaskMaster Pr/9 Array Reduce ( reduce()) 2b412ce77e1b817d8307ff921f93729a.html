@@ -1,0 +1,868 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>9. Array Reduce (.reduce())</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2b412ce7-7e1b-817d-8307-ff921f93729a" class="page sans"><header><h1 class="page-title"><strong>9. </strong>Array Reduce (<code>.reduce()</code>)</h1><p class="page-description"></p><table class="properties"><tbody><tr class="property-row property-row-text"><th><span class="icon property-icon"><img src="https://www.notion.so/icons/description_gray.svg" style="width:14px;height:14px;display:block"/></span>Detail Implementasi</th><td>Calculate the total completed vs. pending tasks in a single iteration for the dashboard.</td></tr><tr class="property-row property-row-text"><th><span class="icon property-icon"><img src="https://www.notion.so/icons/description_gray.svg" style="width:14px;height:14px;display:block"/></span>Fitur &quot;TaskMaster&quot;</th><td><strong>Statistics Widget</strong></td></tr><tr class="property-row property-row-text"><th><span class="icon property-icon"><img src="https://www.notion.so/icons/description_gray.svg" style="width:14px;height:14px;display:block"/></span>Relevansi React</th><td>Complex Logic / <code>useMemo</code></td></tr></tbody></table></header><div class="page-body"><h1 id="2b412ce7-7e1b-81eb-809b-fb98fe830125" class="block-color-yellow">9. Array Reduce (<code>.reduce()</code>) (15 Menit) </h1><h3 id="2b412ce7-7e1b-8158-8597-dcddb41d6452" class="">A. Konsep Dasar Array Method: <code>.reduce()</code></h3><p id="2b412ce7-7e1b-8171-9fe0-c6e171883b6f" class="">Metode <code><strong>.reduce()</strong></code> adalah salah satu <em>Higher-Order Function</em> (fungsi tingkat tinggi) yang paling kuat dan serbaguna di JavaScript. Tujuannya adalah untuk <strong>mengambil seluruh </strong><em><strong>array</strong></em><strong> dan &quot;mereduksinya&quot; menjadi satu nilai tunggal</strong>.</p><p id="2b412ce7-7e1b-81cb-9c7e-ef66a426ea54" class="">Nilai tunggal hasil reduksi ini bisa berupa apa saja: angka, <em>string</em>, <em>Boolean</em>, objek, atau bahkan <em>array</em> lain.</p><h3 id="2b412ce7-7e1b-81bb-afce-f50dc18166b7" class=""><strong>Cara Kerja </strong><code><strong>.reduce()</strong></code></h3><p id="2b412ce7-7e1b-819a-ba4d-d2267a0891a8" class=""><code>.reduce()</code> bekerja dengan mengiterasi melalui setiap elemen <em>array</em> dan menjalankan fungsi <em>callback</em> di setiap iterasi. Fungsi <em>callback</em> ini memiliki parameter unik yang sangat penting: <strong>Akumulator</strong>.</p><p id="2b412ce7-7e1b-81a9-8198-c92158cdb81f" class=""><strong>Akumulator (</strong><code><strong>accumulator</strong></code><strong>):</strong></p><ul id="2b412ce7-7e1b-8143-acf0-c985f7dbe293" class="bulleted-list"><li style="list-style-type:disc">Ini adalah nilai yang dibawa (diakumulasikan) dari satu iterasi ke iterasi berikutnya.</li></ul><ul id="2b412ce7-7e1b-81c5-bce5-eae83cbe415f" class="bulleted-list"><li style="list-style-type:disc">Pada akhir iterasi, nilai akhir dari akumulator akan menjadi nilai <em>return</em> dari keseluruhan metode <code>.reduce()</code>.</li></ul><p id="2b412ce7-7e1b-81e9-a7f2-c3d84a899979" class=""><strong>Sintaks Dasar:</strong></p><p id="2b412ce7-7e1b-8151-a3e4-e50bd2dc2e11" class="">JavaScript</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2b412ce7-7e1b-81a1-b4f4-f72cec594da5" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">array.reduce((accumulator, currentValue, index, array) =&gt; {
+    // Logika perhitungan ada di sini
+    return nextAccumulatorValue; // Mengembalikan nilai baru untuk akumulator
+}, initialValue); // &lt;--- Nilai Awal (Initial Value) untuk Akumulator</code></pre><ul id="2b412ce7-7e1b-81d4-ac6f-ca78adf48cc3" class="bulleted-list"><li style="list-style-type:disc"><code><strong>accumulator</strong></code><strong> (atau </strong><code><strong>acc</strong></code><strong>):</strong> Nilai dari hasil akumulasi sebelumnya.</li></ul><ul id="2b412ce7-7e1b-8118-923f-eeac38815352" class="bulleted-list"><li style="list-style-type:disc"><code><strong>currentValue</strong></code><strong> (atau </strong><code><strong>curr</strong></code><strong>):</strong> Elemen <em>array</em> yang sedang diproses saat ini.</li></ul><ul id="2b412ce7-7e1b-81b2-83b4-d25de96e7257" class="bulleted-list"><li style="list-style-type:disc"><code><strong>initialValue</strong></code><strong> (Opsional):</strong> Nilai awal yang akan digunakan akumulator pada iterasi pertama. <strong>Sangat dianjurkan untuk selalu menyertakan ini</strong> untuk mencegah ambiguitas tipe data.</li></ul><hr id="2b412ce7-7e1b-817b-a705-e0fd00a90f3a"/><h3 id="2b412ce7-7e1b-813e-987e-f22baf8e1842" class="">B. Implementasi di Fitur &quot;TaskMaster&quot; (Widget Statistik)</h3><p id="2b412ce7-7e1b-8189-88a6-d9f35e025c90" class="">Dalam fitur <em>TaskMaster</em>, kita sering kali perlu menghitung statistik dasbor, seperti total tugas selesai dan total tugas pending.</p><p id="2b412ce7-7e1b-8191-8dc6-db68739c9c6b" class=""><strong>Tantangan:</strong> Bagaimana cara menghitung <strong>dua nilai berbeda (selesai dan pending)</strong> hanya dalam <strong>satu kali iterasi</strong> melalui <em>array</em> tugas?</p><p id="2b412ce7-7e1b-81e4-a55a-f81004cb7c2e" class=""><strong>Solusi: Menggunakan Objek sebagai Akumulator.</strong></p><p id="2b412ce7-7e1b-8193-b47a-f946ae4d408d" class="">Kita dapat mengatur <em>initial value</em> akumulator sebagai <strong>objek</strong> yang menyimpan kedua hitungan tersebut.</p><p id="2b412ce7-7e1b-8188-b48f-c894d9c73ab7" class=""><strong>Contoh Kasus:</strong> Menghitung total tugas selesai vs. pending.</p><p id="2b412ce7-7e1b-8123-b201-c907eef742b5" class="">JavaScript</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2b412ce7-7e1b-81fb-89b9-ee7660186553" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">const tasks = [
+    { id: 1, title: &#x27;Meeting Client&#x27;, isCompleted: true },
+    { id: 2, title: &#x27;Kirim Email&#x27;, isCompleted: false },
+    { id: 3, title: &#x27;Review Code&#x27;, isCompleted: true },
+    { id: 4, title: &#x27;Riset Fitur Baru&#x27;, isCompleted: false },
+    { id: 5, title: &#x27;Update Dokumen&#x27;, isCompleted: true },
+];
+
+// Akumulator diinisialisasi sebagai objek
+const taskStats = tasks.reduce((stats, task) =&gt; {
+    if (task.isCompleted) {
+        // Jika tugas selesai, tambahkan 1 ke properti &#x27;completed&#x27;
+        stats.completed += 1;
+    } else {
+        // Jika tugas pending, tambahkan 1 ke properti &#x27;pending&#x27;
+        stats.pending += 1;
+    }
+    
+    // Sangat penting: kembalikan objek akumulator yang telah diperbarui
+    return stats; 
+}, { completed: 0, pending: 0 }); // Nilai Awal (Initial Value)
+
+/*
+Hasil (taskStats):
+{ 
+    completed: 3, 
+    pending: 2 
+}
+*/</code></pre><p id="2b412ce7-7e1b-81e4-9d26-cfff955e7f47" class="">Keuntungan pendekatan ini adalah <strong>efisiensi</strong>. Kita menghindari melakukan dua loop terpisah (<code>.filter()</code> untuk selesai, lalu <code>.filter()</code> lagi untuk pending) dan menyelesaikannya dalam <strong>satu kali </strong><em><strong>pass</strong></em> melalui data.</p><hr id="2b412ce7-7e1b-8179-bf25-d2eca54f7700"/><h3 id="2b412ce7-7e1b-814f-bb61-eaece28e7bfb" class="">C. Relevansi React: Complex Logic / <code>useMemo</code></h3><h3 id="2b412ce7-7e1b-8114-a6a8-c5b300585e34" class=""><strong>Membuat State Turunan yang Kompleks</strong></h3><p id="2b412ce7-7e1b-816c-b3cd-f347f143ee16" class="">Di React, <code>.reduce()</code> sangat sering digunakan untuk menghitung <strong>Derived State</strong> (data turunan) yang lebih kompleks daripada sekadar <em>string</em> atau <em>Boolean</em> sederhana.</p><h3 id="2b412ce7-7e1b-8118-9a6f-c8dc2357cb99" class=""><strong>Optimasi dengan </strong><code><strong>useMemo</strong></code></h3><p id="2b412ce7-7e1b-814f-8128-fb45e24946ec" class="">Jika Anda menghitung statistik yang berat (misalnya, memproses ribuan data) dan hasil perhitungannya hanya dibutuhkan untuk ditampilkan (seperti Widget Statistik), Anda harus membungkus logika <code>.reduce()</code> di dalam React Hook <code><strong>useMemo</strong></code>.</p><p id="2b412ce7-7e1b-8120-a29a-f47ef107f8e5" class=""><strong>Tujuan </strong><code><strong>useMemo</strong></code><strong>:</strong></p><ul id="2b412ce7-7e1b-8124-8abd-e1446b97c739" class="bulleted-list"><li style="list-style-type:disc">Mencegah perhitungan ulang yang mahal dari fungsi <em>reduce</em> pada setiap <em>render</em> komponen.</li></ul><ul id="2b412ce7-7e1b-8136-be66-e9d278b9eb7c" class="bulleted-list"><li style="list-style-type:disc">Perhitungan hanya akan dilakukan ulang jika <em>dependency array</em>nya (dalam kasus ini, <em>array</em> <code>tasks</code>) benar-benar berubah.</li></ul><p id="2b412ce7-7e1b-8189-aeff-fd6560e799bc" class=""><strong>Contoh Pseudo-Code React:</strong></p><p id="2b412ce7-7e1b-812d-bac8-d070fc290c17" class="">JavaScript</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2b412ce7-7e1b-81cd-b4b9-e1cc773f5faa" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">import React, { useMemo } from &#x27;react&#x27;;
+
+function DashboardWidget({ tasks }) {
+    
+    // Perhitungan kompleks dibungkus dalam useMemo
+    const taskStats = useMemo(() =&gt; {
+        console.log(&quot;Menghitung ulang statistik tugas...&quot;);
+        return tasks.reduce((stats, task) =&gt; {
+            // ... (Logika .reduce() seperti di atas)
+            if (task.isCompleted) {
+                stats.completed += 1;
+            } else {
+                stats.pending += 1;
+            }
+            return stats;
+        }, { completed: 0, pending: 0 });
+    }, [tasks]); // Dependensi: Hanya hitung ulang jika array &#x27;tasks&#x27; berubah.
+
+    return (
+        &lt;div className=&quot;stats&quot;&gt;
+            &lt;p&gt;Total Selesai: {taskStats.completed}&lt;/p&gt;
+            &lt;p&gt;Total Pending: {taskStats.pending}&lt;/p&gt;
+        &lt;/div&gt;
+    );
+}</code></pre><hr id="2b412ce7-7e1b-8163-a83f-e7179dbbd6ec"/><h1 id="2b412ce7-7e1b-810e-8f86-d88ba48713af" class="block-color-yellow">Live Coding: Menghitung Statistik Tugas (15 Menit) </h1><p id="2b412ce7-7e1b-81ae-bdfb-ceaa0372008f" class="">Dalam sesi ini, kita akan menerapkan <code>.reduce()</code> untuk menghitung statistik tugas dan menampilkannya di <em>widget</em> dasbor.</p><h3 id="2b412ce7-7e1b-8183-8eda-d41be655b931" class="">Exercise untuk peserta:</h3><ol type="1" id="2b412ce7-7e1b-81ed-89ee-f27293e2ee82" class="numbered-list" start="1"><li>Deklarasikan <em>array</em> tugas dengan properti <code>isCompleted</code>.</li></ol><ol type="1" id="2b412ce7-7e1b-8133-8e45-fac4746d56a4" class="numbered-list" start="2"><li>Buat fungsi <code>calculateTaskStats(tasks)</code> yang menggunakan <code><strong>.reduce()</strong></code> untuk menghasilkan objek <code>{ completed: N, pending: M }</code>.</li></ol><ol type="1" id="2b412ce7-7e1b-81fa-829b-c88d5dfb43ce" class="numbered-list" start="3"><li>Tulis fungsi <code>renderDashboard()</code> yang mengambil hasil dari <code>calculateTaskStats</code> dan menggunakan <em>Template Literals</em> untuk menyusun UI <em>widget</em> statistik.</li></ol><ol type="1" id="2b412ce7-7e1b-817b-b9e7-da55ea26970f" class="numbered-list" start="4"><li>Panggil <code>renderDashboard()</code> untuk menampilkan hasilnya di HTML.</li></ol><h3 id="2b412ce7-7e1b-8105-aa7a-effe9f9ff96d" class="">Contoh Code Starter (HTML/JS):</h3><p id="2b412ce7-7e1b-8118-b80b-ccdbdb8e8c1b" class="">HTML</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2b412ce7-7e1b-818d-b2df-d70aeb98c765" class="code code-wrap"><code class="language-HTML" style="white-space:pre-wrap;word-break:break-all">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;id&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Praktek: Array Reduce (.reduce())&lt;/title&gt;
+    &lt;script src=&quot;https://cdn.tailwindcss.com&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body class=&quot;bg-gray-100 p-8&quot;&gt;
+
+    &lt;div id=&quot;app&quot; class=&quot;max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-xl&quot;&gt;
+        &lt;h1 class=&quot;text-3xl font-bold mb-8 text-gray-800 border-b pb-4&quot;&gt;TaskMaster Dashboard&lt;/h1&gt;
+        
+        &lt;div id=&quot;stats-widget&quot;&gt;
+            &lt;p class=&quot;text-center text-gray-500&quot;&gt;Menghitung statistik...&lt;/p&gt;
+        &lt;/div&gt;
+        
+        &lt;h2 class=&quot;text-xl font-semibold mt-10 mb-4 text-gray-700&quot;&gt;Daftar Tugas (Untuk Referensi)&lt;/h2&gt;
+        &lt;ul id=&quot;task-list&quot; class=&quot;space-y-2 text-sm text-gray-600&quot;&gt;
+            &lt;/ul&gt;
+    &lt;/div&gt;
+
+    &lt;script&gt;
+        // --- DATA STATE APLIKASI ---
+        const TASKS_DATA = [
+            { id: 1, title: &#x27;Siapkan Slide Kelas Online&#x27;, isCompleted: true, priority: &#x27;High&#x27; },
+            { id: 2, title: &#x27;Cek Email Pagi&#x27;, isCompleted: true, priority: &#x27;Low&#x27; },
+            { id: 3, title: &#x27;Perbaiki Bug di Modul Auth&#x27;, isCompleted: false, priority: &#x27;High&#x27; },
+            { id: 4, title: &#x27;Riset Metode .reduce()&#x27;, isCompleted: false, priority: &#x27;Medium&#x27; },
+            { id: 5, title: &#x27;Makan Siang&#x27;, isCompleted: true, priority: &#x27;Low&#x27; },
+            { id: 6, title: &#x27;Desain Layout Dashboard&#x27;, isCompleted: false, priority: &#x27;Medium&#x27; },
+            { id: 7, title: &#x27;Ulangi Materi .filter()&#x27;, isCompleted: false, priority: &#x27;Low&#x27; },
+        ];
+
+        const statsWidgetContainer = document.getElementById(&#x27;stats-widget&#x27;);
+        const taskListContainer = document.getElementById(&#x27;task-list&#x27;);
+
+        // --- FUNGSI UTAMA: MENGGUNAKAN .REDUCE() ---
+        function calculateTaskStats(tasks) {
+            console.log(&quot;Memulai perhitungan statistik menggunakan .reduce()&quot;);
+            
+            // ✅ Gunakan .reduce() dengan Objek sebagai Akumulator
+            return tasks.reduce((stats, task) =&gt; {
+                
+                // Logika: Cek status isCompleted
+                if (task.isCompleted) {
+                    stats.completed += 1;
+                } else {
+                    stats.pending += 1;
+                }
+                
+                // Juga, hitung total prioritas (Contoh kompleks lain)
+                if (task.priority === &#x27;High&#x27;) {
+                    stats.highPriority += 1;
+                }
+                
+                return stats; // Kembalikan objek akumulator yang sudah diperbarui
+            }, { 
+                // Initial Value (Sangat penting!)
+                completed: 0, 
+                pending: 0,
+                total: tasks.length,
+                highPriority: 0
+            });
+        }
+
+        // --- FUNGSI RENDER DASHBOARD ---
+        function renderDashboard() {
+            // 1. Hitung Statistik (statik turunan)
+            const stats = calculateTaskStats(TASKS_DATA);
+            
+            // 2. Render Widget Statistik menggunakan Template Literals
+            const widgetHTML = `
+                &lt;div class=&quot;grid grid-cols-4 gap-4 text-center&quot;&gt;
+                    &lt;div class=&quot;p-4 bg-gray-100 rounded-lg border-l-4 border-gray-500&quot;&gt;
+                        &lt;p class=&quot;text-sm font-semibold text-gray-500&quot;&gt;Total Tugas&lt;/p&gt;
+                        &lt;p class=&quot;text-3xl font-bold text-gray-900&quot;&gt;${stats.total}&lt;/p&gt;
+                    &lt;/div&gt;
+                    &lt;div class=&quot;p-4 bg-green-100 rounded-lg border-l-4 border-green-500&quot;&gt;
+                        &lt;p class=&quot;text-sm font-semibold text-green-700&quot;&gt;Selesai&lt;/p&gt;
+                        &lt;p class=&quot;text-3xl font-bold text-green-900&quot;&gt;${stats.completed}&lt;/p&gt;
+                    &lt;/div&gt;
+                    &lt;div class=&quot;p-4 bg-red-100 rounded-lg border-l-4 border-red-500&quot;&gt;
+                        &lt;p class=&quot;text-sm font-semibold text-red-700&quot;&gt;Pending&lt;/p&gt;
+                        &lt;p class=&quot;text-3xl font-bold text-red-900&quot;&gt;${stats.pending}&lt;/p&gt;
+                    &lt;/div&gt;
+                     &lt;div class=&quot;p-4 bg-yellow-100 rounded-lg border-l-4 border-yellow-500&quot;&gt;
+                        &lt;p class=&quot;text-sm font-semibold text-yellow-700&quot;&gt;Penting&lt;/p&gt;
+                        &lt;p class=&quot;text-3xl font-bold text-yellow-900&quot;&gt;${stats.highPriority}&lt;/p&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            `;
+            
+            statsWidgetContainer.innerHTML = widgetHTML;
+            
+            // Opsional: Render Daftar Tugas
+            taskListContainer.innerHTML = TASKS_DATA.map(task =&gt; {
+                const status = task.isCompleted ? &#x27;✅&#x27; : &#x27;⏳&#x27;;
+                return `&lt;li&gt;${status} [${task.priority}] ${task.title}&lt;/li&gt;`;
+            }).join(&#x27;&#x27;);
+        }
+
+        // --- INISIALISASI ---
+        document.addEventListener(&#x27;DOMContentLoaded&#x27;, renderDashboard);
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><p id="2b412ce7-7e1b-81a1-acc3-e1c407c8d794" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

@@ -1,0 +1,711 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>learnJS</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2b412ce7-7e1b-802e-8e4c-da929450b6bc" class="page sans"><header><img class="page-cover-image" src="https://images.unsplash.com/photo-1522252234503-e356532cafd5?ixlib=rb-4.1.0&amp;q=85&amp;fm=jpg&amp;crop=entropy&amp;cs=srgb" style="object-position:center 50%"/><div class="page-header-icon page-header-icon-with-cover"><img class="icon notion-static-icon" src="https://www.notion.so/icons/command-line_blue.svg"/></div><h1 class="page-title">learnJS</h1><p class="page-description"></p></header><div class="page-body"><p id="2b412ce7-7e1b-809d-a6b6-e8624b2e83c9" class="">Contributors: </p><ul id="2b412ce7-7e1b-8012-a6a1-dab6a3ed14e5" class="bulleted-list"><li style="list-style-type:disc"> <a href="https://github.com/triaji-dev">https://github.com/triaji-dev</a></li></ul><ul id="2b412ce7-7e1b-8029-989c-dd0196ef4fa1" class="bulleted-list"><li style="list-style-type:disc"> <a href="https://github.com/LusianaAniex">https://github.com/LusianaAniex</a></li></ul><p id="2b412ce7-7e1b-8042-9b3c-ce4e320fa7f4" class="">
+</p><p id="2b412ce7-7e1b-8018-96c2-f36dfca7919d" class="">The <mark class="highlight-blue"><strong>learnJS Module</strong></mark> is a foundational <strong>JavaScript guide</strong> that emphasizes <strong>practical application</strong> within modern web development frameworks. Utilizing the <strong>Just-in-Time Learning (JITL) method</strong>, the learning focus is on <strong>step-by-step coding exercises</strong> to achieve a <strong>thorough understanding</strong> and train the participants&#x27; <strong>muscle memory</strong>.</p><p id="2b412ce7-7e1b-8016-b97d-dbb0102949da" class="">Methods:</p><ul id="2b412ce7-7e1b-80b3-82fa-e91167409a73" class="bulleted-list"><li style="list-style-type:disc">Learning JavaScript more <strong>targeted and focused</strong>, aligned with its relevance and use within the modern <strong>React framework</strong>.</li></ul><ul id="2b412ce7-7e1b-80cb-8472-ec09b0f4c391" class="bulleted-list"><li style="list-style-type:disc">Using the <strong>Just-in-Time Learning (JITL)</strong> method, JavaScript material is delivered <strong>incrementally</strong> according to the <strong>micro-projects</strong> being worked on.</li></ul><ul id="2b412ce7-7e1b-8095-8fc0-d29f4bf1120b" class="bulleted-list"><li style="list-style-type:disc">Participants engage in <strong>hands-on practice</strong> gradually; the main goal is to achieve both <strong>comprehension</strong> and train <strong>muscle memory</strong> in the use of syntax.</li></ul><p id="2b412ce7-7e1b-80fb-9988-cb2540df07ae" class="">
+</p><figure id="2b412ce7-7e1b-80eb-9c47-c9d34a5334c8" class="image"><a href="learnJS/image.png"><img style="width:709.9479370117188px" src="learnJS/image.png"/></a></figure><p id="2b412ce7-7e1b-808c-936d-eaa92aa0d344" class="">According to the diagram above, what a <strong>Frontend Web Developer</strong> fundamentally does, in simple terms, is:</p><ul id="2b412ce7-7e1b-806a-9952-c3b378f432eb" class="bulleted-list"><li style="list-style-type:disc"><strong>Managing data</strong> using an API (from the Backend), which includes <strong>CRUD</strong> (Create, Read, Update, Delete) operations.</li></ul><ul id="2b412ce7-7e1b-80e1-973e-c01614ab2011" class="bulleted-list"><li style="list-style-type:disc"><strong>Managing the overall state</strong> (Component Local State, Global Application State, User Event State, Server State).</li></ul><ul id="2b412ce7-7e1b-802f-b639-c23178b3dbb5" class="bulleted-list"><li style="list-style-type:disc"><strong>Converting the UI/UX design from Figma</strong> (from the Designer) into <strong>code</strong>, which involves the DOM, design tokens, UI implementation, and assets.</li></ul><p id="2b412ce7-7e1b-800d-97c3-fc4b985ce680" class="">Therefore, the JavaScript learning module should broadly focus on mastering material that is <strong>relevant to these three areas</strong> within the <strong>React ecosystem</strong>.</p><p id="2b412ce7-7e1b-8085-a683-d32201d4df85" class="">
+</p><h2 id="2b412ce7-7e1b-808a-92a5-ea8a3635efb8" class=""><mark class="highlight-blue">Module Description</mark></h2><ul id="2b412ce7-7e1b-801e-98df-d4ce3a00f53d" class="bulleted-list"><li style="list-style-type:disc">This module focuses on <strong>mastering JavaScript material</strong> that is relevant to the <strong>three main pillars</strong> of the React ecosystem: <strong>data management</strong>, <strong>state management</strong>, and <strong>UI/UX management</strong>.</li></ul><ul id="2b412ce7-7e1b-801e-bc11-e1541fdec18f" class="bulleted-list"><li style="list-style-type:disc">Learning utilizes the <strong>Just-in-Time Learning (JITL) method</strong>. The material is explained incrementally according to relevant examples of its usage within the React ecosystem.</li></ul><ul id="2b412ce7-7e1b-8032-a3ed-d94474491921" class="bulleted-list"><li style="list-style-type:disc">Learning through the &quot;<strong>Building Blocks</strong>&quot; approach (constructing piece by piece towards a single final goal) is the best way to understand the React ecosystem.</li></ul><ul id="2b412ce7-7e1b-80cb-a1cb-ef20facde94f" class="bulleted-list"><li style="list-style-type:disc">Throughout this module, mentees will build a <strong>Final Project</strong> named: <strong>&quot;TaskMaster Dashboard&quot;</strong> (a simple task management application featuring Create, Read, Update, Delete, Filtering, and Statistics).</li></ul><p id="2b412ce7-7e1b-80b0-ad23-fefbfbdba455" class="">
+</p><h2 id="2b412ce7-7e1b-807a-991c-e1b8bc5b0b3d" class=""><mark class="highlight-blue"><strong>Roadmap:</strong></mark><mark class="highlight-yellow"><strong> </strong></mark><mark class="highlight-default"><strong>JavaScript to React (TaskMaster Project)</strong></mark></h2><table id="2b412ce7-7e1b-801d-ad91-c99e821abafd" class="simple-table"><tbody><tr id="2b412ce7-7e1b-8053-bb1e-ea9ed0d3171b"><td id="f:|k" class="" style="width:185.80113220214844px"><strong>Fase</strong></td><td id="b{Al" class="" style="width:271.99998474121094px"><strong>Concept</strong></td><td id="DOq}" class="" style="width:243.3408966064453px"><strong>Micro Projects / Blocks</strong></td></tr><tr id="2b412ce7-7e1b-8069-bd9a-d38a23ff8e3d"><td id="f:|k" class="" style="width:185.80113220214844px"><strong>I. View</strong></td><td id="b{Al" class="" style="width:271.99998474121094px">1. Variables (<code>const</code>) &amp; Template Literals</td><td id="DOq}" class="" style="width:243.3408966064453px"><strong>UI Header &amp; Static Data Structure</strong></td></tr><tr id="2b412ce7-7e1b-8052-af7f-d6622b7be187"><td id="f:|k" class="" style="width:185.80113220214844px"></td><td id="b{Al" class="" style="width:271.99998474121094px">2. Arrow Functions &amp; Return</td><td id="DOq}" class="" style="width:243.3408966064453px"><strong>Task Card Component</strong></td></tr><tr id="2b412ce7-7e1b-8098-9442-c78910793f50"><td id="f:|k" class="" style="width:185.80113220214844px"></td><td id="b{Al" class="" style="width:271.99998474121094px">3. Destructuring (Object)</td><td id="DOq}" class="" style="width:243.3408966064453px"><strong>Task Data Extraction</strong></td></tr><tr id="2b412ce7-7e1b-8043-ba56-f184812fc451"><td id="f:|k" class="" style="width:185.80113220214844px"></td><td id="b{Al" class="" style="width:271.99998474121094px">4. Ternary &amp; Logical AND (<code>&amp;&amp;</code>)</td><td id="DOq}" class="" style="width:243.3408966064453px"><strong>Priority &amp; Status Label</strong></td></tr><tr id="2b412ce7-7e1b-8041-991c-f3f80e595950"><td id="f:|k" class="" style="width:185.80113220214844px"></td><td id="b{Al" class="" style="width:271.99998474121094px">5. Array Map (<code>.map()</code>)</td><td id="DOq}" class="" style="width:243.3408966064453px"><strong>Render Task List</strong></td></tr><tr id="2b412ce7-7e1b-8049-93b5-d95f0ae68b84"><td id="f:|k" class="" style="width:185.80113220214844px"></td><td id="b{Al" class="" style="width:271.99998474121094px">6. Immutability (Spread <code>...</code>)</td><td id="DOq}" class="" style="width:243.3408966064453px"><strong>&quot;Add Task&quot; Feature</strong></td></tr><tr id="2b412ce7-7e1b-8095-a222-eea95bd4cc0f"><td id="f:|k" class="" style="width:185.80113220214844px"><strong>II. Logic</strong></td><td id="b{Al" class="" style="width:271.99998474121094px">7. Events &amp; Callbacks</td><td id="DOq}" class="" style="width:243.3408966064453px"><strong>Button Interaction</strong></td></tr><tr id="2b412ce7-7e1b-8086-a47c-d8f446a9da67"><td id="f:|k" class="" style="width:185.80113220214844px"></td><td id="b{Al" class="" style="width:271.99998474121094px"><strong>8. </strong>Array Filter (<code>.filter()</code>)</td><td id="DOq}" class="" style="width:243.3408966064453px"><strong>Delete &amp; Filter Feature</strong></td></tr><tr id="2b412ce7-7e1b-8090-ae4c-d7df21c4966c"><td id="f:|k" class="" style="width:185.80113220214844px"></td><td id="b{Al" class="" style="width:271.99998474121094px"><strong>9. </strong>Array Reduce (<code>.reduce()</code>)</td><td id="DOq}" class="" style="width:243.3408966064453px"><strong>Statistics Widget</strong></td></tr><tr id="2b412ce7-7e1b-80ae-a075-f309bb217735"><td id="f:|k" class="" style="width:185.80113220214844px"></td><td id="b{Al" class="" style="width:271.99998474121094px"><strong>10. </strong>Modules (Import/Export)</td><td id="DOq}" class="" style="width:243.3408966064453px"><strong>Refactor File Structure</strong></td></tr><tr id="2b412ce7-7e1b-8014-838d-f8a963680ec0"><td id="f:|k" class="" style="width:185.80113220214844px"><strong>III. Form &amp; Data</strong></td><td id="b{Al" class="" style="width:271.99998474121094px"><strong>11. </strong>Async/Await + Fetch</td><td id="DOq}" class="" style="width:243.3408966064453px"><strong>Load Server Data</strong></td></tr><tr id="2b412ce7-7e1b-805f-b23b-d8540acc6c24"><td id="f:|k" class="" style="width:185.80113220214844px"></td><td id="b{Al" class="" style="width:271.99998474121094px"><strong>12. </strong>Optional Chaining (<code>?.</code>)</td><td id="DOq}" class="" style="width:243.3408966064453px"><strong>Data Handling</strong></td></tr><tr id="2b412ce7-7e1b-803a-812e-dee2eb1455bc"><td id="f:|k" class="" style="width:185.80113220214844px"></td><td id="b{Al" class="" style="width:271.99998474121094px"><strong>13. </strong>Computed Property Names</td><td id="DOq}" class="" style="width:243.3408966064453px"><strong>Form (Single Handler)</strong></td></tr><tr id="2b412ce7-7e1b-8076-82de-fa9002f404eb"><td id="f:|k" class="" style="width:185.80113220214844px"><strong>IV. Connection &amp; Storage</strong></td><td id="b{Al" class="" style="width:271.99998474121094px"><strong>14. </strong>LocalStorage &amp; JSON</td><td id="DOq}" class="" style="width:243.3408966064453px"><strong>&quot;Auto-Save&quot; Feature</strong></td></tr><tr id="2b412ce7-7e1b-80df-9e74-c02cef8ec931"><td id="f:|k" class="" style="width:185.80113220214844px"></td><td id="b{Al" class="" style="width:271.99998474121094px"><strong>15. </strong>Value vs Reference</td><td id="DOq}" class="" style="width:243.3408966064453px"><strong>Duplication Check</strong></td></tr><tr id="2b412ce7-7e1b-8026-83b0-d6393ce5f2b5"><td id="f:|k" class="" style="width:185.80113220214844px"></td><td id="b{Al" class="" style="width:271.99998474121094px"><strong>16. </strong>Date Object &amp; Formatting</td><td id="DOq}" class="" style="width:243.3408966064453px"><strong>Deadline Formatting</strong></td></tr><tr id="2b412ce7-7e1b-80c6-b401-d0d9993f0411"><td id="f:|k" class="" style="width:185.80113220214844px"></td><td id="b{Al" class="" style="width:271.99998474121094px"></td><td id="DOq}" class="" style="width:243.3408966064453px"><strong>Final Assignment</strong></td></tr></tbody></table><p id="2b412ce7-7e1b-80a3-ae0a-db768a40971d" class="">Roadmap Details</p><p id="2b412ce7-7e1b-8053-b102-f4f244776d3c" class="">
+</p><figure id="2b412ce7-7e1b-8072-a765-e33789c79de8" class="link-to-page"><a href="learnJS/Roadmap%20Details%20JavaScript%20to%20React%20(TaskMaster%20Pr%202b412ce77e1b8072a765e33789c79de8.html"><img class="icon notion-static-icon" src="https://www.notion.so/icons/map_blue.svg"/>Roadmap Details : JavaScript to React (TaskMaster Project)</a></figure></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

@@ -1,0 +1,856 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>6. Immutability (Spread ...)</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2b412ce7-7e1b-8166-a6b8-fb5642fed722" class="page sans"><header><h1 class="page-title">6. Immutability (Spread <code>...</code>)</h1><p class="page-description"></p><table class="properties"><tbody><tr class="property-row property-row-text"><th><span class="icon property-icon"><img src="https://www.notion.so/icons/description_gray.svg" style="width:14px;height:14px;display:block"/></span>Detail Implementasi</th><td>The <code>addTask</code> function does not use <code>.push()</code>, but creates a new array using the <strong>Spread</strong> syntax: <code>[...old, new]</code>.</td></tr><tr class="property-row property-row-text"><th><span class="icon property-icon"><img src="https://www.notion.so/icons/description_gray.svg" style="width:14px;height:14px;display:block"/></span>Fitur &quot;TaskMaster&quot;</th><td><strong>&quot;Add Task&quot; Feature</strong></td></tr><tr class="property-row property-row-text"><th><span class="icon property-icon"><img src="https://www.notion.so/icons/description_gray.svg" style="width:14px;height:14px;display:block"/></span>Relevansi React</th><td>State Management / <code>useState</code></td></tr></tbody></table></header><div class="page-body"><h1 id="2b412ce7-7e1b-81a5-babf-c5bc5f4aa271" class="block-color-yellow">6. Immutability (Spread <code>...</code>) (30 Menit) </h1><h3 id="2b412ce7-7e1b-813b-b103-dd90d1d97b8d" class="">1. Penjelasan Materi dan Contoh (15 Menit)</h3><h3 id="2b412ce7-7e1b-81a4-a4ad-ca41c8f7b15f" class="">A. Konsep Dasar Immutability</h3><p id="2b412ce7-7e1b-8198-aebb-ffc893b443f5" class=""><strong>Immutability</strong> (ketidak-mampuan-diubah) adalah konsep pemrograman fundamental, terutama dalam pengembangan aplikasi modern seperti React, yang berarti bahwa setelah sebuah data (objek atau array) dibuat, data tersebut <strong>tidak boleh diubah</strong>.</p><ul id="2b412ce7-7e1b-8105-9afa-f36f03561ba6" class="bulleted-list"><li style="list-style-type:disc"><strong>Mutating (Diubah):</strong> Langsung memodifikasi data asli (<em>Array</em> atau <em>Object</em>). Contoh: <code>array.push()</code>, <code>object.property = newValue</code>.</li></ul><ul id="2b412ce7-7e1b-813e-b9b3-f4ac16953dd7" class="bulleted-list"><li style="list-style-type:disc"><strong>Immutable (Tidak Diubah):</strong> Membuat <strong>salinan baru</strong> dari data asli, lalu memodifikasi salinan tersebut. Data lama tetap utuh.</li></ul><p id="2b412ce7-7e1b-81ab-af92-cf3cdcb31bd9" class=""><strong>Mengapa Immutability Penting di React (State Management)?</strong></p><p id="2b412ce7-7e1b-81aa-99c0-fbfc85a9971f" class="">Di React, jika Anda memodifikasi <em>Array</em> atau <em>Object</em> yang merupakan <em>state</em> secara langsung (mutating), React tidak akan mendeteksi perubahan tersebut karena referensi memorinya masih sama. React perlu melihat <strong>referensi baru</strong> untuk memicu proses <em>re-render</em>.</p><hr id="2b412ce7-7e1b-813e-be59-cc578a7e3f0a"/><h3 id="2b412ce7-7e1b-8177-868e-db257ff7f8c7" class="">B. Spread Operator (<code>...</code>)</h3><p id="2b412ce7-7e1b-8193-81d9-e40d7dfaa394" class=""><strong>Spread Operator</strong> (<code>...</code>) adalah fitur ES6 yang merupakan cara paling umum dan paling bersih untuk mencapai <em>Immutability</em> (membuat salinan baru dari <em>Array</em> atau <em>Object</em>).</p><p id="2b412ce7-7e1b-811b-b5dc-ccbe60fe5fe7" class="">Tanda titik tiga (<code>...</code>) digunakan untuk <strong>mengembangkan</strong> (menyebar) elemen-elemen dari <em>Iterable</em> (seperti <em>Array</em>) atau properti dari <em>Object</em> ke dalam <em>Array</em> atau <em>Object</em> baru.</p><h3 id="2b412ce7-7e1b-8194-84cd-c2bcb2d29479" class="">1. Immutability pada Array (Fitur &quot;Tambah Tugas&quot;)</h3><p id="2b412ce7-7e1b-8177-b560-e23a52e21d0f" class="">Untuk menambahkan elemen ke <em>Array</em> secara <em>Immutable</em>, kita tidak menggunakan <code>push()</code> (yang <em>mutating</em>). Kita membuat <em>Array</em> baru:</p><p id="2b412ce7-7e1b-81db-919c-d41f6be84f21" class=""><strong>Detail Implementasi:</strong> Fungsi <code>addTask</code> tidak pakai <code>.push()</code>, tapi membuat array baru <code>[...old, new]</code>.</p><p id="2b412ce7-7e1b-813f-8d9a-f77d1ea44760" class="">JavaScript</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2b412ce7-7e1b-810d-bea6-d1a6aab3a1ed" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">const initialTasks = [&#x27;Makan&#x27;, &#x27;Tidur&#x27;];
+const newTask = &#x27;Coding&#x27;;
+
+// ❌ Cara Mutating (HINDARI di React State)
+// initialTasks.push(newTask); 
+// console.log(initialTasks); // [ &#x27;Makan&#x27;, &#x27;Tidur&#x27;, &#x27;Coding&#x27; ] &lt;-- Array asli berubah
+
+// ✅ Cara Immutable menggunakan Spread Operator
+const newTaskList = [...initialTasks, newTask];
+
+console.log(newTaskList);   // Output: [ &#x27;Makan&#x27;, &#x27;Tidur&#x27;, &#x27;Coding&#x27; ]
+console.log(initialTasks);  // Output: [ &#x27;Makan&#x27;, &#x27;Tidur&#x27; ] &lt;-- Array asli tetap utuh!</code></pre><p id="2b412ce7-7e1b-81b9-a59d-d06be657280d" class=""><em>Keterangan:</em> <code>...initialTasks</code> menyalin semua elemen lama, kemudian <code>newTask</code> ditambahkan di akhir.</p><h3 id="2b412ce7-7e1b-813c-9a72-c4be00b3d78a" class="">2. Immutability pada Objek (Mengubah Properti)</h3><p id="2b412ce7-7e1b-8189-8620-d6d79ad240b4" class="">Untuk mengubah properti pada <em>Object</em> secara <em>Immutable</em>, kita juga menggunakan Spread Operator. Ini sangat penting saat memperbarui <em>state</em> yang merupakan <em>Object</em>.</p><p id="2b412ce7-7e1b-8193-a043-f0915ef5c342" class="">JavaScript</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2b412ce7-7e1b-81cc-b733-dd50e39a2816" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">const user = { 
+    name: &#x27;Budi&#x27;, 
+    age: 25, 
+    isAdmin: false 
+};
+
+// ❌ Cara Mutating
+// user.isAdmin = true; // Objek asli &#x27;user&#x27; berubah
+
+// ✅ Cara Immutable menggunakan Spread Operator
+const updatedUser = { 
+    ...user,        // 1. Salin semua properti lama dari objek &#x27;user&#x27;
+    isAdmin: true,  // 2. Timpa/Update properti yang ingin diubah (isAdmin)
+    email: &#x27;budi@mail.com&#x27; // 3. Tambahkan properti baru
+};
+
+console.log(updatedUser); 
+/* Output: 
+{ name: &#x27;Budi&#x27;, age: 25, isAdmin: true, email: &#x27;budi@mail.com&#x27; } 
+*/
+console.log(user); 
+/* Output: 
+{ name: &#x27;Budi&#x27;, age: 25, isAdmin: false } &lt;-- Objek asli tetap utuh!
+*/</code></pre><hr id="2b412ce7-7e1b-8117-a51e-e03e36f1d566"/><h1 id="2b412ce7-7e1b-81b8-85f2-dfa672b901f9" class="block-color-yellow">Live Coding (15 Menit)</h1><h3 id="2b412ce7-7e1b-818b-8132-dab2c4ecf963" class="">Exercise untuk Peserta</h3><p id="2b412ce7-7e1b-811d-8de3-eee299d1ef8d" class="">Ajak peserta untuk mengimplementasikan fungsionalitas <strong>Tambah Tugas</strong> dan <strong>Update Status Tugas</strong> menggunakan prinsip <em>Immutability</em> dan Spread Operator.</p><ol type="1" id="2b412ce7-7e1b-81b5-8942-fad97e653aec" class="numbered-list" start="1"><li><strong>Siapkan State Awal:</strong> Deklarasikan variabel <code>tasks</code> (sebagai <em>Array of Objects</em>) dan variabel <code>userProfile</code> (sebagai <em>Object</em>).</li></ol><ol type="1" id="2b412ce7-7e1b-8120-9b50-ccd2e634cf3b" class="numbered-list" start="2"><li><strong>Fungsi </strong><code><strong>addTask</strong></code><strong>:</strong> Buat fungsi untuk menambahkan tugas baru ke <em>Array</em> <code>tasks</code> secara <em>Immutable</em> menggunakan <code>[...]</code>.</li></ol><ol type="1" id="2b412ce7-7e1b-8191-aff0-e9e545ef674e" class="numbered-list" start="3"><li><strong>Fungsi </strong><code><strong>updateProfile</strong></code><strong>:</strong> Buat fungsi untuk mengubah properti <code>isPremium</code> pada objek <code>userProfile</code> secara <em>Immutable</em> menggunakan <code>{...}</code>.</li></ol><ol type="1" id="2b412ce7-7e1b-8124-98e9-c6003414e28a" class="numbered-list" start="4"><li><strong>Tampilkan Hasil:</strong> Cetak <em>Array</em> lama dan <em>Array</em> baru (serta <em>Object</em> lama dan <em>Object</em> baru) untuk memverifikasi bahwa <em>Array</em> dan <em>Object</em> lama <strong>tidak berubah</strong>.</li></ol><h3 id="2b412ce7-7e1b-8129-8476-d59052bc2118" class="">Contoh Code (Untuk panduan <em>live coding</em>)</h3><p id="2b412ce7-7e1b-8134-b367-cb7a85f65b2a" class="">HTML</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2b412ce7-7e1b-8198-a6e2-c1a558d6086d" class="code code-wrap"><code class="language-HTML" style="white-space:pre-wrap;word-break:break-all">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;id&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Praktek: Immutability (Spread Operator)&lt;/title&gt;
+    &lt;script src=&quot;https://cdn.tailwindcss.com&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+    &lt;div class=&quot;p-8 max-w-3xl mx-auto&quot;&gt;
+        &lt;h1 class=&quot;text-3xl font-bold mb-6&quot;&gt;TaskMaster: Immutability &amp; Spread Operator&lt;/h1&gt;
+        
+        &lt;div class=&quot;grid grid-cols-2 gap-6&quot;&gt;
+            &lt;div id=&quot;array-status&quot; class=&quot;p-4 border rounded-lg bg-gray-50&quot;&gt;
+                &lt;h2 class=&quot;text-xl font-semibold mb-3&quot;&gt;Status Array Tasks&lt;/h2&gt;
+            &lt;/div&gt;
+            &lt;div id=&quot;object-status&quot; class=&quot;p-4 border rounded-lg bg-gray-50&quot;&gt;
+                &lt;h2 class=&quot;text-xl font-semibold mb-3&quot;&gt;Status Object User&lt;/h2&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+
+    &lt;/div&gt;
+
+    &lt;script&gt;
+        // 🚀 LANGKAH 1: State Awal (Menggunakan let agar bisa di-reassign ke salinan baru)
+        let tasks = [
+            { id: 1, title: &#x27;Pelajari Spread Operator&#x27;, done: false },
+            { id: 2, title: &#x27;Siapkan Sesi Kelas&#x27;, done: true }
+        ];
+
+        let userProfile = {
+            id: &#x27;u-55&#x27;,
+            username: &#x27;trainer&#x27;,
+            isPremium: false
+        };
+
+        // Fungsi pembantu untuk menampilkan status di UI
+        function displayStatus() {
+            document.getElementById(&#x27;array-status&#x27;).innerHTML = `
+                &lt;h2 class=&quot;text-xl font-semibold mb-3&quot;&gt;Status Array Tasks (Jumlah: ${tasks.length})&lt;/h2&gt;
+                &lt;pre class=&quot;bg-white p-2 rounded text-sm&quot;&gt;${JSON.stringify(tasks, null, 2)}&lt;/pre&gt;
+            `;
+            document.getElementById(&#x27;object-status&#x27;).innerHTML = `
+                &lt;h2 class=&quot;text-xl font-semibold mb-3&quot;&gt;Status Object User&lt;/h2&gt;
+                &lt;p&gt;Status Premium: &lt;span class=&quot;font-bold text-${userProfile.isPremium ? &#x27;green&#x27; : &#x27;red&#x27;}-600&quot;&gt;${userProfile.isPremium ? &#x27;YES&#x27; : &#x27;NO&#x27;}&lt;/span&gt;&lt;/p&gt;
+                &lt;pre class=&quot;bg-white p-2 rounded text-sm&quot;&gt;${JSON.stringify(userProfile, null, 2)}&lt;/pre&gt;
+            `;
+        }
+        
+        // -----------------------------------------------------------------
+        // 🚀 LANGKAH 2: Menambahkan Array secara Immutable (Fitur &quot;Tambah Tugas&quot;)
+        // -----------------------------------------------------------------
+
+        function addTask(title) {
+            console.log(`\n--- Menambahkan Tugas: &quot;${title}&quot; ---`);
+            const newTask = {
+                id: Date.now(), // ID unik sederhana
+                title: title,
+                done: false
+            };
+
+            // Membuat Array baru: Menggabungkan semua elemen lama dan elemen baru
+            const newTasksList = [
+                ...tasks,   // Menyebar semua elemen tasks lama
+                newTask     // Menambahkan objek tugas baru
+            ];
+            
+            console.log(&quot;Array Lama (Tasks):&quot;, tasks);
+            console.log(&quot;Array Baru (newTasksList):&quot;, newTasksList);
+            
+            // Reassign variabel tasks ke salinan baru (Simulasi useState di React)
+            tasks = newTasksList; 
+        }
+
+        // -----------------------------------------------------------------
+        // 🚀 LANGKAH 3: Mengubah Properti Objek secara Immutable
+        // -----------------------------------------------------------------
+
+        function upgradeUser() {
+            console.log(&quot;\n--- Mengupgrade Akun Pengguna ---&quot;);
+            
+            // Membuat Objek baru: Salin properti lama, lalu timpa properti yang diubah
+            const updatedProfile = {
+                ...userProfile, // Menyebar semua properti userProfile lama
+                isPremium: true, // Menimpa properti isPremium
+                lastUpdated: new Date().toLocaleTimeString() // Tambah properti baru
+            };
+            
+            console.log(&quot;Objek Lama (userProfile):&quot;, userProfile);
+            console.log(&quot;Objek Baru (updatedProfile):&quot;, updatedProfile);
+            
+            // Reassign variabel userProfile ke salinan baru
+            userProfile = updatedProfile;
+        }
+
+        // -----------------------------------------------------------------
+        // Implementasi Live Coding
+        // -----------------------------------------------------------------
+
+        // Inisialisasi tampilan awal
+        displayStatus();
+
+        // Demonstrasi Tambah Tugas (Array Immutability)
+        addTask(&#x27;Belanja Kebutuhan Kantor&#x27;);
+        displayStatus();
+        
+        addTask(&#x27;Hubungi Klien A&#x27;);
+        displayStatus();
+
+        // Demonstrasi Update Objek (Object Immutability)
+        upgradeUser();
+        displayStatus();
+        
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><hr id="2b412ce7-7e1b-813a-874e-d83b613c8e12"/><p id="2b412ce7-7e1b-813d-bd1d-c646c1dc27d2" class="">Materi untuk sesi kelas online Anda sudah lengkap dari poin 1 hingga 6. Apakah ada materi lain yang ingin Anda tambahkan, atau ada topik sebelumnya yang ingin Anda revisi?</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

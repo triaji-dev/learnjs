@@ -1,0 +1,852 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>5. Array Map (.map())</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2b412ce7-7e1b-812e-947d-fdb9907536d1" class="page sans"><header><h1 class="page-title">5. Array Map (<code>.map()</code>)</h1><p class="page-description"></p><table class="properties"><tbody><tr class="property-row property-row-text"><th><span class="icon property-icon"><img src="https://www.notion.so/icons/description_gray.svg" style="width:14px;height:14px;display:block"/></span>Detail Implementasi</th><td>Automatically transform an Array of Objects into a list of task card HTML elements.</td></tr><tr class="property-row property-row-text"><th><span class="icon property-icon"><img src="https://www.notion.so/icons/description_gray.svg" style="width:14px;height:14px;display:block"/></span>Fitur &quot;TaskMaster&quot;</th><td><strong>Render Task List</strong></td></tr><tr class="property-row property-row-text"><th><span class="icon property-icon"><img src="https://www.notion.so/icons/description_gray.svg" style="width:14px;height:14px;display:block"/></span>Relevansi React</th><td>Rendering List in React</td></tr></tbody></table></header><div class="page-body"><h1 id="2b412ce7-7e1b-81dd-b87d-fd4dd5c334a1" class="block-color-yellow">5. Array Map (<code>.map()</code>) (30 Menit) </h1><h3 id="2b412ce7-7e1b-81e4-9bf9-c45729490971" class="">1. Penjelasan Materi dan Contoh (15 Menit)</h3><h3 id="2b412ce7-7e1b-81ee-af2d-d5abc5d09159" class="">A. Konsep Dasar Array Map</h3><p id="2b412ce7-7e1b-8102-b6e0-f7a91c605b9f" class="">Metode <code><strong>.map()</strong></code> adalah salah satu metode <em>Higher-Order Function</em> pada <em>Array</em> di JavaScript. Tujuan utamanya adalah untuk melakukan <strong>iterasi</strong> (perulangan) pada setiap elemen dalam sebuah <em>Array</em> dan <strong>mengembalikan </strong><em><strong>Array</strong></em><strong> baru</strong> yang berisi hasil dari pemrosesan setiap elemen tersebut.</p><p id="2b412ce7-7e1b-8151-9fe5-ca3eee40f4e0" class=""><strong>Tiga Poin Kunci:</strong></p><ol type="1" id="2b412ce7-7e1b-81eb-937c-d13d2ce9a7db" class="numbered-list" start="1"><li><strong>Iterasi:</strong> <code>.map()</code> mengunjungi setiap elemen dalam <em>Array</em> sumber.</li></ol><ol type="1" id="2b412ce7-7e1b-81ac-9c59-c2c6642a91a5" class="numbered-list" start="2"><li><strong>Transformasi:</strong> Ia menerapkan fungsi <em>callback</em> yang Anda sediakan pada setiap elemen.</li></ol><ol type="1" id="2b412ce7-7e1b-81ab-9bdb-f25c2a103ba5" class="numbered-list" start="3"><li><strong>Array Baru:</strong> Ia selalu mengembalikan <strong>Array baru</strong> dengan jumlah elemen yang sama. <em>Array</em> sumber tidak diubah (non-mutating).</li></ol><p id="2b412ce7-7e1b-812b-a10a-e350630d5e39" class=""><strong>Sintaks:</strong></p><p id="2b412ce7-7e1b-81e2-8541-d80694456112" class="">JavaScript</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2b412ce7-7e1b-81bb-a716-fec8abb7b85d" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">const newArray = originalArray.map((element, index, array) =&gt; {
+    // Kembalikan nilai yang ditransformasi
+    return transformedValue;
+});</code></pre><h3 id="2b412ce7-7e1b-8184-b179-d00c98676f66" class="">B. Contoh 1: Transformasi Data Sederhana</h3><p id="2b412ce7-7e1b-818f-9e50-ea6f272f0ac8" class="">Misalnya, kita punya daftar angka dan ingin mengalikannya dengan dua.</p><p id="2b412ce7-7e1b-8172-9a34-f29661bb6c72" class="">JavaScript</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2b412ce7-7e1b-8173-acbd-e52638c8561f" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">const numbers = [1, 2, 3, 4];
+
+// Transformasi: Setiap angka dikalikan 2
+const doubledNumbers = numbers.map(number =&gt; {
+    return number * 2;
+});
+
+console.log(doubledNumbers); // Output: [2, 4, 6, 8]
+console.log(numbers);        // Array sumber tidak berubah: [1, 2, 3, 4]</code></pre><h3 id="2b412ce7-7e1b-8123-87fa-d482c35b12cb" class="">C. Detail Implementasi: Array of Objects ke Markup HTML</h3><p id="2b412ce7-7e1b-8137-9468-cb7937479b0d" class="">Ini adalah skenario penggunaan terpenting di pengembangan <em>Front-End</em> modern (seperti React) — mengubah <code><strong>Array of Objects</strong></code> yang mewakili data (misalnya, daftar tugas) menjadi <strong>daftar elemen HTML</strong> yang dapat ditampilkan di antarmuka pengguna.</p><p id="2b412ce7-7e1b-81d5-9f8c-f04e8d8b0b5c" class=""><strong>Contoh 2: Rendering Daftar Tugas (Fitur TaskMaster)</strong></p><p id="2b412ce7-7e1b-81d2-a727-fdd76733c371" class="">Kita memiliki daftar tugas dalam bentuk <em>Array</em> objek dan ingin mengubahnya menjadi <em>string</em> HTML untuk setiap kartu tugas.</p><p id="2b412ce7-7e1b-8119-a23b-d88e8b18b3ff" class="">JavaScript</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2b412ce7-7e1b-81bd-9a21-d66df77e7b28" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">const taskList = [
+    { id: 1, title: &#x27;Beli Bahan Makanan&#x27;, priority: &#x27;Low&#x27; },
+    { id: 2, title: &#x27;Perbaiki Bug Login&#x27;, priority: &#x27;High&#x27; },
+    { id: 3, title: &#x27;Rapat Mingguan Tim&#x27;, priority: &#x27;Medium&#x27; }
+];
+
+// Menggunakan .map() untuk mengubah setiap objek tugas menjadi string HTML
+const taskCardsHTML = taskList.map(task =&gt; {
+    // Di sini kita menggunakan Template Literals untuk membuat markup
+    const priorityClass = task.priority === &#x27;High&#x27; ? &#x27;text-red-600&#x27; : &#x27;text-gray-600&#x27;;
+    
+    return `
+        &lt;div class=&quot;task-card border p-3 mb-2 rounded shadow-sm&quot;&gt;
+            &lt;h3 class=&quot;text-lg font-semibold&quot;&gt;${task.title}&lt;/h3&gt;
+            &lt;p class=&quot;${priorityClass}&quot;&gt;Prioritas: ${task.priority}&lt;/p&gt;
+        &lt;/div&gt;
+    `;
+});
+
+console.log(taskCardsHTML); 
+/* Output: 
+Array dari 3 string HTML: 
+[
+    &quot;&lt;div class=... &gt;...&lt;/div&gt;&quot;, 
+    &quot;&lt;div class=... &gt;...&lt;/div&gt;&quot;, 
+    &quot;&lt;div class=... &gt;...&lt;/div&gt;&quot;
+]
+*/
+
+// Catatan: Array of strings ini perlu digabungkan (.join(&#x27;&#x27;)) sebelum disisipkan ke DOM.
+const finalHTML = taskCardsHTML.join(&#x27;&#x27;); 
+// Output: Satu string panjang yang siap disisipkan ke innerHTML</code></pre><h3 id="2b412ce7-7e1b-810c-b9cb-e1372d923c92" class="">D. Relevansi React: Rendering List</h3><p id="2b412ce7-7e1b-818b-bb5e-d5f8b877c458" class="">Konsep ini adalah dasar dari <strong>Rendering List</strong> di React.</p><ul id="2b412ce7-7e1b-81ba-b164-ee545139fd23" class="bulleted-list"><li style="list-style-type:disc">Dalam React/JSX, <code>.map()</code> digunakan untuk mengubah <em>Array</em> data menjadi <em>Array</em> elemen JSX (bukan string HTML).</li></ul><ul id="2b412ce7-7e1b-8178-86a9-c158f5b30f39" class="bulleted-list"><li style="list-style-type:disc">Ketika JSX melihat <em>Array</em> elemen, ia secara otomatis me-render setiap elemen secara berurutan.</li></ul><p id="2b412ce7-7e1b-8176-b654-ce7635ddd443" class="">JavaScript</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2b412ce7-7e1b-81e9-8e07-debc4452bc11" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">// Contoh dalam konteks JSX (di React):
+// function TaskList({ tasks }) {
+//   return (
+//     &lt;div&gt;
+//       {tasks.map((task) =&gt; (
+//         // Setiap elemen di sini adalah JSX (Komponen React)
+//         &lt;TaskCard key={task.id} title={task.title} priority={task.priority} /&gt;
+//       ))}
+//     &lt;/div&gt;
+//   );
+// }</code></pre><hr id="2b412ce7-7e1b-8142-a283-f227e128b612"/><h1 id="2b412ce7-7e1b-8115-ad8b-cfb411042f9a" class="block-color-yellow">Live Coding (15 Menit)</h1><h3 id="2b412ce7-7e1b-8128-b5b7-de4bed1b7b34" class="">Exercise untuk Peserta</h3><p id="2b412ce7-7e1b-81fb-ad61-d53b6f16b451" class="">Ajak peserta untuk mengimplementasikan fungsionalitas <strong>Render Daftar Tugas</strong> menggunakan <code>.map()</code>, Template Literals, dan konsep <em>Destructuring</em> yang sudah dipelajari.</p><ol type="1" id="2b412ce7-7e1b-81e6-946d-ed5dde972366" class="numbered-list" start="1"><li><strong>Siapkan Array Data Tugas:</strong> Buat <em>Array</em> bernama <code>taskData</code> yang berisi minimal 3 objek tugas (dengan <code>id</code>, <code>title</code>, <code>priority</code>, dan <code>status</code>).</li></ol><ol type="1" id="2b412ce7-7e1b-81b4-86df-f47c5e387f91" class="numbered-list" start="2"><li><strong>Tulis Fungsi </strong><code><strong>renderTask</strong></code><strong>:</strong> Buat fungsi yang menerima satu objek tugas dan mengembalikan <em>string</em> HTML kartu tugas yang sudah diformat (<em>gunakan Destructuring dan Template Literals</em>).</li></ol><ol type="1" id="2b412ce7-7e1b-8153-adab-ef0659aab7bc" class="numbered-list" start="3"><li><strong>Terapkan </strong><code><strong>.map()</strong></code><strong>:</strong> Gunakan <code>.map()</code> pada <code>taskData</code> untuk memanggil fungsi <code>renderTask</code> pada setiap elemen.</li></ol><ol type="1" id="2b412ce7-7e1b-815b-93de-cf2b3c0bb82c" class="numbered-list" start="4"><li><strong>Gabungkan dan Tampilkan:</strong> Gunakan metode <code>.join(&#x27;&#x27;)</code> untuk mengubah <em>Array</em> hasil menjadi satu <em>string</em> besar, kemudian sisipkan ke DOM menggunakan <code>innerHTML</code>.</li></ol><h3 id="2b412ce7-7e1b-817b-a1b0-d755b9639bb6" class="">Contoh Code (Untuk panduan <em>live coding</em>)</h3><p id="2b412ce7-7e1b-816e-86e0-d795e633d221" class="">HTML</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2b412ce7-7e1b-81b5-8911-f61bf7253cbe" class="code code-wrap"><code class="language-HTML" style="white-space:pre-wrap;word-break:break-all">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;id&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Praktek: Array Map (.map())&lt;/title&gt;
+    &lt;script src=&quot;https://cdn.tailwindcss.com&quot;&gt;&lt;/script&gt;
+    &lt;style&gt;
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+    &lt;div class=&quot;p-8 max-w-2xl mx-auto&quot;&gt;
+        &lt;h1 class=&quot;text-3xl font-bold mb-6&quot;&gt;TaskMaster: Daftar Tugas Otomatis&lt;/h1&gt;
+        &lt;div id=&quot;task-list-container&quot; class=&quot;space-y-4&quot;&gt;
+            &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;script&gt;
+        // Data sumber: Array of Objects
+        const taskData = [
+            { id: 101, title: &#x27;Setup Database Development&#x27;, priority: &#x27;High&#x27;, status: &#x27;To Do&#x27; },
+            { id: 102, title: &#x27;Desain Komponen Navbar&#x27;, priority: &#x27;Medium&#x27;, status: &#x27;In Progress&#x27; },
+            { id: 103, title: &#x27;Buat Dokumentasi Fitur X&#x27;, priority: &#x27;Low&#x27;, status: &#x27;Done&#x27; },
+            { id: 104, title: &#x27;Koreksi Final Proposal&#x27;, priority: &#x27;High&#x27;, status: &#x27;To Do&#x27; }
+        ];
+
+        // -----------------------------------------------------------------
+        // 🚀 LANGKAH 1 &amp; 2: Fungsi Pembantu untuk Merender Satu Kartu (Menggunakan Destructuring)
+        // -----------------------------------------------------------------
+
+        function renderTaskCard({ id, title, priority, status }) {
+            // Logika untuk menentukan warna badge (menggunakan Ternary Operator)
+            const priorityClass = priority === &#x27;High&#x27; ? &#x27;bg-red-200 text-red-800&#x27; : 
+                                  priority === &#x27;Medium&#x27; ? &#x27;bg-yellow-200 text-yellow-800&#x27; :
+                                  &#x27;bg-blue-200 text-blue-800&#x27;;
+
+            const statusClass = status === &#x27;Done&#x27; ? &#x27;bg-green-200 text-green-800&#x27; : &#x27;bg-gray-200 text-gray-800&#x27;;
+
+            // Menggunakan Template Literals untuk membuat string HTML
+            return `
+                &lt;div class=&quot;p-4 border border-gray-200 rounded-lg shadow-md bg-white&quot;&gt;
+                    &lt;div class=&quot;flex justify-between items-start mb-2&quot;&gt;
+                        &lt;h3 class=&quot;text-xl font-bold text-gray-800&quot;&gt;${title}&lt;/h3&gt;
+                        &lt;span class=&quot;text-sm font-light text-gray-500&quot;&gt;ID: ${id}&lt;/span&gt;
+                    &lt;/div&gt;
+                    
+                    &lt;div class=&quot;flex space-x-2&quot;&gt;
+                        &lt;span class=&quot;badge ${priorityClass}&quot;&gt;${priority}&lt;/span&gt;
+                        &lt;span class=&quot;badge ${statusClass}&quot;&gt;${status}&lt;/span&gt;
+                    &lt;/div&gt;
+
+                    ${status !== &#x27;Done&#x27; &amp;&amp; 
+                        `&lt;div class=&quot;mt-3 text-right&quot;&gt;
+                            &lt;button class=&quot;text-sm text-indigo-600 hover:text-indigo-800 font-medium&quot;&gt;Lanjutkan&lt;/button&gt;
+                        &lt;/div&gt;`
+                    }
+                &lt;/div&gt;
+            `;
+        }
+
+        // -----------------------------------------------------------------
+        // 🚀 LANGKAH 3 &amp; 4: Menerapkan .map(), Menggabungkan, dan Menampilkan
+        // -----------------------------------------------------------------
+        
+        // 1. Iterasi Array menggunakan .map()
+        const taskCardsArrayOfStrings = taskData.map(task =&gt; {
+            // Memanggil fungsi pembantu untuk setiap objek tugas
+            return renderTaskCard(task); 
+        });
+
+        console.log(&quot;Array of Strings HTML dihasilkan:&quot;, taskCardsArrayOfStrings);
+        
+        // 2. Menggabungkan Array of Strings menjadi satu string besar menggunakan .join(&#x27;&#x27;)
+        const finalTaskListHTML = taskCardsArrayOfStrings.join(&#x27;&#x27;);
+        
+        // 3. Menyisipkan ke DOM
+        const container = document.getElementById(&#x27;task-list-container&#x27;);
+        if (container) {
+            container.innerHTML = finalTaskListHTML;
+        } else {
+            console.error(&quot;Elemen container tidak ditemukan.&quot;);
+        }
+
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><hr id="2b412ce7-7e1b-816f-8d36-e55aa77259be"/><p id="2b412ce7-7e1b-81c4-bc8a-ed164575713e" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
